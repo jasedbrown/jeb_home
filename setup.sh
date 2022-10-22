@@ -4,7 +4,10 @@ sudo apt update
 sudo apt install -y \
      zsh \
      emacs \
+     cmake \
      gcc \
+     dstat \
+     htop \
      ninja-build \
      build-essentials \
      libssl-dev \
@@ -12,6 +15,21 @@ sudo apt install -y \
      autoconf \
      libtool \
      curl \
+     libcurl4-openssl-dev \
+     liblzma-dev \
+     python-dev-is-python3 \
+     libssl-dev \
+     python3-pip \
+     libgflags-dev \
+     libzstd-dev \
+     bzip2 \
+     liblz4-dev \
+     liblz4-tool \
+     zstd \
+     libbz2-dev \
+     libsnappy-dev \
+     zlib1g-dev \
+     libgflags-dev 
      python3-pip
 
 
