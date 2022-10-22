@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 DATA_ROOT="/var/lib/mongo"
 # sudo mkdir -p $DATA_ROOT
 # sudo chown -R jasobrown: $DATA_ROOT
@@ -21,7 +21,7 @@ do
 
     REPL_IP="127.0.0.${i}"
 
-#    ${MONGOD} --fork --replSet shard_jasobrown --noscripting --dbpath $REPL_HOME/data --bind_ip $REPL_IP --port 9902 --logpath $REPL_HOME/log/mongo.log --logRotate reopen --logappend --pidfilepath $REPL_HOME/mongodb.pid
+    ${MONGOD} --fork --replSet shard_jasobrown --noscripting --dbpath $REPL_HOME/data --bind_ip $REPL_IP --port 9902 --logpath $REPL_HOME/log/mongo.log --logRotate reopen --logappend --pidfilepath $REPL_HOME/mongodb.pid
 done
 
 ${MONGO_SHELL} 127.0.0.1:9902 ~/bin/initiate.js
