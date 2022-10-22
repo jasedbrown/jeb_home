@@ -39,6 +39,8 @@
 ;; supress welcome screen
 (setq inhibit-startup-message t)
 
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
 ;;---------------------------------------------------
 ;; PACKAGE MANAGEMENT
 (require 'package)
