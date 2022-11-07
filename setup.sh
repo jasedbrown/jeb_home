@@ -29,7 +29,7 @@ sudo apt install -y \
      libbz2-dev \
      libsnappy-dev \
      zlib1g-dev \
-     libgflags-dev 
+     libgflags-dev \ 
      python3-pip
 
 
