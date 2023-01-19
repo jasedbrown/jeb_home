@@ -112,3 +112,6 @@ alias ll='ls -lart'
 alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
+
+# jfc, i hate shared history
+unsetopt share_history
