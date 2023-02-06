@@ -4,4 +4,9 @@
 	ci = commit
 	st = status
 	cl = clone
+    ru = remote update
 	fuckit = clean -f -d -x -q
+[init]
+	defaultBranch = main
+[core]
+	editor = emacs -nw
