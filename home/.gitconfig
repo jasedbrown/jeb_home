@@ -5,6 +5,7 @@
 	st = status
 	cl = clone
     ru = remote update
+    dc = diff --cached
 	fuckit = clean -f -d -x -q
 [init]
 	defaultBranch = main
