@@ -1,5 +1,5 @@
 #!/bin/bash
-
+11;rgb:1717/1414/2121
 # add repo for updated versions of emacs
 sudo add-apt-repository ppa:kelleyk/emacs
 
@@ -34,7 +34,8 @@ sudo apt install -y \
      libgflags-dev \ 
      python3-pip \
      1password \
-     emacs28    
+     emacs28 \
+     code
 
 
 cp -v -R home/.* home/* ~
