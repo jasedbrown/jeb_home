@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# add repo for updated versions of emacs
+sudo add-apt-repository ppa:kelleyk/emacs
+
 sudo apt update
 sudo apt install -y \
      zsh \
-     emacs \
      cmake \
      gcc \
      dstat \
@@ -30,7 +32,9 @@ sudo apt install -y \
      libsnappy-dev \
      zlib1g-dev \
      libgflags-dev \ 
-     python3-pip
+     python3-pip \
+     1password \
+     emacs28    
 
 
 cp -v -R home/.* home/* ~
