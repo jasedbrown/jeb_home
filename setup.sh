@@ -11,7 +11,7 @@ sudo apt install -y \
      dstat \
      htop \
      ninja-build \
-     build-essentials \
+     build-essential \
      libssl-dev \
      net-tools \
      autoconf \
@@ -33,12 +33,7 @@ sudo apt install -y \
      zlib1g-dev \
      libgflags-dev \ 
      python3-pip \
-     1password \
-     emacs28 \
-     code
-
-
-cp -v -R home/.* home/* ~
+     emacs28 
 
 # install oh-my-zsh *yeah, i still like it)
 if [ ! -d "~/.oh-my-zsh" ]; then
@@ -48,4 +43,8 @@ fi
 # install rust/rustup
 if [ ! -d "~/.rustup" ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    rustup component add rust-src
+    rustup component add rust-analyzer
 fi
+
+cp -v -R home/.* home/* ~

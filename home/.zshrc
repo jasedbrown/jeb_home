@@ -113,5 +113,10 @@ alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
 
+# emacs magick
+alias emacs='emacs -nw`
+alias rmacs='EMACS_LANG=rust emacs -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el'
+alias jmacs='EMACS_LANG=java emacs -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el'
+
 # jfc, i hate shared history
 unsetopt share_history
