@@ -1,5 +1,4 @@
 #!/bin/bash
-11;rgb:1717/1414/2121
 # add repo for updated versions of emacs
 sudo add-apt-repository ppa:kelleyk/emacs
 
@@ -33,7 +32,9 @@ sudo apt install -y \
      zlib1g-dev \
      libgflags-dev \ 
      python3-pip \
-     emacs28 
+     emacs28 \
+     libgflags-dev  
+
 
 # install oh-my-zsh *yeah, i still like it)
 if [ ! -d "~/.oh-my-zsh" ]; then
@@ -47,4 +48,9 @@ if [ ! -d "~/.rustup" ]; then
     rustup component add rust-analyzer
 fi
 
+# copy over home directory files *after* installing oh-my-zsh
 cp -v -R home/.* home/* ~
+
+# install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
+python3 -m pip install semgrep
+# add to $PATH

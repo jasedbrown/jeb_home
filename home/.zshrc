@@ -100,7 +100,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export PATH=$PATH:/opt/bin/golang/cur_go/bin
+export PATH=$PATH:~/bin:~/.local/bin
 
 alias cd.='cd ..'
 alias cd..='cd ../../'
