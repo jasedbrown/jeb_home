@@ -30,10 +30,15 @@ sudo apt install -y \
      libbz2-dev \
      libsnappy-dev \
      zlib1g-dev \
+<<<<<<< HEAD
      libgflags-dev \ 
      python3-pip \
      emacs28 \
      libgflags-dev  
+=======
+     libgflags-dev \
+     linux-tools-$(uname -r)
+>>>>>>> e222d57 (add linux perf to install)
 
 
 # install oh-my-zsh *yeah, i still like it)
