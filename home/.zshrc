@@ -100,7 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export PATH=$PATH:~/bin:~/.local/bin
+export JAVA_HOME=/opt/dev/java/cur_jdk
+export PATH=$PATH:~/bin:/home/jasobrown/.local/bin:$JAVA_HOME/bin
 
 alias cd.='cd ..'
 alias cd..='cd ../../'
@@ -108,15 +109,27 @@ alias cd...='cd ../../../'
 alias cd....='cd ../../../../'
 alias cd.....='cd ../../../../../'
 alias cds='cd /opt/dev'
-alias ll='ls -lart'
+alias cdr='cd /opt/dev/readyset'
+alias ll='ls -la'
+alias llr='ls -lart'
 alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
 
 # emacs magick
-alias emacs='emacs -nw`
-alias rmacs='EMACS_LANG=rust emacs -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el'
-alias jmacs='EMACS_LANG=java emacs -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el'
+EMACS_CONFIG_HOME=/opt/dev/jasobrown_stuffs/emacs_config
+alias emacs="emacs -nw -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el"
+alias rmacs="EMACS_LANG=rust emacs"
+alias jmacs="EMACS_LANG=java emacs"
+
+# use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
+# to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
+export LSP_USE_PLISTS=true
 
 # jfc, i hate shared history
 unsetopt share_history
+
+# disable readyset telemetry
+export RS_API_KEY="readyset_internal"
+
+ulimit -n unlimited
