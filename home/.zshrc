@@ -115,6 +115,7 @@ alias llr='ls -lart'
 alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
+alias gs='git status'
 
 # emacs magick
 EMACS_CONFIG_HOME=/opt/dev/jasobrown_stuffs/emacs_config
