@@ -1,6 +1,6 @@
 #!/bin/bash
 # add repo for updated versions of emacs
-sudo add-apt-repository ppa:kelleyk/emacs
+sudo add-apt-repository -y ppa:kelleyk/emacs
 
 sudo apt update
 sudo apt install -y \
@@ -35,7 +35,8 @@ sudo apt install -y \
      emacs28 \
      libgflags-dev  \
      libgflags-dev \
-     linux-tools-$(uname -r)
+     linux-tools-$(uname -r) \
+     ncal
 
 
 # install oh-my-zsh (yeah, i still like it)
