@@ -112,14 +112,15 @@ alias cds='cd /opt/dev'
 alias cdr='cd /opt/dev/readyset'
 alias ll='ls -la'
 alias llr='ls -lart'
+alias mkdir='mkdir -p'
 alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
 alias gs='git status'
 
 # emacs magick
-EMACS_CONFIG_HOME=/opt/dev/jasobrown_stuffs/emacs_config
-alias emacs="emacs -nw -q --load /opt/dev/jasobrown_stuffs/emacs_config/standalone.el"
+EMACS_CONFIG_HOME=~/.emacs.d/jasobrown
+alias emacs="emacs -nw -q --load ${EMACS_CONFIG_HOME}/standalone.el"
 alias rmacs="EMACS_LANG=rust emacs"
 alias jmacs="EMACS_LANG=java emacs"
 
