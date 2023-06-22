@@ -62,8 +62,8 @@
                ))))
 
 (add-hook 'ibuffer-mode-hook
-	  '(lambda ()
-	     (ibuffer-switch-to-saved-filter-groups "home")))
+	      (lambda ()
+	        (ibuffer-switch-to-saved-filter-groups "home")))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
