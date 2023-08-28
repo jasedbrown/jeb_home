@@ -117,6 +117,7 @@ alias findname='find -L . -name'
 alias ec='emacsclient'
 alias shippo='tail -200f'
 alias gs='git status'
+alias ethereal='wireshark'
 
 # emacs magick
 EMACS_CONFIG_HOME=~/.emacs.d/jasobrown

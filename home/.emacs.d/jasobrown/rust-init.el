@@ -129,12 +129,6 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; Create / cleanup rust scratch projects quickly
-
-(use-package rust-playground :ensure)
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; for Cargo.toml and other config files
 
 (use-package toml-mode :ensure)

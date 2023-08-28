@@ -1,4 +1,12 @@
 #!/bin/bash
+# make sure to ssh with -A flag
+
+set -euo pipefail
+set -x
+
+#############################
+# update system
+
 # add repo for updated versions of emacs
 sudo add-apt-repository -y ppa:kelleyk/emacs
 
@@ -33,14 +41,48 @@ sudo apt install -y \
      libgflags-dev \ 
      python3-pip \
      emacs28 \
-     libgflags-dev  \
      libgflags-dev \
      linux-tools-$(uname -r) \
-     ncal
+     ncal \
+     gnuplot \
+     postgres-client \
+     linux-tools-common \
+     linux-tools-generic \
+     gdb \
+     sysbench \
+     postgresql-client \
+     mysql-client \
+     wireshark \
+     tmux \
+     python3-venv \
+     pkg-config \
+     libclang-dev \
+     libclang-cpp-dev
+
 
 # install oh-my-zsh (yeah, i still like it)
 if [ ! -d "~/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+
+##############################
+# install docker (https://docs.docker.com/engine/install/ubuntu/)
+
+if [ ! -f "/usr/bin/docker" ]; then
+    # Add Docker’s official GPG key
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+    # set up the repository
+    echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    sudo apt-get update
+    sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 
 
@@ -52,11 +94,16 @@ if [ ! -d "~/.rustup" ]; then
     export PATH=$PATH:$HOME/.cargo/bin
     echo "\nexport PATH=$PATH:$HOME/.cargo/bin" >> ~/.bashrc
 
-    cargo install flamegraph
-    cargo install --locked cargo-deny
     rustup component add rust-src
     rustup component add rust-analyzer
+    cargo install critcmp
+    cargo install flamegraph
+    cargo install --locked cargo-deny
 fi
+
+# lower the paranoia level so we can get reasonable flamegraphs
+echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+
 
 #############################
 # install mold compiler. instructions taken from 
@@ -69,7 +116,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v1.11.0
+    git checkout v2.1.0
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
@@ -83,6 +130,29 @@ linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
 EOF
 
+fi
+
+
+#############################
+# install readyset and do a basic build of readyset,
+# this will update cargo, grab dependent crates, etc.
+
+READYSET_HOME=$SRC_HOME/readyset
+if [ ! -d "$READYSET_HOME" ]; then
+    cd $SRC_HOME
+    git clone https://github.com/readysettech/readyset.git 
+    cd $READYSET_HOME
+    cargo build --bin readyset
+    cargo build --release --bin readyset
+fi
+
+
+#############################
+## install flamegraphs
+
+if [ ! -d "$SRC_HOME/FlameGraph" ]; then
+    cd $SRC_HOME
+    git clone git@github.com:brendangregg/FlameGraph.git
 fi
 
 # copy over home directory files *after* installing oh-my-zsh
