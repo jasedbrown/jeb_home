@@ -120,7 +120,7 @@ alias gs='git status'
 alias ethereal='wireshark'
 
 # emacs magick
-EMACS_CONFIG_HOME=~/.emacs.d/jasobrown
+EMACS_CONFIG_HOME=~/src/jeb_home/home/.emacs.d/jasobrown
 alias emacs="emacs -nw -q --load ${EMACS_CONFIG_HOME}/standalone.el"
 alias rmacs="EMACS_LANG=rust emacs"
 alias jmacs="EMACS_LANG=java emacs"
