@@ -1,0 +1,104 @@
+version: "3.8"
+services:
+  ##############################
+  ## databases
+  # mysql:
+  #   image: mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=readyset
+  #     - MYSQL_DATABASE=testdb
+  #   ports:
+  #     - '3306:3306'
+  # postgres:
+  #   image: postgres:14
+  #   environment:
+  #     - POSTGRES_PASSWORD=readyset
+  #     - POSTGRES_DB=testdb
+  #   ports:
+  #     - '5432:5432'
+  #   command:
+  #     - "postgres"
+  #     - "-c"
+  #     - "wal_level=logical"
+
+  
+  ##############################
+  ## metrics
+  prometheus:
+    image: prom/prometheus
+    # Required to access a local noria-server.
+    network_mode: "host"
+    # ports:
+    #   - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9090"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+      start_period: 5s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  pushgateway:
+    # allows ephemeral and batch jobs to expose their metrics to Prometheus
+    # https://github.com/prometheus/pushgateway
+    image: prom/pushgateway
+    network_mode: "host"
+    # ports:
+    #   - '9091:9091'
+  node_exporter:
+    # exporter for hardware and OS metrics exposed by *NIX kernels
+    # https://github.com/prometheus/node_exporter
+    # https://prometheus.io/docs/guides/node-exporter/
+    # default port of 9100
+    image: prom/node-exporter:latest
+    #container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+  # grafana:
+  #   image: grafana/grafana
+  #   network_mode: "host"
+  #   # ports:
+  #   #   - '4000:4000'
+  #   volumes:
+  #     - ./grafana/dashboards:/var/lib/grafana/dashboards
+  #     - ./grafana/provisioning:/etc/grafana/provisioning
+  #     - ./grafana/config:/etc/grafana
+
+  ##############################
+  ## logging?
+  # vector:
+  #   image: timberio/vector:0.16.1-debian
+  #   network_mode: "host"
+  #   volumes:
+  #     - ./vector/aggregator.toml:/etc/vector/vector.toml
+
+  ##############################
+  ## tracing
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   network_mode: "host"
+  #   # ports:
+  #   #   - "0.0.0.0:16686:16686"
+  #   #   - "0.0.0.0:4317:4317"
+  #   environment:
+  #     SPAN_STORAGE_TYPE: "badger"
+  #     BADGER_EPHEMERAL: "false"
+
+  # consul-server:
+  #   image: hashicorp/consul:1.15
+  #   restart: always
+  #   volumes:
+  #     - ./docker/consul/server.json:/consul/config/server.json:ro
+  #   command: 'agent -bootstrap-expect=1'
+  # consul-server:
+  #   ports:
+  #     - '8500:8500'
+  #     - '8600:8600/tcp'
+  #     - '8600:8600/udp'
