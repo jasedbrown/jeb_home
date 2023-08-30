@@ -136,9 +136,9 @@ READYSET_HOME=$SRC_HOME/readyset
 if [ ! -d "$READYSET_HOME" ]; then
     cd $SRC_HOME
     git clone https://github.com/readysettech/readyset.git 
-    cd $READYSET_HOME
-    cargo build --bin readyset
-    cargo build --release --bin readyset
+#    cd $READYSET_HOME
+#    cargo build --bin readyset
+#    cargo build --release --bin readyset
 fi
 
 
