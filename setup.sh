@@ -12,52 +12,47 @@ sudo add-apt-repository -y ppa:kelleyk/emacs
 
 sudo apt update
 sudo apt install -y \
-     zsh \
-     cmake \
-     gcc \
-     dstat \
-     htop \
-     ninja-build \
-     build-essential \
-     libssl-dev \
-     net-tools \
      autoconf \
-     libtool \
-     curl \
-     libcurl4-openssl-dev \
-     liblzma-dev \
-     python-dev-is-python3 \
-     libssl-dev \
-     python3-pip \
-     libgflags-dev \
-     libzstd-dev \
+     build-essential \
      bzip2 \
+     cmake \
+     curl \
+     dstat \
+     gcc \
+     gdb \
+     gnuplot \
+     htop \
+     libbz2-dev \
+     libclang-dev \
+     libclang-cpp-dev \
+     libcurl4-openssl-dev \
+     libgflags-dev \
+     liblzma-dev \
      liblz4-dev \
      liblz4-tool \
-     zstd \
-     libbz2-dev \
      libsnappy-dev \
-     zlib1g-dev \
-     libgflags-dev \ 
-     python3-pip \
-     emacs28 \
-     libgflags-dev \
+     libssl-dev \
+     libssl-dev \
+     libtool \
+     libzstd-dev \
      linux-tools-$(uname -r) \
-     ncal \
-     gnuplot \
-     postgres-client \
      linux-tools-common \
      linux-tools-generic \
-     gdb \
-     sysbench \
-     postgresql-client \
      mysql-client \
-     wireshark \
-     tmux \
-     python3-venv \
+     ncal \
+     net-tools \
+     ninja-build \
      pkg-config \
-     libclang-dev \
-     libclang-cpp-dev
+     postgresql-client \
+     python-dev-is-python3 \
+     python3-pip \
+     python3-venv \
+     sysbench \
+     tmux \
+     wireshark \
+     zlib1g-dev \
+     zsh \
+     zstd 
 
 
 # install oh-my-zsh (yeah, i still like it)
