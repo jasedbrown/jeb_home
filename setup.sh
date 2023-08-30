@@ -99,6 +99,8 @@ fi
 # lower the paranoia level so we can get reasonable flamegraphs
 echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
 
+SRC_HOME=~/src
+mkdir -p $SRC_HOME
 
 #############################
 # install mold compiler. instructions taken from 
