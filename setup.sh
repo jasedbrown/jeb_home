@@ -56,9 +56,9 @@ sudo apt install -y \
 
 
 # install oh-my-zsh (yeah, i still like it)
-if [ ! -d "~/.oh-my-zsh" ]; then
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
+# if [ ! -d "~/.oh-my-zsh" ]; then
+#     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# fi
 
 
 ##############################
