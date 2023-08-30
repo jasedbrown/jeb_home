@@ -123,8 +123,13 @@ if [ ! -d "$MOLD_HOME" ]; then
     mkdir -p $HOME/.cargo
     cat <<EOF >> $HOME/.cargo/config.toml
 [target.x86_64-unknown-linux-gnu]
-linker = "clang"
-rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
+# known problems with mold, ubuntu, clang/gcc:
+# https://github.com/rui314/mold/issues/1025
+# https://github.com/michaelsproul/mold-stdcpp/blob/main/.cargo/config.toml
+# linker = "clang"
+# rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
+
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 EOF
 
 fi
