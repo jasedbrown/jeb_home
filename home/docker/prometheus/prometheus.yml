@@ -14,6 +14,11 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9091']
     honor_labels: true
+  - job_name: 'node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9100']
+    honor_labels: true
   - job_name: 'readyset'
     scrape_interval: 5s
     static_configs:
