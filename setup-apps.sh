@@ -36,3 +36,11 @@ if [ ! -d "$PGCAT_HOME" ]; then
 fi
 
 
+#############################
+## setup some directories for container output
+
+sudo mkdir /var/lib/grafana
+sudo chown $(whoami)  /var/lib/grafana
+
+sudo mkdir /var/lib/prometheus
+sudo chown $(whoami)  /var/lib/prometheus

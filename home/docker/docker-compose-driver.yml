@@ -29,6 +29,7 @@ services:
     network_mode: "host"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/var/lib/prometheus
     healthcheck:
       test: ["CMD", "nc", "-vz", "localhost", "9090"]
       interval: 10s
@@ -45,7 +46,8 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/config:/etc/grafana
-
+    volumes:
+      - grafana_data:/var/lib/grafana
 
   ##############################
   ## exporters
@@ -55,3 +57,12 @@ services:
     # defaults to port 9091
     image: prom/pushgateway
     network_mode: "host"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+
+##############################
+## volumes for specific apps
+volumes:
+  grafana_data: {}
+  prometheus-data: {}
