@@ -9,13 +9,11 @@ SCRIPT_DIR=$(pwd)
 #############################
 # update system
 
-export DEBIAN_FRONTEND=noninteractive
-
 # add repo for updated versions of emacs
 sudo add-apt-repository -y ppa:kelleyk/emacs
 
 sudo apt update
-sudo apt install -y \
+sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      autoconf \
      build-essential \
      bzip2 \
@@ -65,7 +63,7 @@ sudo apt install -y \
 #     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # fi
 
-chsh -s /usr/bin/zsh ubuntu
+sudo chsh -s /usr/bin/zsh $(whoami)
 
 ##############################
 # install docker (https://docs.docker.com/engine/install/ubuntu/)

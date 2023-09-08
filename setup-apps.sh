@@ -6,16 +6,10 @@ set -x
 
 SCRIPT_DIR=$(pwd)
 
-#############################
-# update system
-
-export DEBIAN_FRONTEND=noninteractive
-
-
 ##############################
 # install extra applications for benchmarking
 
-sudo apt install -y \
+sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      memcached \
      pgbouncer \
      redis-server
