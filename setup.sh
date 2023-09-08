@@ -4,8 +4,12 @@
 set -euo pipefail
 set -x
 
+SCRIPT_DIR=$(pwd)
+
 #############################
 # update system
+
+export DEBIAN_FRONTEND=noninteractive
 
 # add repo for updated versions of emacs
 sudo add-apt-repository -y ppa:kelleyk/emacs
@@ -47,6 +51,7 @@ sudo apt install -y \
      python-dev-is-python3 \
      python3-pip \
      python3-venv \
+     redis-tools \
      sysbench \
      tmux \
      wireshark \
@@ -60,6 +65,7 @@ sudo apt install -y \
 #     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # fi
 
+chsh -s /usr/bin/zsh ubuntu
 
 ##############################
 # install docker (https://docs.docker.com/engine/install/ubuntu/)
@@ -72,9 +78,9 @@ if [ ! -f "/usr/bin/docker" ]; then
 
     # set up the repository
     echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
     sudo apt-get update
     sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -143,9 +149,6 @@ READYSET_HOME=$SRC_HOME/readyset
 if [ ! -d "$READYSET_HOME" ]; then
     cd $SRC_HOME
     git clone https://github.com/readysettech/readyset.git 
-#    cd $READYSET_HOME
-#    cargo build --bin readyset
-#    cargo build --release --bin readyset
 fi
 
 
@@ -158,6 +161,7 @@ if [ ! -d "$SRC_HOME/FlameGraph" ]; then
 fi
 
 # copy over home directory files *after* installing oh-my-zsh
+cd $SCRIPT_DIR
 cp -v -R home/.* home/* ~
 
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)

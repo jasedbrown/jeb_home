@@ -1,0 +1,70 @@
+version: "3.8"
+services:
+  ##############################
+  ## databases
+  # mysql:
+  #   image: mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=readyset
+  #     - MYSQL_DATABASE=testdb
+  #   ports:
+  #     - '3306:3306'
+  # postgres:
+  #   image: postgres:14
+  #   environment:
+  #     - POSTGRES_PASSWORD=readyset
+  #     - POSTGRES_DB=testdb
+  #   ports:
+  #     - '5432:5432'
+  #   command:
+  #     - "postgres"
+  #     - "-c"
+  #     - "wal_level=logical"
+
+  
+  ##############################
+  ## metrics exporters
+
+  postgres_exporter:
+    # https://github.com/prometheus-community/postgres_exporter
+    # defaults to port 9187
+    image: prometheuscommunity/postgres-exporter
+    network_mode: "host"
+    environment:
+      - DATA_SOURCE_URI=DB_URI_HERE:5432?sslmode=disable
+      - DATA_SOURCE_USER=postgres
+      - DATA_SOURCE_PASS=readyset
+
+  pgbouncer_exporter:
+    # https://github.com/prometheus-community/pgbouncer_exporter
+    # defaults to port localhost:9127
+    image: prometheuscommunity/pgbouncer-exporter
+    network_mode: "host"
+
+  redis_exporter:
+    # https://hub.docker.com/r/oliver006/redis_exporter / https://github.com/oliver006/redis_exporter
+    # ??? https://hub.docker.com/r/bitnami/redis-exporter
+    # default port is 9121
+    image: oliver006/redis_exporter
+    network_mode: "host"
+
+  memcached_exporter:
+    # https://github.com/prometheus/memcached_exporter / https://hub.docker.com/r/prom/memcached-exporter
+    # ?? https://hub.docker.com/r/bitnami/memcached-exporter
+    # default port is 9150
+    image: prom/memcached-exporter
+    network_mode: "host"
+
+  node_exporter:
+    # exporter for hardware and OS metrics exposed by *NIX kernels
+    # https://github.com/prometheus/node_exporter
+    # https://prometheus.io/docs/guides/node-exporter/
+    # default port of 9100
+    image: prom/node-exporter:latest
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'

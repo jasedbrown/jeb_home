@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  ##############################
+  ## databases
+  # mysql:
+  #   image: mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=readyset
+  #     - MYSQL_DATABASE=testdb
+  #   ports:
+  #     - '3306:3306'
+  # postgres:
+  #   image: postgres:14
+  #   environment:
+  #     - POSTGRES_PASSWORD=readyset
+  #     - POSTGRES_DB=testdb
+  #   ports:
+  #     - '5432:5432'
+  #   command:
+  #     - "postgres"
+  #     - "-c"
+  #     - "wal_level=logical"
+
+  
+  ##############################
+  ## metrics
+  prometheus:
+    image: prom/prometheus
+    network_mode: "host"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9090"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+      start_period: 5s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana
+    network_mode: "host"
+    volumes:
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/config:/etc/grafana
+
+
+  ##############################
+  ## exporters
+  pushgateway:
+    # allows ephemeral and batch jobs to expose their metrics to Prometheus
+    # https://github.com/prometheus/pushgateway
+    # defaults to port 9091
+    image: prom/pushgateway
+    network_mode: "host"

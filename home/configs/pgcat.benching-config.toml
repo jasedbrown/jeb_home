@@ -1,0 +1,30 @@
+[general]
+
+host = "0.0.0.0"
+port = 6433
+admin_username = "pgcat"
+admin_password = "pgcat"
+
+enable_prometheus_exporter = true
+server_tls = true
+verify_server_certificate = false
+
+[pools.testdb]
+pool_mode = "session"
+
+# This section holds the credentials for users that may connect to this cluster
+# JEB: i think this is the equivalent of pgbouncer's auth_file
+[pools.testdb.users.0]
+username = "root"
+password = "doggo"
+pool_size = 10
+
+server_username = "root"
+server_password = "__password__"
+
+# Each shard config contains a list of servers that make up the shard
+# and the database name to use.
+[pools.testdb.shards.0]
+servers = [["__DB_URI__", 5432, "primary"]]
+database = "testdb"
+
