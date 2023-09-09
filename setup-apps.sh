@@ -35,12 +35,3 @@ if [ ! -d "$PGCAT_HOME" ]; then
     cp $SCRIPT_DIR/home/configs/pgcat/pgcat.benching-config.toml ./pgcat.toml
 fi
 
-
-#############################
-## setup some directories for container output
-
-sudo mkdir /var/lib/grafana
-sudo chown $(whoami)  /var/lib/grafana
-
-sudo mkdir /var/lib/prometheus
-sudo chown $(whoami)  /var/lib/prometheus
