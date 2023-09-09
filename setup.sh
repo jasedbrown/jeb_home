@@ -160,7 +160,9 @@ fi
 
 # copy over home directory files *after* installing oh-my-zsh
 cd $SCRIPT_DIR
-cp -v -R home/.* home/* ~
+cp -v -R home/.gitconfig ~
+cp -v -R home/.zshrc ~
+cp -v -R home/bin ~
 
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
 python3 -m pip install semgrep
