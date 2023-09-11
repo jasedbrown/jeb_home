@@ -25,3 +25,13 @@ providers:
     type: file
     options:
       path: /var/lib/grafana/dashboards/connected.json
+
+  - name: Postgres Overview
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/postgresql-database.json
+
+  - name: Redis
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/redis.json

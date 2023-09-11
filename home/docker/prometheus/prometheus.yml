@@ -16,7 +16,7 @@ scrape_configs:
   ## remote entries
   - job_name: 'readyset'
     static_configs:
-      - targets: ['HOST_URI:6034']
+      - targets: ['HOST_URI:9034']
   - job_name: 'node_exporter'
     static_configs:
       - targets: ['HOST_URI:9100']
