@@ -40,3 +40,8 @@ providers:
     type: file
     options:
       path: /var/lib/grafana/dashboards/memcached.json
+
+  - name: pgbouncer
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/pgbouncer.json
