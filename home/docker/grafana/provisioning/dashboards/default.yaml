@@ -35,3 +35,8 @@ providers:
     type: file
     options:
       path: /var/lib/grafana/dashboards/redis.json
+
+  - name: memcached
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/memcached.json
