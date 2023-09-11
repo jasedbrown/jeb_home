@@ -16,7 +16,7 @@ pool_mode = "session"
 # JEB: i think this is the equivalent of pgbouncer's auth_file
 [pools.testdb.users.0]
 username = "root"
-password = "doggo"
+password = "readyset"
 pool_size = 10
 
 server_username = "root"
