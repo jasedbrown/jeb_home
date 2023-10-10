@@ -1,0 +1,39 @@
+global:
+  scrape_interval:     5s # By default, scrape targets every 15 seconds.
+  external_labels:
+    monitor: 'readyset-benchmarking'
+
+scrape_configs:
+  # local entries
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'pushgateway'
+    static_configs:
+      - targets: ['localhost:9091']
+    honor_labels: true
+
+  ## remote entries
+  - job_name: 'readyset'
+    static_configs:
+      - targets: ['localhost:6034']
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+
+  - job_name: 'postgres_exporter'
+    static_configs:
+      - targets: ['localhost:9187']
+  - job_name: 'pgcat'
+    static_configs:
+      - targets: ['localhost:6432']
+  - job_name: 'pgbouncer_exporter'
+    static_configs:
+      - targets: ['localhost:9127']
+
+  - job_name: 'redis_exporter'
+    static_configs:
+      - targets: ['localhost:9121']
+  - job_name: 'memcached_exporter'
+    static_configs:
+      - targets: ['localhost:9150']
