@@ -23,6 +23,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      gcc \
      gdb \
      gnuplot \
+     graphviz \
      htop \
      libbz2-dev \
      libclang-dev \
