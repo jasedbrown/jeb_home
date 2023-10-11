@@ -20,6 +20,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      cmake \
      curl \
      dstat \
+     feh \
      gcc \
      gdb \
      gnuplot \
