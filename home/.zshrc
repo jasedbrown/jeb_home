@@ -118,6 +118,7 @@ alias ec='emacsclient'
 alias shippo='tail -200f'
 alias gs='git status'
 alias ethereal='wireshark'
+alias gviz='xclip -out -selection clipboard | dot -Tpng | feh -'
 
 # emacs magick
 EMACS_CONFIG_HOME=~/src/jeb_home/home/.emacs.d/jasobrown

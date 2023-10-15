@@ -21,6 +21,8 @@
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
 
+;; lsp helper - Increase the amount of data which Emacs reads from the process
+;;(setq read-process-output-max (* 1024 1024))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; IBuffer: buffer list manangement: IBuffer (https://www.emacswiki.org/emacs/IbufferMode) 
@@ -37,6 +39,8 @@
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 ;; Protobuf
 (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+;; Protobuf
+(add-to-list 'auto-mode-alist '("\\.gnuplot\\'" . gnuplot-mode))
 
 ;; define and then _load_ filter
 (setq ibuffer-saved-filter-groups
@@ -50,11 +54,14 @@
                                 (mode . shell-script-mode)
                                 (mode . sh-mode)))
                ("c/c++" (mode . c++-mode))
+               ("python" (mode . python-mode))
+               ("lua" (mode . lua-mode))
                ("java" (mode . java-mode))
                ("databass" (or
                             (mode . sql-mode)
                             (name . "\\.spec")))
                ("docs" (mode . markdown-mode))
+               ("gnuplot" (mode . markdown-mode))
                ("emacs" (or
                          (name . "\\.el")
                          (name . "^\\*scratch\\*$")
@@ -62,8 +69,8 @@
                ))))
 
 (add-hook 'ibuffer-mode-hook
-	      (lambda ()
-	        (ibuffer-switch-to-saved-filter-groups "home")))
+	  (lambda ()
+	     (ibuffer-switch-to-saved-filter-groups "home")))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -167,3 +174,8 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; load my custom variables/settings (yet another file, tbh ...)
+
+(load-file (expand-file-name "custom.el" user-emacs-directory))

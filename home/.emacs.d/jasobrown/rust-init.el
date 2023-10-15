@@ -27,7 +27,8 @@
   ;; (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable rustfmt on save
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
+  )
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
@@ -70,7 +71,7 @@
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil))
 
-(setq lsp-file-watch-threshold 2000)
+(setq lsp-file-watch-threshold nil)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
