@@ -113,6 +113,15 @@ mkdir -p $SRC_HOME
 # https://github.com/rui314/mold
 # only for linux
 
+# there used to be/still exist known problems with mold, ubuntu, and clang/gcc:
+# https://github.com/rui314/mold/issues/1025
+# https://github.com/michaelsproul/mold-stdcpp/blob/main/.cargo/config.toml
+#
+# but according to this SO, just installing an updated version of gcc's libstdc++ solves it:
+# https://stackoverflow.com/questions/67712376/after-updating-gcc-clang-cant-find-libstdc-anymore
+# might also want to install an updated version of llvm, as well (see ./setup-llvm.sh)
+sudo apt install libstdc++-12-dev
+
 MOLD_HOME=$SRC_HOME/mold
 if [ ! -d "$MOLD_HOME" ]; then
     cd $SRC_HOME
@@ -129,13 +138,11 @@ if [ ! -d "$MOLD_HOME" ]; then
     mkdir -p $HOME/.cargo
     cat <<EOF >> $HOME/.cargo/config.toml
 [target.x86_64-unknown-linux-gnu]
-# known problems with mold, ubuntu, clang/gcc:
-# https://github.com/rui314/mold/issues/1025
-# https://github.com/michaelsproul/mold-stdcpp/blob/main/.cargo/config.toml
-# linker = "clang"
-# rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
 
-rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+# safe version that uses gcc
+# rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 EOF
 
 fi
