@@ -78,12 +78,15 @@ services:
     # https://github.com/prometheus/pushgateway
     # defaults to port 9091
     image: prom/pushgateway
-    network_mode: "host"
+#    network_mode: "host"
+    ports:
+      - '9091:9091'
 
   node_exporter:
     # exporter for hardware and OS metrics exposed by *NIX kernels
     # https://github.com/prometheus/node_exporter
     # https://prometheus.io/docs/guides/node-exporter/
+    # wicked awesome grafana dashboard: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
     # default port of 9100
     image: prom/node-exporter:latest
     command:

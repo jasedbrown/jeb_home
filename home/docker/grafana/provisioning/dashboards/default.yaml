@@ -1,31 +1,6 @@
 apiVersion: 1
 
 providers:
-  - name: Readyset Overview
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards/readyset_external.json
-
-  - name: Readyset Internal
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards/readyset_internal.json
-
-  - name: Query Overview
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards/query_overview.json
-
-  - name: Specific Query
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards/query_specific.json
-
-  - name: Connected
-    type: file
-    options:
-      path: /var/lib/grafana/dashboards/connected.json
-
   - name: Postgres Overview
     type: file
     options:
@@ -45,3 +20,18 @@ providers:
     type: file
     options:
       path: /var/lib/grafana/dashboards/pgbouncer.json
+
+  - name: ReadySet - adapter
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/readyset-adapter.json
+
+  - name: ReadySet - Query
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/grafana-perf.json
+
+  - name: Lobsters Benchmark
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/lobsters.json
