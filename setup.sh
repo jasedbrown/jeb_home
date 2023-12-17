@@ -1,5 +1,4 @@
 #!/bin/bash
-# make sure to ssh with -A flag
 
 set -euo pipefail
 set -x
@@ -8,9 +7,6 @@ SCRIPT_DIR=$(pwd)
 
 #############################
 # update system
-
-# add repo for updated versions of emacs
-sudo add-apt-repository -y ppa:kelleyk/emacs
 
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
