@@ -58,12 +58,3 @@
 ;;   (set-face-attribute 'default nil :font "DejaVu Sans Mono-10")))
 
 (load-file (expand-file-name "jeb.el" user-emacs-directory))
-
-(setq jeb_lang_env (getenv "EMACS_LANG"))
-(cond
-    ((string= jeb_lang_env "rust") (load-file (expand-file-name "rust-init.el" user-emacs-directory)))
-    ((string= jeb_lang_env "java") (load-file (expand-file-name "java-init.el" user-emacs-directory)))
-    )
-
-(load-file (expand-file-name "post-lang.el" user-emacs-directory))
-
