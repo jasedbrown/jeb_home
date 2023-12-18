@@ -438,7 +438,15 @@
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package dap-java :ensure nil)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; c/c++-related settings, mostly borrowed from a post on the emacs lsp page:
+;; https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; RANDOM SHIT
