@@ -42,10 +42,11 @@
 ;; buffer-move - helpful to move windows around
 ;; https://github.com/lukhas/buffer-move
 (require 'buffer-move)
-(global-set-key (kbd "<C-S-up>")     'buf-move-up)
-(global-set-key (kbd "<C-S-down>")   'buf-move-down)
-(global-set-key (kbd "<C-S-left>")   'buf-move-left)
-(global-set-key (kbd "<C-S-right>")  'buf-move-right)
+;; if you want to have key bindings for moving the buffers, uncommment below
+;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -267,11 +268,21 @@
 
 (use-package lsp-ui
   :ensure
+  :after (lsp-mode)
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
+  (lsp-ui-doc-enable nil)
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references))
+  :init (setq lsp-ui-doc-delay 1.5
+              lsp-ui-doc-position 'bottom
+	          lsp-ui-doc-max-width 100
+              )
+)
+
 
 (setq lsp-file-watch-threshold nil)
 
@@ -375,18 +386,24 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
 ;; https://github.com/neppramod/java_emacs/tree/master
+;;
+;; also, you might hit problems if you have a jvm that doesn't support
+;; gradle/kotlin correctly (:facepalm:). I had jdk-20, but needed to
+;; drop down to jdk-17. Also, jdk version prefs might get recorded into
+;; conf files after you change the jdk/JAVA_HOME. I hacked this file:
+;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
 
 (use-package hydra)
-(use-package lsp-ui
-  :ensure t
-  :after (lsp-mode)
-  :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references))
-  :init (setq lsp-ui-doc-delay 1.5
-              lsp-ui-doc-position 'bottom
-	          lsp-ui-doc-max-width 100
-              ))
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :after (lsp-mode)
+;;   :bind (:map lsp-ui-mode-map
+;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;;               ([remap xref-find-references] . lsp-ui-peek-find-references))
+;;   :init (setq lsp-ui-doc-delay 1.5
+;;               lsp-ui-doc-position 'bottom
+;; 	          lsp-ui-doc-max-width 100
+;;               ))
 (use-package lsp-mode
   :ensure t
   :hook (
@@ -406,11 +423,10 @@
     (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   )
+
 (use-package lsp-java
   :ensure t
   :config (add-hook 'java-mode-hook 'lsp))
-
-(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; setting up debugging support with dap-mode
