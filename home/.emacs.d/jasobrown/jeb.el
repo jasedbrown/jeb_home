@@ -392,6 +392,7 @@
 ;; drop down to jdk-17. Also, jdk version prefs might get recorded into
 ;; conf files after you change the jdk/JAVA_HOME. I hacked this file:
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
+;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package hydra)
 ;; (use-package lsp-ui
