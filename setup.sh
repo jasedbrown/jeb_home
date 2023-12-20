@@ -170,5 +170,9 @@ cp -v -R home/.zshrc ~
 cp -v -R home/bin ~
 
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
-python3 -m pip install semgrep
+python3 -m pip install semgrep 
+
+# install puthon lsp packages
+python3 -m pip install python-lsp-server[all] pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
+
 # add to $PATH

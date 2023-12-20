@@ -448,6 +448,20 @@
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; python-related settings, mostly borrowed from a post on the emacs lsp page:
+;; https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
+;;
+;; using pylsp: https://github.com/python-lsp/python-lsp-server
+
+;; (use-package lsp-mode
+;;   :hook
+;;   ((python-mode . lsp)))
+(add-hook 'python-mode-hook 'lsp)
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; RANDOM SHIT
 
