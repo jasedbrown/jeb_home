@@ -85,6 +85,8 @@
                ("databass" (or
                             (mode . sql-mode)
                             (name . "\\.spec")))
+               ("ruby" (mode . ruby-mode))
+               ("golang" (mode . go-mode))
                ("docs" (mode . markdown-mode))
                ("gnuplot" (mode . markdown-mode))
                ("emacs" (or
@@ -460,7 +462,21 @@
 ;; (use-package lsp-mode
 ;;   :hook
 ;;   ((python-mode . lsp)))
+(use-package python-mode
+  :ensure t)
 (add-hook 'python-mode-hook 'lsp)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; golang-related settings. Need a Go SDK installed, and the go lsp server (gopls)
+;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
+;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+(use-package go-mode
+  :ensure t)
+(add-hook 'go-mode-hook #'lsp-deferred)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; RANDOM SHIT
