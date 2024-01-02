@@ -13,6 +13,9 @@
 (show-paren-mode 1)
 (column-number-mode 1)
 
+; automatically pairs braces when you crrate them
+(electric-pair-mode 1)
+
 ;; don't use global line highlight
 (global-hl-line-mode 0)
 
@@ -78,7 +81,9 @@
                ("shell script" (or
                                 (mode . shell-script-mode)
                                 (mode . sh-mode)))
-               ("c/c++" (mode . c++-mode))
+               ("c/c++" (or
+                         (mode . c-mode)
+                         (mode . c++-mode)))
                ("python" (mode . python-mode))
                ("lua" (mode . lua-mode))
                ("java" (mode . java-mode))
@@ -254,7 +259,7 @@
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
+  (lsp-idle-delay 0.2)
   ;; This controls the overlays that display type and other hints inline. Enable
   ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
   ;; effect on open projects.
@@ -397,16 +402,6 @@
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package hydra)
-;; (use-package lsp-ui
-;;   :ensure t
-;;   :after (lsp-mode)
-;;   :bind (:map lsp-ui-mode-map
-;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;;               ([remap xref-find-references] . lsp-ui-peek-find-references))
-;;   :init (setq lsp-ui-doc-delay 1.5
-;;               lsp-ui-doc-position 'bottom
-;; 	          lsp-ui-doc-max-width 100
-;;               ))
 (use-package lsp-mode
   :ensure t
   :hook (
@@ -415,10 +410,6 @@
          )
   :init (setq
          lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
-         lsp-enable-file-watchers nil
-         read-process-output-max (* 1024 1024)  ; 1 mb
-         lsp-completion-provider :capf
-         lsp-idle-delay 0.500
          )
   :config
   (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
