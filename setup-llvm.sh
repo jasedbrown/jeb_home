@@ -1,5 +1,10 @@
 #!/bin/bash
-# make sure to ssh with -A flag
+
+##########################
+# install an updated version of the llvm toolchain.
+# you _might_ need to 'apt remove llvm' any system-default install
+# of llvm as i've seen older versions completely eff up
+# the lldb-mi build (terribly).
 
 set -eu pipefail
 set -x
@@ -23,7 +28,13 @@ sudo bash /home/jasobrown/bin/update_alternatives_llvm.sh $LLVM_VERSION 1
 # now clone the llvm-mi repo and build
 git clone git@github.com:lldb-tools/lldb-mi.git
 cd $LLVM_DIR/lldb-mi
-cmake .
-cmake --build .
+
+mkdir build
+cd build
+cmake ..
+make
+
+# copy the binary to a location that will be on the emacs exec-path
+sudo cp src/lldb-mi /usr/local/bin
 
 # update the cargo build instuctions

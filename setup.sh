@@ -23,8 +23,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      graphviz \
      htop \
      libbz2-dev \
-     libclang-dev \
-     libclang-cpp-dev \
      libcurl4-openssl-dev \
      libgflags-dev \
      liblzma-dev \
