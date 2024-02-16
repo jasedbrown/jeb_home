@@ -13,7 +13,7 @@
 (show-paren-mode 1)
 (column-number-mode 1)
 
-; automatically pairs braces when you crrate them
+; automatically pairs braces when you create them
 (electric-pair-mode 1)
 
 ;; don't use global line highlight
@@ -76,22 +76,22 @@
                ("rust" (or
                         (mode . rust-mode)
                         (mode . rustic-mode)))
+               ("java" (mode . java-mode))
+               ("python" (mode . python-mode))
+               ("ruby" (mode . ruby-mode))
+               ("golang" (mode . go-mode))
+               ("c/c++" (or
+                         (mode . c-mode)
+                         (mode . c++-mode)))
+               ("lua" (mode . lua-mode))
                ("toml" (mode . toml-mode))
                ("yaml" (mode . yaml-mode))
                ("shell script" (or
                                 (mode . shell-script-mode)
                                 (mode . sh-mode)))
-               ("c/c++" (or
-                         (mode . c-mode)
-                         (mode . c++-mode)))
-               ("python" (mode . python-mode))
-               ("lua" (mode . lua-mode))
-               ("java" (mode . java-mode))
                ("databass" (or
                             (mode . sql-mode)
                             (name . "\\.spec")))
-               ("ruby" (mode . ruby-mode))
-               ("golang" (mode . go-mode))
                ("docs" (mode . markdown-mode))
                ("gnuplot" (mode . markdown-mode))
                ("emacs" (or
@@ -258,12 +258,11 @@
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.2)
+  (lsp-idle-delay 0.5)
   ;; This controls the overlays that display type and other hints inline. Enable
   ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
   ;; effect on open projects.
-  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-inlay-hint-enable nil)
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t)
   (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
@@ -362,30 +361,33 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; setting up debugging support with dap-mode
 
-(use-package exec-path-from-shell
-  :ensure
-  :init (exec-path-from-shell-initialize))
+;; (use-package exec-path-from-shell
+;;   :ensure
+;;   :init (exec-path-from-shell-initialize))
 
-(when (executable-find "lldb-mi")
-  (use-package dap-mode
-    :ensure
-    :config
-    (dap-ui-mode)
-    (dap-ui-controls-mode 1)
+;; (use-package dap-mode
+;;   :ensure
+;;   :config
+;;   (dap-auto-configure-mode)
+;;   (dap-ui-mode)
+;;   (dap-ui-controls-mode 1)
 
-    (require 'dap-lldb)
-    (require 'dap-gdb-lldb)
-    ;; installs .extension/vscode
-    (dap-gdb-lldb-setup)
-    (dap-register-debug-template
-     "Rust::LLDB Run Configuration"
-     (list :type "lldb"
-           :request "launch"
-           :name "LLDB::Run"
-	   :gdbpath "rust-lldb"
-           ;; uncomment if lldb-mi is not in PATH
-           ;; :lldbmipath "path/to/lldb-mi"
-           ))))
+
+;;   (require 'dap-lldb)
+;;   (require 'dap-gdb-lldb)
+;;   ;; installs .extension/vscode
+;;   (dap-gdb-lldb-setup)
+;;   (dap-register-debug-template
+;;    "Rust::LLDB Run Configuration"
+;;    (list :type "lldb"
+;;          :request "launch"
+;;          :name "LLDB::Run"
+;; 	     :gdbpath "rust-lldb"
+;;          ;; uncomment if lldb-mi is not in PATH
+;;          ;; :lldbmipath "path/to/lldb-mi"
+;;          )))
+
+(use-package hydra)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -401,7 +403,6 @@
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
-(use-package hydra)
 (use-package lsp-mode
   :ensure t
   :hook (
@@ -425,11 +426,8 @@
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
 (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; setting up debugging support with dap-mode
-
-(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
-(use-package dap-java :ensure nil)
+;; ;; setting up debugging support with dap-mode
+;; (use-package dap-java :ensure nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -450,9 +448,9 @@
 ;;
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
-;; (use-package lsp-mode
-;;   :hook
-;;   ((python-mode . lsp)))
+(use-package lsp-mode
+  :hook
+  ((python-mode . lsp)))
 (use-package python-mode
   :ensure t)
 (add-hook 'python-mode-hook 'lsp)
@@ -479,4 +477,18 @@
   :ensure t)
 (lsp-treemacs-sync-mode 1)
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+;; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
 
+;; don't show verstion control (git) branch name in mode line
+;; (setq-default mode-line-format
+;;               (delete '(vc-mode vc-mode) mode-line-format))
+
+(setq-default mode-line-format
+              '("%e"
+               mode-line-buffer-identification
+               "   "
+               mode-line-position
+               "  "
+               mode-line-misc-info))
+              

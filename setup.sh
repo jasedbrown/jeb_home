@@ -122,7 +122,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v2.3.1
+    git checkout v2.4.0
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
@@ -160,6 +160,22 @@ if [ ! -d "$SRC_HOME/FlameGraph" ]; then
     cd $SRC_HOME
     git clone git@github.com:brendangregg/FlameGraph.git
 fi
+
+#############################
+# install other programming languages (or at least the tools to make it bearable)
+
+# java and maven
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install java 17.0.10-zulu
+sdk install maven 3.9.6
+
+# python
+curl https://pyenv.run | bash
+exec "$SHELL"
+pyenv update
+pyenv install 3.11.8
+
 
 # copy over home directory files *after* installing oh-my-zsh
 cd $SCRIPT_DIR

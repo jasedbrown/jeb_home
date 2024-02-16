@@ -10,8 +10,7 @@ source $ZSH/oh-my-zsh.sh
 
 #################
 ## jasobrown configuration
-export JAVA_HOME=/opt/dev/java/cur_jdk
-export PATH=$PATH:~/bin:/home/jasobrown/.local/bin:$JAVA_HOME/bin
+export PATH=$PATH:~/bin:/home/jasobrown/.local/bin
 
 alias cd.='cd ..'
 alias cd..='cd ../../'
@@ -24,7 +23,7 @@ alias ll='ls -la'
 alias llr='ls -lart'
 alias mkdir='mkdir -p'
 alias findname='find -L . -name'
-alias ec='emacsclient'
+alias ec='emacsclient -nw'
 alias shippo='tail -200f'
 alias gs='git status'
 alias ethereal='wireshark'

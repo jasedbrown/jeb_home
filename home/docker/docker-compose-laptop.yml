@@ -24,16 +24,16 @@ services:
 
   ##############################
   ## additional high-level services
-  consul-server:
-    image: hashicorp/consul:1.15
-    ports:
-      - '8500:8500'
-      - '8600:8600/tcp'
-      - '8600:8600/udp'
-    restart: always
-    volumes:
-      - ./consul/server.json:/consul/config/server.json:ro
-    command: 'agent -bootstrap-expect=1'
+  # consul-server:
+  #   image: hashicorp/consul:1.15
+  #   ports:
+  #     - '8500:8500'
+  #     - '8600:8600/tcp'
+  #     - '8600:8600/udp'
+  #   restart: always
+  #   volumes:
+  #     - ./consul/server.json:/consul/config/server.json:ro
+  #   command: 'agent -bootstrap-expect=1'
 
   
   ##############################
@@ -61,41 +61,42 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/config:/etc/grafana
 
+      
   ##############################
   ## metrics exporters
-  postgres_exporter:
-    # https://github.com/prometheus-community/postgres_exporter
-    # defaults to port 9187
-    image: prometheuscommunity/postgres-exporter
-    network_mode: "host"
-    environment:
-      - DATA_SOURCE_URI=0.0.0.0:5432?sslmode=disable
-      - DATA_SOURCE_USER=postgres
-      - DATA_SOURCE_PASS=readyset
+#   postgres_exporter:
+#     # https://github.com/prometheus-community/postgres_exporter
+#     # defaults to port 9187
+#     image: prometheuscommunity/postgres-exporter
+#     network_mode: "host"
+#     environment:
+#       - DATA_SOURCE_URI=0.0.0.0:5432?sslmode=disable
+#       - DATA_SOURCE_USER=postgres
+#       - DATA_SOURCE_PASS=readyset
 
-  pushgateway:
-    # allows ephemeral and batch jobs to expose their metrics to Prometheus
-    # https://github.com/prometheus/pushgateway
-    # defaults to port 9091
-    image: prom/pushgateway
-#    network_mode: "host"
-    ports:
-      - '9091:9091'
+#   pushgateway:
+#     # allows ephemeral and batch jobs to expose their metrics to Prometheus
+#     # https://github.com/prometheus/pushgateway
+#     # defaults to port 9091
+#     image: prom/pushgateway
+# #    network_mode: "host"
+#     ports:
+#       - '9091:9091'
 
-  node_exporter:
-    # exporter for hardware and OS metrics exposed by *NIX kernels
-    # https://github.com/prometheus/node_exporter
-    # https://prometheus.io/docs/guides/node-exporter/
-    # wicked awesome grafana dashboard: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
-    # default port of 9100
-    image: prom/node-exporter:latest
-    command:
-      - '--path.rootfs=/host'
-    network_mode: host
-    pid: host
-    restart: unless-stopped
-    volumes:
-      - '/:/host:ro,rslave'
+#   node_exporter:
+#     # exporter for hardware and OS metrics exposed by *NIX kernels
+#     # https://github.com/prometheus/node_exporter
+#     # https://prometheus.io/docs/guides/node-exporter/
+#     # wicked awesome grafana dashboard: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+#     # default port of 9100
+#     image: prom/node-exporter:latest
+#     command:
+#       - '--path.rootfs=/host'
+#     network_mode: host
+#     pid: host
+#     restart: unless-stopped
+#     volumes:
+#       - '/:/host:ro,rslave'
 
 
 ##############################
