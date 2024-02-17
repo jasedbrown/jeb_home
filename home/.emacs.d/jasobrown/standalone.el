@@ -19,19 +19,21 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; I find these light-weight and helpful
-
+;; which-key: displays in the mni buffer the key bindings following
+;; your currently entered incomplete command
+;; https://github.com/justbur/emacs-which-key
 (use-package which-key
   :ensure
   :init
   (which-key-mode))
 
-(use-package selectrum
+;; vertico - vertical completion UI (for example, when selecting files
+;; in a directory, in the mini buffer). replacement of older selectrum.el
+;; https://github.com/minad/vertico
+(use-package vertico
   :ensure
   :init
-  (selectrum-mode)
-  :custom
-  (completion-styles '(flex substring partial-completion)))
+  (vertico-mode))
 
 ;; Some common sense settings
 
