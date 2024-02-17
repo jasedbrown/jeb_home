@@ -35,9 +35,10 @@
   :init
   (vertico-mode))
 
-;; Some common sense settings
+;; themes
+;; currently liking prot's https://github.com/protesilaos/ef-themes
+(load-theme 'ef-maris-dark t)
 
-;; (load-theme 'leuven t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (recentf-mode 1)
 (setq recentf-max-saved-items 100
@@ -48,15 +49,5 @@
 (menu-bar-mode 0)
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode 0))
-
-;; (cond
-;;  ((member "Monaco" (font-family-list))
-;;   (set-face-attribute 'default nil :font "Monaco-12"))
-;;  ((member "Inconsolata" (font-family-list))
-;;   (set-face-attribute 'default nil :font "Inconsolata-12"))
-;;  ((member "Consolas" (font-family-list))
-;;   (set-face-attribute 'default nil :font "Consolas-11"))
-;;  ((member "DejaVu Sans Mono" (font-family-list))
-;;   (set-face-attribute 'default nil :font "DejaVu Sans Mono-10")))
 
 (load-file (expand-file-name "jeb.el" user-emacs-directory))
