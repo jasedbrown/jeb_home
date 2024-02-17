@@ -51,3 +51,10 @@
   (scroll-bar-mode 0))
 
 (load-file (expand-file-name "jeb.el" user-emacs-directory))
+
+(defun server-shutdown ()
+  "Save buffers, Quit, and Shutdown (kill) server"
+  (interactive)
+  (save-some-buffers)
+  (kill-emacs)
+  )
