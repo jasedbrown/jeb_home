@@ -19,7 +19,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; which-key: displays in the mni buffer the key bindings following
+;; which-key: displays in the mini buffer the key bindings following
 ;; your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
