@@ -477,6 +477,20 @@
   :ensure t)
 (lsp-treemacs-sync-mode 1)
 
+;; hideshow - it's a builtin minor mode.
+;; the following enables it by default everywhere, rather than needing to
+;; do it in every damn buffer i open
+;; I tried to map this onto Hyper_l, even remapped CapsLock to Hyper_l
+;; in PopOS via the gnome tweaks (and can confirm via `xev`). But emacs
+;; is not seeing the Hyper_l event :(
+(setq-default hs-minor-mode t)
+(global-set-key (kbd "C-c C-h") (kbd "C-c @ C-h"))         ;;hiding block of code
+(global-set-key (kbd "C-c C-r") (kbd "C-c @ C-s"))         ;;revealing block of code
+(global-set-key (kbd "H-h") (kbd "C-c @ C-h"))         ;;hiding block of code
+(global-set-key (kbd "H-s") (kbd "C-c @ C-s"))         ;;revealing block of code
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
 
