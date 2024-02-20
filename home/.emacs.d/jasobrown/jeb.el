@@ -20,6 +20,26 @@
 (global-hl-line-mode 0)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; tree-sitter configs
+;; currently using treesit-auto as a quality of life plaugin,
+;; even the maintainer admits it might be obsolete by emacs 30 ...
+
+;; NOTE: i tried this but it barfed as I excluded rust ...
+;; something in my project config looks for rust even when opening
+;; a java file?!?! wtf ...
+
+;; basically, everything except for rust, for now ...
+;; (delete 'rust treesit-auto-langs)
+;; (use-package treesit-auto
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
+
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; winum - easier window switching
 ;; https://github.com/deb0ch/emacs-winum
 
@@ -255,6 +275,9 @@
 (use-package lsp-mode
   :ensure
   :commands lsp
+  :init (setq
+         lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
+         )
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -269,8 +292,12 @@
   (lsp-rust-analyzer-display-closure-return-type-hints t)
   (lsp-rust-analyzer-display-parameter-hints nil)
   (lsp-rust-analyzer-display-reborrow-hints nil)
+  ;; ???
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (add-hook 'java-mode #'lsp-deferred)
+  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration))
 
 (use-package lsp-ui
   :ensure
@@ -403,21 +430,10 @@
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
-(use-package lsp-mode
-  :ensure t
-  :hook (
-         (lsp-mode . lsp-enable-which-key-integration)
-         (java-mode . #'lsp-deferred)
-         )
-  :init (setq
-         lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
-         )
-  :config
-  (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
-  (with-eval-after-load 'lsp-intelephense
-    (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  )
+;; (use-package eglot-java
+;;   :ensure t
+;;   )
+;; (add-hook 'java-mode-hook 'eglot-java-mode)
 
 (use-package lsp-java
   :ensure t
