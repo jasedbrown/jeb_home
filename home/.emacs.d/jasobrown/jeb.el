@@ -280,7 +280,7 @@
          )
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-rust-analyzer-cargo-watch-command "check")
   (lsp-idle-delay 0.5)
   ;; This controls the overlays that display type and other hints inline. Enable
   ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
@@ -385,37 +385,6 @@
 (use-package toml-mode :ensure)
 
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; setting up debugging support with dap-mode
-
-;; (use-package exec-path-from-shell
-;;   :ensure
-;;   :init (exec-path-from-shell-initialize))
-
-;; (use-package dap-mode
-;;   :ensure
-;;   :config
-;;   (dap-auto-configure-mode)
-;;   (dap-ui-mode)
-;;   (dap-ui-controls-mode 1)
-
-
-;;   (require 'dap-lldb)
-;;   (require 'dap-gdb-lldb)
-;;   ;; installs .extension/vscode
-;;   (dap-gdb-lldb-setup)
-;;   (dap-register-debug-template
-;;    "Rust::LLDB Run Configuration"
-;;    (list :type "lldb"
-;;          :request "launch"
-;;          :name "LLDB::Run"
-;; 	     :gdbpath "rust-lldb"
-;;          ;; uncomment if lldb-mi is not in PATH
-;;          ;; :lldbmipath "path/to/lldb-mi"
-;;          )))
-
-(use-package hydra)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -435,15 +404,12 @@
 ;;   )
 ;; (add-hook 'java-mode-hook 'eglot-java-mode)
 
-(use-package lsp-java
-  :ensure t
-  :config (add-hook 'java-mode-hook 'lsp))
+;; (use-package lsp-java
+;;   :ensure t
+;;   :config (add-hook 'java-mode-hook 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
 (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
-
-;; ;; setting up debugging support with dap-mode
-;; (use-package dap-java :ensure nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -464,12 +430,12 @@
 ;;
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
-(use-package lsp-mode
-  :hook
-  ((python-mode . lsp)))
-(use-package python-mode
-  :ensure t)
-(add-hook 'python-mode-hook 'lsp)
+;; (use-package lsp-mode
+;;   :hook
+;;   ((python-mode . lsp)))
+;; (use-package python-mode
+;;   :ensure t)
+;; (add-hook 'python-mode-hook 'lsp)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -479,12 +445,44 @@
 ;; golang-related settings. Need a Go SDK installed, and the go lsp server (gopls)
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
-(use-package go-mode
-  :ensure t)
-(add-hook 'go-mode-hook #'lsp-deferred)
+;; (use-package go-mode
+;;   :ensure t)
+;; (add-hook 'go-mode-hook #'lsp-deferred)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; RANDOM SHIT
+
+;; setting up debugging support with dap-mode
+
+;; (use-package exec-path-from-shell
+;;   :ensure
+;;   :init (exec-path-from-shell-initialize))
+
+;; (use-package dap-mode
+;;   :ensure
+;;   :config
+;;   (dap-auto-configure-mode)
+;;   (dap-ui-mode)
+;;   (dap-ui-controls-mode 1)
+
+;;   (require 'dap-lldb)
+;;   (require 'dap-gdb-lldb)
+;;   (require 'dap-java)
+;;   ;; (require 'dap-dlv-go) ;; go-lang
+
+;;   ;; installs .extension/vscode
+;;   (dap-gdb-lldb-setup)
+;;   (dap-register-debug-template
+;;    "Rust::LLDB Run Configuration"
+;;    (list :type "lldb"
+;;          :request "launch"
+;;          :name "LLDB::Run"
+;; 	     :gdbpath "rust-lldb"
+;;          ;; uncomment if lldb-mi is not in PATH
+;;          ;; :lldbmipath "path/to/lldb-mi"
+;;          )))
+
+(use-package hydra)
 
 ;; enable bidirectional synchronization of lsp workspace folders and treemacs projects.
 (use-package lsp-treemacs
