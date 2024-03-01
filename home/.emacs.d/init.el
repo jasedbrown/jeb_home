@@ -3,21 +3,55 @@
 ;; see https://emacs.stackexchange.com/a/4258/22184
 
 (setq user-init-file (or load-file-name (buffer-file-name)))
+(setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; JEB - MAYBE REMOVE?
+(load-file (expand-file-name "custom.el" user-emacs-directory))
 
 (setq confirm-kill-emacs 'yes-or-no-p)
+(fset 'yes-or-no-p 'y-or-n-p)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode 0))
 
+(setq backup-directory-alist
+      `(("." . ,(concat user-emacs-directory "backups"))))
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+(show-paren-mode 1)
+(column-number-mode 1)
+
+; automatically pairs braces when you create them
+(electric-pair-mode 1)
+
+;; don't use global line highlight
+(global-hl-line-mode 0)
+
+; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
+(setq-default mode-line-format
+              '("%e"
+               mode-line-buffer-identification
+               "   "
+               mode-line-position
+               "  "
+               mode-line-misc-info))
+
+
+;; package.el
 (require 'package)
 (add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
 (package-initialize)
-
-;; Install use-package that we require for managing all other dependencies
+;; force install of use-package 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
 
 ;; which-key: displays in the mini buffer the key bindings following
 ;; your currently entered incomplete command
@@ -37,99 +71,10 @@
 
 ;; themes
 ;; currently liking prot's https://github.com/protesilaos/ef-themes
+(use-package ef-themes
+  :ensure t)
 (load-theme 'ef-maris-dark t)
 
-(fset 'yes-or-no-p 'y-or-n-p)
-(recentf-mode 1)
-(setq recentf-max-saved-items 100
-      inhibit-startup-message t
-      ring-bell-function 'ignore)
-
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode 0))
-
-(defun server-shutdown ()
-  "Save buffers, Quit, and Shutdown (kill) server"
-  (interactive)
-  (save-some-buffers)
-  (kill-emacs)
-  )
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; jasobrown's custom settings
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; general settings
-
-(setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backups"))))
-
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-(show-paren-mode 1)
-(column-number-mode 1)
-
-; automatically pairs braces when you create them
-(electric-pair-mode 1)
-
-;; don't use global line highlight
-(global-hl-line-mode 0)
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; tree-sitter configs
-;; currently using treesit-auto as a quality of life plaugin,
-;; even the maintainer admits it might be obsolete by emacs 30 ...
-
-;; NOTE: i tried this but it barfed as I excluded rust ...
-;; something in my project config looks for rust even when opening
-;; a java file?!?! wtf ...
-
-;; basically, everything except for rust, for now ...
-;; (delete 'rust treesit-auto-langs)
-;; (use-package treesit-auto
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
-
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; winum - easier window switching
-;; https://github.com/deb0ch/emacs-winum
-
-;; note: the keymapping be declared before the require command :shrug:
-(setq winum-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-`") 'winum-select-window-by-number)
-      (define-key map (kbd "C-²") 'winum-select-window-by-number)
-      (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-      (define-key map (kbd "M-1") 'winum-select-window-1)
-      (define-key map (kbd "M-2") 'winum-select-window-2)
-      (define-key map (kbd "M-3") 'winum-select-window-3)
-      (define-key map (kbd "M-4") 'winum-select-window-4)
-      (define-key map (kbd "M-5") 'winum-select-window-5)
-      (define-key map (kbd "M-6") 'winum-select-window-6)
-      (define-key map (kbd "M-7") 'winum-select-window-7)
-      (define-key map (kbd "M-8") 'winum-select-window-8)
-      map))
-(require 'winum)
-(winum-mode)
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; buffer-move - helpful to move windows around
-;; https://github.com/lukhas/buffer-move
-(require 'buffer-move)
-;; if you want to have key bindings for moving the buffers, uncommment below
-;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
-;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -191,91 +136,11 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay        0.5
-          treemacs-directory-name-transformer      #'identity
-          treemacs-display-in-side-window          t
-          treemacs-eldoc-display                   'simple
-          treemacs-file-event-delay                2000
-          treemacs-file-extension-regex            treemacs-last-period-regex-value
-          treemacs-file-follow-delay               0.2
-          treemacs-file-name-transformer           #'identity
-          treemacs-follow-after-init               t
-          treemacs-expand-after-init               t
-          treemacs-find-workspace-method           'find-for-file-or-pick-first
-          treemacs-git-command-pipe                ""
-          treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
-          treemacs-hide-dot-git-directory          t
-          treemacs-indentation                     2
-          treemacs-indentation-string              " "
-          treemacs-is-never-other-window           nil
-          treemacs-max-git-entries                 5000
-          treemacs-missing-project-action          'ask
-          treemacs-move-forward-on-expand          nil
-          treemacs-no-png-images                   nil
-          treemacs-no-delete-other-windows         t
-          treemacs-project-follow-cleanup          nil
-          treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                        'left
-          treemacs-read-string-input               'from-child-frame
-          treemacs-recenter-distance               0.1
-          treemacs-recenter-after-file-follow      nil
-          treemacs-recenter-after-tag-follow       nil
-          treemacs-recenter-after-project-jump     'always
-          treemacs-recenter-after-project-expand   'on-distance
-          treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
-          treemacs-project-follow-into-home        nil
-          treemacs-show-cursor                     nil
-          treemacs-show-hidden-files               t
-          treemacs-silent-filewatch                nil
-          treemacs-silent-refresh                  nil
-          treemacs-sorting                         'alphabetic-asc
-          treemacs-select-when-already-in-treemacs 'move-back
-          treemacs-space-between-root-nodes        t
-          treemacs-tag-follow-cleanup              t
-          treemacs-tag-follow-delay                1.5
-          treemacs-text-scale                      nil
-          treemacs-user-mode-line-format           nil
-          treemacs-user-header-line-format         nil
-          treemacs-wide-toggle-width               70
-          treemacs-width                           35
-          treemacs-width-increment                 1
-          treemacs-width-is-initially-locked       t
-          treemacs-workspace-switch-cleanup        nil)
-
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
-
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (when treemacs-python-executable
-      (treemacs-git-commit-diff-mode t))
-
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple)))
-
-    (treemacs-hide-gitignored-files-mode nil))
   :bind
   (:map global-map
         ("<f9>"      . treemacs)
         ("<f8>"      . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+        ))
 
 (use-package treemacs-magit
   :after (treemacs magit)
@@ -286,11 +151,6 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; load my custom variables/settings (yet another file, tbh ...)
-
-(load-file (expand-file-name "custom.el" user-emacs-directory))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -304,17 +164,8 @@
               ("C-c C-c l" . flycheck-list-errors)
               ("C-c C-c a" . lsp-execute-code-action)
               ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status)
-              ("C-c C-c e" . lsp-rust-analyzer-expand-macro)
-              ("C-c C-c d" . dap-hydra)
-              ("C-c C-c h" . lsp-ui-doc-glance))
-  :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
+              ("C-c C-c d" . dap-hydra))
+   :config
 
   ;; comment to disable rustfmt on save
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
@@ -329,6 +180,8 @@
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
+(use-package toml-mode :ensure)
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; for rust-analyzer integration
 
@@ -340,7 +193,7 @@
          )
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "check")
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-idle-delay 0.5)
   ;; This controls the overlays that display type and other hints inline. Enable
   ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
@@ -357,7 +210,8 @@
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'java-mode #'lsp-deferred)
-  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration))
+  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+ )
 
 (use-package lsp-ui
   :ensure
@@ -390,15 +244,7 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; auto-completion and code snippets
-
-(use-package yasnippet
-  :ensure
-  :config
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook 'yas-minor-mode)
-  (add-hook 'text-mode-hook 'yas-minor-mode))
-
+;; company - auto-completion
 (use-package company
   :ensure
   :bind
@@ -411,6 +257,7 @@
         ("<tab>". tab-indent-or-complete)
         ("TAB". tab-indent-or-complete)))
 
+;; JEB- ???
 (defun company-yasnippet-or-completion ()
   (interactive)
   (or (do-yas-expand)
@@ -424,6 +271,7 @@
         (backward-char 1)
         (if (looking-at "::") t nil)))))
 
+;; JEB???
 (defun do-yas-expand ()
   (let ((yas-fallback-behavior 'return-nil))
     (yas-expand)))
@@ -440,15 +288,6 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; for Cargo.toml and other config files
-
-(use-package toml-mode :ensure)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
 ;; https://github.com/neppramod/java_emacs/tree/master
 ;;
@@ -459,30 +298,21 @@
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
-;; (use-package eglot-java
-;;   :ensure t
-;;   )
-;; (add-hook 'java-mode-hook 'eglot-java-mode)
-
-;; (use-package lsp-java
-;;   :ensure t
-;;   :config (add-hook 'java-mode-hook 'lsp))
+(use-package lsp-java
+  :ensure t
+  :config (add-hook 'java-mode-hook 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
 (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; c/c++-related settings, mostly borrowed from a post on the emacs lsp page:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
 
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
+;; (add-hook 'c-mode-hook 'lsp)
+;; (add-hook 'c++-mode-hook 'lsp)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; python-related settings, mostly borrowed from a post on the emacs lsp page:
@@ -498,9 +328,6 @@
 ;; (add-hook 'python-mode-hook 'lsp)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; golang-related settings. Need a Go SDK installed, and the go lsp server (gopls)
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
@@ -509,9 +336,8 @@
 ;;   :ensure t)
 ;; (add-hook 'go-mode-hook #'lsp-deferred)
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; RANDOM SHIT
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; setting up debugging support with dap-mode
 
 ;; (use-package exec-path-from-shell
@@ -542,41 +368,112 @@
 ;;          ;; :lldbmipath "path/to/lldb-mi"
 ;;          )))
 
-(use-package hydra)
+;;(use-package hydra)
 
 ;; enable bidirectional synchronization of lsp workspace folders and treemacs projects.
 (use-package lsp-treemacs
   :after (treemacs lsp-mode)
   :defer t
   :ensure t)
-(lsp-treemacs-sync-mode 1)
+(lsp-treemacs-sync-mode t)
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; GUTTER configs
+;; stuff I don't want to delete just yet, in case I end up
+;; trying to ressurect it.
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; tree-sitter configs
+;; currently using treesit-auto as a quality of life plaugin,
+;; even the maintainer admits it might be obsolete by emacs 30 ...
+
+;; NOTE: i tried this but it barfed as I excluded rust ...
+;; something in my project config looks for rust even when opening
+;; a java file?!?! wtf ...
+
+;; basically, everything except for rust, for now ...
+;; (delete 'rust treesit-auto-langs)
+;; (use-package treesit-auto
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
+
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; (use-package eglot-java
+;;   :ensure t
+;;   )
+;; (add-hook 'java-mode-hook 'eglot-java-mode)
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; buffer-move - helpful to move windows around
+;; https://github.com/lukhas/buffer-move
+;; (use-package buffer-move
+;;   :ensure t)
+;; (require 'buffer-move)
+;; if you want to have key bindings for moving the buffers, uncommment below
+;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; hideshow - it's a builtin minor mode.
 ;; the following enables it by default everywhere, rather than needing to
 ;; do it in every damn buffer i open
 ;; I tried to map this onto Hyper_l, even remapped CapsLock to Hyper_l
 ;; in PopOS via the gnome tweaks (and can confirm via `xev`). But emacs
 ;; is not seeing the Hyper_l event :(
-(setq-default hs-minor-mode t)
-(global-set-key (kbd "C-c C-h") (kbd "C-c @ C-h"))         ;;hiding block of code
-(global-set-key (kbd "C-c C-r") (kbd "C-c @ C-s"))         ;;revealing block of code
-(global-set-key (kbd "H-h") (kbd "C-c @ C-h"))         ;;hiding block of code
-(global-set-key (kbd "H-s") (kbd "C-c @ C-s"))         ;;revealing block of code
-(add-hook 'prog-mode-hook #'hs-minor-mode)
+;; (setq-default hs-minor-mode t)
+;; (global-set-key (kbd "C-c C-h") (kbd "C-c @ C-h"))         ;;hiding block of code
+;; (global-set-key (kbd "C-c C-r") (kbd "C-c @ C-s"))         ;;revealing block of code
+;; (global-set-key (kbd "H-h") (kbd "C-c @ C-h"))         ;;hiding block of code
+;; (global-set-key (kbd "H-s") (kbd "C-c @ C-s"))         ;;revealing block of code
+;; (add-hook 'prog-mode-hook #'hs-minor-mode)
 
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; winum - easier window switching
+;; https://github.com/deb0ch/emacs-winum
 
-;; don't show verstion control (git) branch name in mode line
-;; (setq-default mode-line-format
-;;               (delete '(vc-mode vc-mode) mode-line-format))
+;; note: the keymapping be declared before the require command :shrug:
+;; (use-package winum
+;;   :ensure t)
+;; (setq winum-keymap
+;;     (let ((map (make-sparse-keymap)))
+;;       (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+;;       (define-key map (kbd "M-1") 'winum-select-window-1)
+;;       (define-key map (kbd "M-2") 'winum-select-window-2)
+;;       (define-key map (kbd "M-3") 'winum-select-window-3)
+;;       (define-key map (kbd "M-4") 'winum-select-window-4)
+;;       (define-key map (kbd "M-5") 'winum-select-window-5)
+;;       (define-key map (kbd "M-6") 'winum-select-window-6)
+;;       (define-key map (kbd "M-7") 'winum-select-window-7)
+;;       (define-key map (kbd "M-8") 'winum-select-window-8)
+;;       map))
+;; (require 'winum)
+;; (winum-mode)
 
-(setq-default mode-line-format
-              '("%e"
-               mode-line-buffer-identification
-               "   "
-               mode-line-position
-               "  "
-               mode-line-misc-info))
-              
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; (recentf-mode 1)
+;; (setq recentf-max-saved-items 100
+;;       inhibit-startup-message t
+;;       ring-bell-function 'ignore)
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; (use-package yasnippet
+;;   :ensure
+;;   :config
+;;   (yas-reload-all)
+;;   (add-hook 'prog-mode-hook 'yas-minor-mode)
+;;   (add-hook 'text-mode-hook 'yas-minor-mode))
