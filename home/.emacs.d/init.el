@@ -385,8 +385,8 @@
 ;; c/c++-related settings, mostly borrowed from a post on the emacs lsp page:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
 
-;; (add-hook 'c-mode-hook 'lsp)
-;; (add-hook 'c++-mode-hook 'lsp)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -395,21 +395,18 @@
 ;;
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
-;; (use-package lsp-mode
-;;   :hook
-;;   ((python-mode . lsp)))
-;; (use-package python-mode
-;;   :straight t)
-;; (add-hook 'python-mode-hook 'lsp)
+(use-package python-mode
+  :straight t)
+(add-hook 'python-mode-hook 'lsp)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; golang-related settings. Need a Go SDK installed, and the go lsp server (gopls)
+;; golang-related settings. Need a Go SDK installed, and the go-lsp server (gopls)
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
-;; (use-package go-mode
-;;   :straight t)
-;; (add-hook 'go-mode-hook #'lsp-deferred)
+(use-package go-mode
+  :straight t)
+(add-hook 'go-mode-hook #'lsp-deferred)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
