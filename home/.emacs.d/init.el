@@ -416,32 +416,36 @@
 ;;   :straight t
 ;;   :init (exec-path-from-shell-initialize))
 
-;; (use-package dap-mode
-;;   :straight t
-;;   :config
-;;   (dap-auto-configure-mode)
-;;   (dap-ui-mode)
-;;   (dap-ui-controls-mode 1)
+(use-package dap-mode
+  :straight t
+  :config
+  (dap-auto-configure-mode)
+  (dap-ui-mode)
+  (dap-ui-controls-mode 1)
 
-;;   (require 'dap-lldb)
-;;   (require 'dap-gdb-lldb)
-;;   (require 'dap-java)
-;;   ;; (require 'dap-dlv-go) ;; go-lang
+  (require 'dap-lldb)
+  (require 'dap-gdb-lldb)
+  (require 'dap-java)
+  ;; (require 'dap-dlv-go) ;; go-lang
 
-;;   ;; installs .extension/vscode
-;;   (dap-gdb-lldb-setup)
-;;   (dap-register-debug-template
-;;    "Rust::LLDB Run Configuration"
-;;    (list :type "lldb"
-;;          :request "launch"
-;;          :name "LLDB::Run"
-;; 	     :gdbpath "rust-lldb"
-;;          ;; uncomment if lldb-mi is not in PATH
-;;          ;; :lldbmipath "path/to/lldb-mi"
-;;          )))
+  ;; installs .extension/vscode
+  (dap-gdb-lldb-setup)
+  (dap-register-debug-template
+   "Rust::LLDB Run Configuration"
+   (list :type "lldb"
+         :request "launch"
+         :name "LLDB::Run"
+	     :gdbpath "rust-lldb"
+         ;; uncomment if lldb-mi is not in PATH
+         ;; :lldbmipath "path/to/lldb-mi"
+         )))
 
-;;(use-package hydra)
+(use-package hydra :straight t)
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; org-mode and friends
+(use-package org
+     :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
