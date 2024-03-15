@@ -8,8 +8,8 @@
 
 ;; save customized variables into a separate file, not init.el
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load-file custom-file)
+;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (load-file custom-file)
 
 (setq confirm-kill-emacs 'yes-or-no-p)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -32,6 +32,18 @@
 
 ;; don't use global line highlight
 (global-hl-line-mode 0)
+
+;; save mini-buffer history
+(setq history-length 25)
+(savehist-mode 1)
+
+;; Remember and restore the last cursor location of opened files
+(save-place-mode 1)
+
+;; Revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
+;; Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
 
 ; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
 (setq-default mode-line-format
@@ -69,6 +81,34 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; dired hacking
+(use-package dired
+  :straight nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho")))
+
+;; https://github.com/emacsmirror/dired-single
+(use-package dired-single :straight t)
+(defun my-dired-init ()
+  (define-key dired-mode-map [remap dired-find-file]
+    'dired-single-buffer)
+  (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
+    'dired-single-buffer-mouse)
+  (define-key dired-mode-map [remap dired-up-directory]
+    'dired-single-up-directory))
+
+;; if dired's already loaded, then the keymap will be bound
+(if (boundp 'dired-mode-map)
+    ;; we're good to go; just add our bindings
+    (my-dired-init)
+  ;; it's not loaded yet, so add our bindings to the load-hook
+  (add-hook 'dired-load-hook 'my-dired-init))
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; which-key: displays in the mini buffer the key bindings following
 ;; your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
@@ -90,7 +130,6 @@
 (use-package ef-themes
   :straight t)
 (load-theme 'ef-maris-dark t)
-
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -146,22 +185,7 @@
 	  (lambda ()
 	     (ibuffer-switch-to-saved-filter-groups "home")))
 
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; treemacs support and config
-;; this is mostly just taken from the docs (https://github.com/Alexander-Miller/treemacs)
-(use-package treemacs
-  :straight t
-  :bind
-  (:map global-map
-        ("<f9>"      . treemacs)
-        ("<f8>"      . treemacs-select-window)
-        ))
-
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :straight t)
-
+(use-package magit :straight t)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -420,12 +444,6 @@
 ;;          )))
 
 ;;(use-package hydra)
-
-;; enable bidirectional synchronization of lsp workspace folders and treemacs projects.
-(use-package lsp-treemacs
-  :after (treemacs lsp-mode)
-  :straight t)
-(lsp-treemacs-sync-mode t)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
