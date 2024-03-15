@@ -1,13 +1,12 @@
-;; This is to support loading from a non-standard .emacs.d
-;; via emacs -q --load "/path/to/standalone.el"
-;; see https://emacs.stackexchange.com/a/4258/22184
-
-(setq user-init-file (or load-file-name (buffer-file-name)))
+;; if starting emacs with a custom user-emacs-directory
+;; https://emacs.stackexchange.com/questions/4253/how-to-start-emacs-with-a-custom-user-emacs-directory
 (setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
+
+;; save customized variables into a separate file, not init.el
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; JEB - MAYBE REMOVE?
-(load-file (expand-file-name "custom.el" user-emacs-directory))
+(load-file custom-file)
 
 (setq confirm-kill-emacs 'yes-or-no-p)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -40,6 +39,9 @@
                "  "
                mode-line-misc-info))
 
+;; raise the gc collection threshold, due to lsp-mode
+;; https://emacs-lsp.github.io/lsp-mode/page/performance/#adjust-gc-cons-threshold
+(setq gc-cons-threshold 100000000)
 
 ;; package.el
 (require 'package)
@@ -116,6 +118,7 @@
                                 (mode . sh-mode)))
                ("databass" (or
                             (mode . sql-mode)
+                            (mode . "\\.test")
                             (name . "\\.spec")))
                ("docs" (mode . markdown-mode))
                ("gnuplot" (mode . markdown-mode))
@@ -145,11 +148,6 @@
 (use-package treemacs-magit
   :after (treemacs magit)
   :ensure t)
-
-(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-  :after (treemacs)
-  :ensure t
-  :config (treemacs-set-scope-type 'Tabs))
 
 
 
@@ -183,14 +181,14 @@
 (use-package toml-mode :ensure)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; for rust-analyzer integration
+;; lsp-mode and friends
 
 (use-package lsp-mode
   :ensure
   :commands lsp
-  :init (setq
-         lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
-         )
+  :init
+  ; this is for which-key integration documentation, need to use lsp-mode-map
+  (setq lsp-keymap-prefix "C-c l" )
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -215,7 +213,6 @@
 
 (use-package lsp-ui
   :ensure
-  :after (lsp-mode)
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
@@ -224,7 +221,7 @@
   :bind (:map lsp-ui-mode-map
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references))
-  :init (setq lsp-ui-doc-delay 1.5
+  :init (setq lsp-ui-doc-delay 0.5
               lsp-ui-doc-position 'bottom
 	          lsp-ui-doc-max-width 100
               )
@@ -236,12 +233,53 @@
 ;; lsp helper - Increase the amount of data which Emacs reads from the process
 (setq read-process-output-max (* 1024 1024))
 
+;; lsp-booster integration
+;; https://github.com/blahgeek/emacs-lsp-booster
+(defun lsp-booster--advice-json-parse (old-fn &rest args)
+  "Try to parse bytecode instead of json."
+  (or
+   (when (equal (following-char) ?#)
+     (let ((bytecode (read (current-buffer))))
+       (when (byte-code-function-p bytecode)
+         (funcall bytecode))))
+   (apply old-fn args)))
+(advice-add (if (progn (require 'json)
+                       (fboundp 'json-parse-buffer))
+                'json-parse-buffer
+              'json-read)
+            :around
+            #'lsp-booster--advice-json-parse)
+
+(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+  "Prepend emacs-lsp-booster command to lsp CMD."
+  (let ((orig-result (funcall old-fn cmd test?)))
+    (if (and (not test?)                             ;; for check lsp-server-present?
+             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+             lsp-use-plists
+             (not (functionp 'json-rpc-connection))  ;; native json-rpc
+             (executable-find "emacs-lsp-booster"))
+        (progn
+          (message "Using emacs-lsp-booster for %s!" orig-result)
+          (cons "emacs-lsp-booster" orig-result))
+      orig-result)))
+(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
 (use-package flycheck :ensure)
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; yas - snippets. i really don't use this (now), but I have
+;; other stuffs that does (which I haven't cleaned up yet)
+(use-package yasnippet
+  :ensure
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
@@ -469,11 +507,3 @@
 ;;       inhibit-startup-message t
 ;;       ring-bell-function 'ignore)
 
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; (use-package yasnippet
-;;   :ensure
-;;   :config
-;;   (yas-reload-all)
-;;   (add-hook 'prog-mode-hook 'yas-minor-mode)
-;;   (add-hook 'text-mode-hook 'yas-minor-mode))
