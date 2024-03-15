@@ -1,3 +1,6 @@
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; jasobrown's emacs config.
+
 ;; if starting emacs with a custom user-emacs-directory
 ;; https://emacs.stackexchange.com/questions/4253/how-to-start-emacs-with-a-custom-user-emacs-directory
 (setq user-init-file (or load-file-name (buffer-file-name)))
@@ -43,23 +46,34 @@
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#adjust-gc-cons-threshold
 (setq gc-cons-threshold 100000000)
 
-;; package.el
-(require 'package)
-(add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(setq package-user-dir (expand-file-name "elpa/" user-emacs-directory))
-(package-initialize)
-;; force install of use-package 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; package support via straight.el
+;; https://systemcrafters.net/advanced-package-management/using-straight-el/
+;; https://github.com/radian-software/straight.el 
 
+; copy-and-paste base install block for getting straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+      (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+        "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+        'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; point straight-use-package.el to straight
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;; which-key: displays in the mini buffer the key bindings following
 ;; your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
-  :ensure
+  :straight t
   :init
   (which-key-mode))
 
@@ -67,14 +81,14 @@
 ;; in a directory, in the mini buffer). replacement of older selectrum.el
 ;; https://github.com/minad/vertico
 (use-package vertico
-  :ensure
+  :straight t
   :init
   (vertico-mode))
 
 ;; themes
 ;; currently liking prot's https://github.com/protesilaos/ef-themes
 (use-package ef-themes
-  :ensure t)
+  :straight t)
 (load-theme 'ef-maris-dark t)
 
 
@@ -137,8 +151,7 @@
 ;; treemacs support and config
 ;; this is mostly just taken from the docs (https://github.com/Alexander-Miller/treemacs)
 (use-package treemacs
-  :ensure t
-  :defer t
+  :straight t
   :bind
   (:map global-map
         ("<f9>"      . treemacs)
@@ -147,7 +160,7 @@
 
 (use-package treemacs-magit
   :after (treemacs magit)
-  :ensure t)
+  :straight t)
 
 
 
@@ -155,7 +168,7 @@
 ;; rustic = basic rust-mode + additions
 
 (use-package rustic
-  :ensure
+  :straight t
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -178,13 +191,13 @@
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
-(use-package toml-mode :ensure)
+(use-package toml-mode :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; lsp-mode and friends
 
 (use-package lsp-mode
-  :ensure
+  :straight t
   :commands lsp
   :init
   ; this is for which-key integration documentation, need to use lsp-mode-map
@@ -212,7 +225,7 @@
  )
 
 (use-package lsp-ui
-  :ensure
+  :straight t
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
@@ -268,14 +281,14 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
-(use-package flycheck :ensure)
+(use-package flycheck :straight t)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; yas - snippets. i really don't use this (now), but I have
 ;; other stuffs that does (which I haven't cleaned up yet)
 (use-package yasnippet
-  :ensure
+  :straight t
   :config
   (yas-reload-all)
   (add-hook 'prog-mode-hook 'yas-minor-mode)
@@ -284,7 +297,7 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
 (use-package company
-  :ensure
+  :straight t
   :bind
   (:map company-active-map
               ("C-n". company-select-next)
@@ -337,7 +350,7 @@
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package lsp-java
-  :ensure t
+  :straight t
   :config (add-hook 'java-mode-hook 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
@@ -362,7 +375,7 @@
 ;;   :hook
 ;;   ((python-mode . lsp)))
 ;; (use-package python-mode
-;;   :ensure t)
+;;   :straight t)
 ;; (add-hook 'python-mode-hook 'lsp)
 
 
@@ -371,7 +384,7 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 ;; (use-package go-mode
-;;   :ensure t)
+;;   :straight t)
 ;; (add-hook 'go-mode-hook #'lsp-deferred)
 
 
@@ -379,11 +392,11 @@
 ;; setting up debugging support with dap-mode
 
 ;; (use-package exec-path-from-shell
-;;   :ensure
+;;   :straight t
 ;;   :init (exec-path-from-shell-initialize))
 
 ;; (use-package dap-mode
-;;   :ensure
+;;   :straight t
 ;;   :config
 ;;   (dap-auto-configure-mode)
 ;;   (dap-ui-mode)
@@ -411,8 +424,7 @@
 ;; enable bidirectional synchronization of lsp workspace folders and treemacs projects.
 (use-package lsp-treemacs
   :after (treemacs lsp-mode)
-  :defer t
-  :ensure t)
+  :straight t)
 (lsp-treemacs-sync-mode t)
 
 
@@ -445,7 +457,7 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; (use-package eglot-java
-;;   :ensure t
+;;   :straight t
 ;;   )
 ;; (add-hook 'java-mode-hook 'eglot-java-mode)
 
@@ -454,7 +466,7 @@
 ;; buffer-move - helpful to move windows around
 ;; https://github.com/lukhas/buffer-move
 ;; (use-package buffer-move
-;;   :ensure t)
+;;   :straight t)
 ;; (require 'buffer-move)
 ;; if you want to have key bindings for moving the buffers, uncommment below
 ;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
@@ -484,7 +496,7 @@
 
 ;; note: the keymapping be declared before the require command :shrug:
 ;; (use-package winum
-;;   :ensure t)
+;;   :straight t)
 ;; (setq winum-keymap
 ;;     (let ((map (make-sparse-keymap)))
 ;;       (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
