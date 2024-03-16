@@ -199,19 +199,6 @@
   ; this is for which-key integration documentation, need to use lsp-mode-map
   (setq lsp-keymap-prefix "C-c l" )
   :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-idle-delay 0.5)
-  ;; This controls the overlays that display type and other hints inline. Enable
-  ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
-  ;; effect on open projects.
-  (lsp-inlay-hint-enable nil)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
   ;; ???
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :hook (('lsp-mode-hook 'lsp-ui-mode)
@@ -343,7 +330,21 @@
               ("C-c C-c a" . lsp-execute-code-action)
               ("C-c C-c r" . lsp-rename)
               ("C-c C-c d" . dap-hydra))
-   :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
+  :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-idle-delay 0.5)
+  ;; This controls the overlays that display type and other hints inline. Enable
+  ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
+  ;; effect on open projects.
+  (lsp-inlay-hint-enable nil)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
   )
 
 (defun rk/rustic-mode-hook ()
