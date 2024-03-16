@@ -203,6 +203,13 @@
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :hook (('lsp-mode-hook 'lsp-ui-mode)
          ('lsp-mode-hook 'lsp-enable-which-key-integration))
+  :bind (:map lsp-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c d" . dap-hydra))
  )
 
 (use-package lsp-ui
@@ -323,13 +330,7 @@
 
 (use-package rustic
   :straight t
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c d" . dap-hydra))
+  :requires lsp
   :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
@@ -414,16 +415,13 @@
 
 (use-package dap-mode
   :straight t
+  :requires (dap-lldb dap-gdb-lldb dap-java)
+  ;; (require 'dap-dlv-go) ;; go-lang
+
   :config
   (dap-auto-configure-mode)
   (dap-ui-mode)
   (dap-ui-controls-mode 1)
-
-  (require 'dap-lldb)
-  (require 'dap-gdb-lldb)
-  (require 'dap-java)
-  ;; (require 'dap-dlv-go) ;; go-lang
-
   ;; installs .extension/vscode
   (dap-gdb-lldb-setup)
   (dap-register-debug-template
