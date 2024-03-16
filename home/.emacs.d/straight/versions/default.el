@@ -29,6 +29,7 @@
  ("markdown-mode" . "b7f7da9b2dbab9a5e3de7a674495c0b1627b456c")
  ("melpa" . "feb6e7b10f4adb9c6ba3981b60f72db6f4cedb95")
  ("nongnu-elpa" . "f06fc1286a20c827cbbd53a8c3ed53b2ac41c9d9")
+ ("org" . "fb61e83f2af2ec1acde9cd657d82cbdd8e2e76ff")
  ("pfuture" . "19b53aebbc0f2da31de6326c495038901bffb73c")
  ("posframe" . "017deece88360c7297265680d78a0bb316470716")
  ("project" . "b6a824963e340a42a1f624d9093a18ed07615224")

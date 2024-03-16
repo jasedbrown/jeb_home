@@ -188,34 +188,6 @@
 (use-package magit :straight t)
 
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; rustic = basic rust-mode + additions
-
-(use-package rustic
-  :straight t
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c d" . dap-hydra))
-   :config
-
-  ;; comment to disable rustfmt on save
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
-  )
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-  ;; save rust buffers that are not file visiting. Once
-  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-  ;; no longer be necessary.
-  (when buffer-file-name
-    (setq-local buffer-save-without-query t))
-  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
-
-(use-package toml-mode :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; lsp-mode and friends
@@ -242,10 +214,8 @@
   (lsp-rust-analyzer-display-reborrow-hints nil)
   ;; ???
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (add-hook 'java-mode #'lsp-deferred)
-  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+  :hook (('lsp-mode-hook 'lsp-ui-mode)
+         ('lsp-mode-hook 'lsp-enable-which-key-integration))
  )
 
 (use-package lsp-ui
@@ -315,8 +285,8 @@
   :straight t
   :config
   (yas-reload-all)
-  (add-hook 'prog-mode-hook 'yas-minor-mode)
-  (add-hook 'text-mode-hook 'yas-minor-mode))
+  :hook (('prog-mode-hook 'yas-minor-mode)
+         ('text-mode-hook 'yas-minor-mode)))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
@@ -361,6 +331,31 @@
             (company-complete-common)
           (indent-for-tab-command)))))
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; rustic = basic rust-mode + additions
+
+(use-package rustic
+  :straight t
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c d" . dap-hydra))
+   :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
+  )
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+(use-package toml-mode :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
@@ -375,7 +370,7 @@
 
 (use-package lsp-java
   :straight t
-  :config (add-hook 'java-mode-hook 'lsp))
+  :hook ('java-mode-hook 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
 (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
@@ -396,8 +391,8 @@
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
 (use-package python-mode
-  :straight t)
-(add-hook 'python-mode-hook 'lsp)
+  :straight t
+  :hook ('python-mode-hook 'lsp))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -405,8 +400,8 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package go-mode
-  :straight t)
-(add-hook 'go-mode-hook #'lsp-deferred)
+  :straight t
+  :hook ('go-mode-hook #'lsp-deferred))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -477,8 +472,7 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; (use-package eglot-java
 ;;   :straight t
-;;   )
-;; (add-hook 'java-mode-hook 'eglot-java-mode)
+;;   :hook ('java-mode-hook 'eglot-java-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
