@@ -199,6 +199,14 @@
   ; this is for which-key integration documentation, need to use lsp-mode-map
   (setq lsp-keymap-prefix "C-c l" )
   :custom
+  (lsp-idle-delay 0.5)
+  ;; This controls the overlays that display type and other hints inline. Enable
+  ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
+  ;; effect on open projects.
+  (lsp-inlay-hint-enable nil)
+  ;; the next two disable crap down in the modeline
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
   ;; ???
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :hook (('lsp-mode-hook 'lsp-ui-mode)
@@ -219,6 +227,7 @@
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil)
+  (lsp-ui-sideline-show-hover nil)
   :bind (:map lsp-ui-mode-map
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references))
@@ -266,6 +275,38 @@
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+;; setting up debugging support with dap-mode
+
+;; (use-package exec-path-from-shell
+;;   :straight t
+;;   :init (exec-path-from-shell-initialize))
+
+(use-package dap-mode
+  :straight t
+  :requires (dap-lldb dap-gdb-lldb)
+  ;; (require 'dap-dlv-go dap-java) ;; go-lang and java
+
+  :config
+  ;; dap-auto-configure-features!
+  (dap-auto-configure-mode)
+  (dap-ui-mode)
+  (dap-ui-controls-mode 1)
+  ;; installs .extension/vscode
+  (dap-gdb-lldb-setup)
+  (dap-register-debug-template
+   "Rust::LLDB Run Configuration"
+   (list :type "lldb"
+         :request "launch"
+         :name "LLDB::Run"
+	     :gdbpath "rust-lldb"
+         ;; uncomment if lldb-mi is not in PATH
+         ;; :lldbmipath "path/to/lldb-mi"
+         )))
+
+(use-package hydra :straight t)
+;; dap-hydra??
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
@@ -286,6 +327,8 @@
 ;; company - auto-completion
 (use-package company
   :straight t
+  ;;  :after lsp-mode
+  ;;  :hook (lsp-mode . company-mode)
   :bind
   (:map company-active-map
               ("C-n". company-select-next)
@@ -294,7 +337,10 @@
               ("M->". company-select-last))
   (:map company-mode-map
         ("<tab>". tab-indent-or-complete)
-        ("TAB". tab-indent-or-complete)))
+        ("TAB". tab-indent-or-complete))
+  :custom
+  (company-minimum-index-length 2))
+
 
 ;; JEB- ???
 (defun company-yasnippet-or-completion ()
@@ -325,6 +371,12 @@
             (company-complete-common)
           (indent-for-tab-command)))))
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; org-mode and friends
+(use-package org
+     :straight t)
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
 
@@ -335,11 +387,6 @@
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-idle-delay 0.5)
-  ;; This controls the overlays that display type and other hints inline. Enable
-  ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
-  ;; effect on open projects.
-  (lsp-inlay-hint-enable nil)
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t)
   (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
@@ -404,42 +451,6 @@
 (use-package go-mode
   :straight t
   :hook ('go-mode-hook #'lsp-deferred))
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; setting up debugging support with dap-mode
-
-;; (use-package exec-path-from-shell
-;;   :straight t
-;;   :init (exec-path-from-shell-initialize))
-
-(use-package dap-mode
-  :straight t
-  :requires (dap-lldb dap-gdb-lldb dap-java)
-  ;; (require 'dap-dlv-go) ;; go-lang
-
-  :config
-  (dap-auto-configure-mode)
-  (dap-ui-mode)
-  (dap-ui-controls-mode 1)
-  ;; installs .extension/vscode
-  (dap-gdb-lldb-setup)
-  (dap-register-debug-template
-   "Rust::LLDB Run Configuration"
-   (list :type "lldb"
-         :request "launch"
-         :name "LLDB::Run"
-	     :gdbpath "rust-lldb"
-         ;; uncomment if lldb-mi is not in PATH
-         ;; :lldbmipath "path/to/lldb-mi"
-         )))
-
-(use-package hydra :straight t)
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; org-mode and friends
-(use-package org
-     :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
