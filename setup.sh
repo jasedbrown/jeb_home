@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
 set -x
 
 SCRIPT_DIR=$(pwd)
@@ -45,8 +44,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      python-dev-is-python3 \
      python3-pip \
      python3-venv \
-     redis-tools \
-     sysbench \
      tmux \
      wireshark \
      zlib1g-dev \
@@ -122,7 +119,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v2.4.0
+    git checkout v2.30.0
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
