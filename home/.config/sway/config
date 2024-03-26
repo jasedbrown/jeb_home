@@ -1,5 +1,3 @@
-# Ansible managed message here
-
 #==================================================================================#
 # Sway Window Manager Configuration File                                           #
 #----------------------------------------------------------------------------------#
@@ -88,23 +86,11 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# Move focus to another window ("cult of vim" version):
-bindsym $mod+j focus down
-bindsym $mod+h focus left
-bindsym $mod+l focus right
-bindsym $mod+k focus up
-
 # Move the window:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-
-# Move the the window ("cult of vim" version):
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
 
 # Hold the modifier key and hold the left/right mouse button
 # to drag or resize a window respectively. This isn't exclusive
@@ -118,12 +104,6 @@ mode "resize" {
     bindsym Down resize grow height 10px
     bindsym Up resize shrink height 10px
     bindsym Right resize grow width 10px
-
-    # "cult of vim" version:
-    bindsym h resize shrink width 10px
-    bindsym j resize grow height 10px
-    bindsym k resize shrink height 10px
-    bindsym l resize grow width 10px
 
     # Return to default mode
     bindsym Return mode "default"
