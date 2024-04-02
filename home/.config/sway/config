@@ -10,7 +10,6 @@
 # pressing Super + Shift + C.                                                      #
 #==================================================================================#
 
-
 #========================#
 # Appearance and Theming #
 #========================#
@@ -65,12 +64,17 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec $HOME/.config/sway/exit.sh
 
 # Screen locking (automatic, with a timeout)
-set $lock swaylock -c 550000
+# set $lock swaylock -c 550000
 exec swayidle -w \
-    timeout 600 $lock \
-    timeout 570 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    before-sleep $lock
+    timeout 615 'swaylock -f -c 000000' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' 
+
+# exec swayidle -w \
+#     timeout 25 $lock \
+#     timeout 20 'swaymsg "output * dpms off"' \
+#     resume 'swaymsg "output * dpms on"' \
+#     before-sleep $lock
 
 # Screen locking (manual)
 set $lock_screen exec bash ~/.config/sway/lock_screen.sh
@@ -116,10 +120,10 @@ bindsym $mod+r mode "resize"
 # Keyboard Shortcuts (Workspaces) #
 #=================================#
 # Switch to workspace
-set $ws1 "1 - Communication"
+set $ws1 "1 - Coding"
 set $ws2 "2 - Browsing"
 set $ws3 "3 - System Administration"
-set $ws4 "4 - Learn Linux TV"
+set $ws4 "4 - Music"
 set $ws5 "5 - Media"
 set $ws6 "6 - Writing"
 set $ws7 "7 - Homelab"
