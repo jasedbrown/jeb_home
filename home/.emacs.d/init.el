@@ -284,7 +284,7 @@
 
 (use-package dap-mode
   :straight t
-  :requires (dap-lldb dap-gdb-lldb)
+  :requires (dap-lldb dap-gdb-lldb dap-cpptools)
   ;; (require 'dap-dlv-go dap-java) ;; go-lang and java
 
   :config
@@ -303,6 +303,8 @@
          ;; uncomment if lldb-mi is not in PATH
          ;; :lldbmipath "path/to/lldb-mi"
          )))
+(require 'dap-lldb)
+(require 'dap-cpptools)
 
 (use-package hydra :straight t)
 ;; dap-hydra??
