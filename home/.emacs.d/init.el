@@ -408,6 +408,8 @@
 
 (use-package toml-mode :straight t)
 
+(use-package yaml-mode :straight t)
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
 ;; https://github.com/neppramod/java_emacs/tree/master
