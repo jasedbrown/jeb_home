@@ -383,7 +383,7 @@
 ;; rustic = basic rust-mode + additions
 
 (use-package rustic
-  :straight t
+  :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :requires lsp
   :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
   :custom
@@ -455,6 +455,9 @@
 (use-package go-mode
   :straight t
   :hook ('go-mode-hook #'lsp-deferred))
+
+
+(use-package lua-mode :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
