@@ -9,6 +9,7 @@ SCRIPT_DIR=$(pwd)
 
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+     alacritty \ 
      autoconf \
      build-essential \
      bzip2 \
