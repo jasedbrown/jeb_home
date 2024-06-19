@@ -27,8 +27,29 @@
 (show-paren-mode 1)
 (column-number-mode 1)
 
-; automatically pairs braces when you create them
+;; parens matching - automatically pairs braces when you create them
 (electric-pair-mode 1)
+
+;; this function finds the line number for a matching paren, and prints to minibuffer.
+;; chatgpt created this for me
+(defun show-paren-line-number ()
+  "Display the line number of the matching paren."
+  (when (and (bound-and-true-p show-paren-mode)
+             (or (eq (char-after) ?\() (eq (char-after) ?\[) (eq (char-after) ?\{)
+                 (eq (char-before) ?\)) (eq (char-before) ?\]) (eq (char-before) ?\})))
+    (let* ((pos (save-excursion
+                  (condition-case nil
+                      (progn
+                        (forward-list (if (looking-at-p "[[({]") 1 -1))
+                        (point))
+                    (error nil))))
+           (line-number (when pos (line-number-at-pos pos))))
+      (when line-number
+        (message "Matching paren is on line: %d" line-number)))))
+
+;; Hook the function to run when show-paren-mode is active
+(add-hook 'post-command-hook 'show-paren-line-number)
+
 
 ;; don't use global line highlight
 (global-hl-line-mode 0)
