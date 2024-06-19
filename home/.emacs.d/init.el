@@ -294,33 +294,39 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; setting up debugging support with dap-mode
 
-;; (use-package exec-path-from-shell
-;;   :init (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
 
 (use-package dap-mode
-  :requires (dap-lldb dap-gdb-lldb dap-cpptools)
-  ;; (require 'dap-dlv-go dap-java) ;; go-lang and java
+  ;;:after (lsp-mode dap-gdb-lldb)
+  ;; (require  dap-lldb  dap-cpptools   dap-dlv-go dap-java) ;; go-lang and java
 
   :config
   ;; dap-auto-configure-features!
   (dap-auto-configure-mode)
   (dap-ui-mode)
   (dap-ui-controls-mode 1)
+  (require 'dap-lldb)
+  (require 'dap-gdb-lldb)
   ;; installs .extension/vscode
   (dap-gdb-lldb-setup)
   (dap-register-debug-template
-   "Rust::LLDB Run Configuration"
+   "JEB::Rust::LLDB Run Configuration"
    (list :type "lldb"
          :request "launch"
          :name "LLDB::Run"
 	     :gdbpath "rust-lldb"
-         ;; uncomment if lldb-mi is not in PATH
-         ;; :lldbmipath "path/to/lldb-mi"
+         ))
+  (dap-register-debug-template
+   "JEB::Rust::GDB Run Configuration"
+   (list :type "gdb"
+         :request "launch"
+         :name "GDB::Run"
+	     :gdbpath "rust-gdb"
          )))
-(require 'dap-lldb)
-(require 'dap-cpptools)
 
-(use-package hydra :straight t)
+
+;;(use-package hydra)
 ;; dap-hydra??
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -414,6 +420,12 @@
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
+;; arguably, cargo-mode might not be unnecessary ...
+(use-package cargo-mode
+  :hook (rust-mode . cargo-minor-mode)
+  :custom
+  (compilation-scroll-output t))
+
 (use-package toml-mode)
 
 (use-package yaml-mode)
@@ -430,10 +442,12 @@
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package lsp-java
-  :hook ('java-mode . 'lsp))
-
-;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
-(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+  :hook ('java-mode . 'lsp)
+  :custom
+  ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
+  ;; which is taken from VSCode
+  (lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
