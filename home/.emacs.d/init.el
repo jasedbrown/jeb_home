@@ -226,8 +226,8 @@
   (lsp-modeline-diagnostics-enable nil)
   ;; ???
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  :hook (('lsp-mode-hook 'lsp-ui-mode)
-         ('lsp-mode-hook 'lsp-enable-which-key-integration))
+  :hook (('lsp-mode . 'lsp-ui-mode)
+         ('lsp-mode . 'lsp-enable-which-key-integration))
   :bind (:map lsp-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -335,8 +335,8 @@
 (use-package yasnippet
   :config
   (yas-reload-all)
-  :hook (('prog-mode-hook 'yas-minor-mode)
-         ('text-mode-hook 'yas-minor-mode)))
+  :hook (('prog-mode . 'yas-minor-mode)
+         ('text-mode . 'yas-minor-mode)))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
@@ -395,8 +395,8 @@
 
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
-  :requires lsp
-  :hook ('rustic-mode-hook 'rk/rustic-mode-hook)
+  :after lsp-mode
+  :hook ('rustic-mode . 'rk/rustic-mode-hook)
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -433,7 +433,7 @@
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package lsp-java
-  :hook ('java-mode-hook 'lsp))
+  :hook ('java-mode . 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
 (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
@@ -454,7 +454,7 @@
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
 (use-package python-mode
-  :hook ('python-mode-hook 'lsp))
+  :hook ('python-mode . 'lsp))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -462,7 +462,7 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package go-mode
-  :hook ('go-mode-hook #'lsp-deferred))
+  :hook ('go-mode . 'lsp-deferred))
 
 
 (use-package lua-mode)
@@ -496,7 +496,7 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; (use-package eglot-java
-;;   :hook ('java-mode-hook 'eglot-java-mode))
+;;   :hook ('java-mode . 'eglot-java-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
