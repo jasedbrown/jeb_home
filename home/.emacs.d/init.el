@@ -112,7 +112,7 @@
   :custom ((dired-listing-switches "-agho")))
 
 ;; https://github.com/emacsmirror/dired-single
-(use-package dired-single :straight t)
+(use-package dired-single)
 (defun my-dired-init ()
   (define-key dired-mode-map [remap dired-find-file]
     'dired-single-buffer)
@@ -134,7 +134,6 @@
 ;; your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
-  :straight t
   :init
   (which-key-mode))
 
@@ -142,14 +141,12 @@
 ;; in a directory, in the mini buffer). replacement of older selectrum.el
 ;; https://github.com/minad/vertico
 (use-package vertico
-  :straight t
   :init
   (vertico-mode))
 
 ;; themes
 ;; currently liking prot's https://github.com/protesilaos/ef-themes
-(use-package ef-themes
-  :straight t)
+(use-package ef-themes)
 (load-theme 'ef-maris-dark t)
 
 
@@ -206,7 +203,7 @@
 	  (lambda ()
 	     (ibuffer-switch-to-saved-filter-groups "home")))
 
-(use-package magit :straight t)
+(use-package magit)
 
 
 
@@ -214,7 +211,6 @@
 ;; lsp-mode and friends
 
 (use-package lsp-mode
-  :straight t
   :commands lsp
   :init
   ; this is for which-key integration documentation, need to use lsp-mode-map
@@ -242,7 +238,6 @@
  )
 
 (use-package lsp-ui
-  :straight t
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
@@ -300,11 +295,9 @@
 ;; setting up debugging support with dap-mode
 
 ;; (use-package exec-path-from-shell
-;;   :straight t
 ;;   :init (exec-path-from-shell-initialize))
 
 (use-package dap-mode
-  :straight t
   :requires (dap-lldb dap-gdb-lldb dap-cpptools)
   ;; (require 'dap-dlv-go dap-java) ;; go-lang and java
 
@@ -333,14 +326,13 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
-(use-package flycheck :straight t)
+;;(use-package flycheck)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; yas - snippets. i really don't use this (now), but I have
 ;; other stuffs that does (which I haven't cleaned up yet)
 (use-package yasnippet
-  :straight t
   :config
   (yas-reload-all)
   :hook (('prog-mode-hook 'yas-minor-mode)
@@ -349,7 +341,6 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
 (use-package company
-  :straight t
   ;;  :after lsp-mode
   ;;  :hook (lsp-mode . company-mode)
   :bind
@@ -397,8 +388,7 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; org-mode and friends
-(use-package org
-     :straight t)
+(use-package org)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
@@ -427,9 +417,9 @@
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
-(use-package toml-mode :straight t)
+(use-package toml-mode)
 
-(use-package yaml-mode :straight t)
+(use-package yaml-mode)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
@@ -443,7 +433,6 @@
 ;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 
 (use-package lsp-java
-  :straight t
   :hook ('java-mode-hook 'lsp))
 
 ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java, which is taken from VSCode
@@ -465,7 +454,6 @@
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
 (use-package python-mode
-  :straight t
   :hook ('python-mode-hook 'lsp))
 
 
@@ -474,11 +462,10 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package go-mode
-  :straight t
   :hook ('go-mode-hook #'lsp-deferred))
 
 
-(use-package lua-mode :straight t)
+(use-package lua-mode)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -509,15 +496,13 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; (use-package eglot-java
-;;   :straight t
 ;;   :hook ('java-mode-hook 'eglot-java-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; buffer-move - helpful to move windows around
 ;; https://github.com/lukhas/buffer-move
-;; (use-package buffer-move
-;;   :straight t)
+;; (use-package buffer-move)
 ;; (require 'buffer-move)
 ;; if you want to have key bindings for moving the buffers, uncommment below
 ;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
@@ -546,8 +531,7 @@
 ;; https://github.com/deb0ch/emacs-winum
 
 ;; note: the keymapping be declared before the require command :shrug:
-;; (use-package winum
-;;   :straight t)
+;; (use-package winum)
 ;; (setq winum-keymap
 ;;     (let ((map (make-sparse-keymap)))
 ;;       (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
