@@ -398,14 +398,11 @@
   :after lsp-mode
   :hook ('rustic-mode . 'rk/rustic-mode-hook)
   :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (rustic-format-trigger "on-save")
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
   (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
+  ;; (lsp-rust-analyzer-cargo-extra-args "--locked")
   )
 
 (defun rk/rustic-mode-hook ()
