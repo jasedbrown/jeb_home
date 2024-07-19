@@ -120,7 +120,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v2.30.0
+    git checkout v2.32.1
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
@@ -130,8 +130,8 @@ if [ ! -d "$MOLD_HOME" ]; then
     mkdir -p $HOME/.cargo
     cat <<EOF >> $HOME/.cargo/config.toml
 [target.x86_64-unknown-linux-gnu]
-linker = "clang"
-rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold/mold"]
+# apparently i need this as-per `flamegraph-rs`, the `--no-resegment` flag, for mold
+rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "link-arg=-Wl,--no-rosegment"]
 
 # safe version that uses gcc
 # rustflags = ["-C", "link-arg=-fuse-ld=mold"]
