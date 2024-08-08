@@ -226,7 +226,7 @@
    ["Push"
     ("p" "Push to origin HEAD:refs/for/main" gerrit-push-origin-head)]])
 
-(define-key magit-mode-map (kbd "C-c p") 'my-magit-push-menu)
+(define-key magit-mode-map (kbd "C-c C-p") 'my-magit-push-menu)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
