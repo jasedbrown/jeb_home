@@ -203,8 +203,30 @@
 	  (lambda ()
 	     (ibuffer-switch-to-saved-filter-groups "home")))
 
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; magit magick!
 (use-package magit)
 
+;; convenience functions for pushing branches up to gerrit,
+;; via magit
+(defun gerrit-push-origin-head ()
+  "Push the current branch to origin as refs/for/main using magit."
+  (interactive)
+  (let ((project-root (or (lsp-workspace-root)
+                          (rustic-buffer-crate)
+                          (magit-toplevel))))
+    (when project-root
+      (let ((default-directory project-root))
+        (magit-run-git "push" "origin" "HEAD:refs/for/main")))))
+
+(transient-define-prefix my-magit-push-menu ()
+  "My Magit Push Menu"
+  ["Actions"
+   ["Push"
+    ("p" "Push to origin HEAD:refs/for/main" gerrit-push-origin-head)]])
+
+(define-key magit-mode-map (kbd "C-c p") 'my-magit-push-menu)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

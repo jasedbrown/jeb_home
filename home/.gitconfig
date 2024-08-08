@@ -1,11 +1,12 @@
 [alias]
-	co = checkout
 	br = branch
 	ci = commit
-	st = status
 	cl = clone
-    ru = remote update
+	co = checkout
+    cp = cherry-pick
     dc = diff --cached
+    ru = remote update
+	st = status
 	fuckit = clean -f -d -x -q
 [init]
 	defaultBranch = main
