@@ -209,7 +209,7 @@
 (use-package magit)
 
 ;; convenience functions for pushing branches up to gerrit,
-;; via magit
+;; via magit. prints result of the operation to the mini-buffer.
 (defun gerrit-push-origin-head ()
   "Push the current branch to origin as refs/for/main using magit."
   (interactive)
@@ -217,8 +217,14 @@
                           (rustic-buffer-crate)
                           (magit-toplevel))))
     (when project-root
-      (let ((default-directory project-root))
-        (magit-run-git "push" "origin" "HEAD:refs/for/main")))))
+      (let ((default-directory project-root)
+            (output-buffer "*Git Push Output*"))
+        (with-output-to-temp-buffer output-buffer
+          (let ((exit-code (call-process "git" nil output-buffer t
+                                         "push" "origin" "HEAD:refs/for/main")))
+            (if (eq exit-code 0)
+                (message "Pushed to origin HEAD:refs/for/main successfully.")
+              (message "Git push failed. See *Git Push Output* buffer for details."))))))))
 
 (transient-define-prefix my-magit-push-menu ()
   "My Magit Push Menu"
