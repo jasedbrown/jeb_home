@@ -236,6 +236,19 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; projectile
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
+
+;; apparently, `deadgrep` is thw newer hotness, but not sure
+;; if it integrates with projectile
+(use-package ripgrep)
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; lsp-mode and friends
 
 (use-package lsp-mode
@@ -426,11 +439,37 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
+;; define the hook functions before they are referenced in use-package
+
+;; 2024-Aug-23 unclear if this is even necessary
+(defun rk/rustic-mode ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (message "*** JEB rk/rustic-mode-hook")
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+;; set the cargo build directory to a local dir in `./target'.
+;; this allows rust-analyzer (called from emacs) to have it's own compilation dir.
+;; 2024-Aug-23 not sure this is working as hoped. var gets set in local buffer, but
+;; nopt being respected. it might be due to my use of lsp-booster, idk ...
+(defun jeb-set-cargo-target-dir ()
+  "Set Cargo's target directory to 'target/emacs' relative to the workspace root using Projectile."
+    (let ((project-root (projectile-project-root)))
+      (if project-root
+            (setq-local lsp-rust-analyzer-cargo-override-command
+                        `("cargo" "build" "--target-dir" ,(concat project-root "target/emacs")))
+        (message "Could not determine project root using Projectile"))))
+
 
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :after lsp-mode
-  :hook ('rustic-mode . 'rk/rustic-mode-hook)
+  :hook (rustic-mode . (lambda() (rk/rustic-mode) (jeb-set-cargo-target-dir)))
+;;  :hook (rustic-mode-hook . (rk/rustic-mode-hook jeb/set-cargo-target-dir-hook))
   :custom
   (rustic-format-trigger "on-save")
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
@@ -438,15 +477,6 @@
   (lsp-rust-analyzer-display-closure-return-type-hints t)
   ;; (lsp-rust-analyzer-cargo-extra-args "--locked")
   )
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-  ;; save rust buffers that are not file visiting. Once
-  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-  ;; no longer be necessary.
-  (when buffer-file-name
-    (setq-local buffer-save-without-query t))
-  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
 ;; arguably, cargo-mode might not be unnecessary ...
 (use-package cargo-mode
@@ -457,6 +487,7 @@
 (use-package toml-mode)
 
 (use-package yaml-mode)
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; java-related settings, mostly borrowed from
