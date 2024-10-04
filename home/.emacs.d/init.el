@@ -447,7 +447,6 @@
   ;; save rust buffers that are not file visiting. Once
   ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
   ;; no longer be necessary.
-  (message "*** JEB rk/rustic-mode-hook")
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
@@ -468,7 +467,7 @@
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :after lsp-mode
-  :hook (rustic-mode . (lambda() (rk/rustic-mode) (jeb-set-cargo-target-dir)))
+;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
 ;;  :hook (rustic-mode-hook . (rk/rustic-mode-hook jeb/set-cargo-target-dir-hook))
   :custom
   (rustic-format-trigger "on-save")
@@ -498,8 +497,10 @@
 ;; drop down to jdk-17. Also, jdk version prefs might get recorded into
 ;; conf files after you change the jdk/JAVA_HOME. I hacked this file:
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
-;; alos, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
-
+;; also, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
+;; as of Oct 2024, lsp-java sets 'lsp-java-jdt-download-url' to version 1.23, which
+;; is a old. current is v1.40. 
+(setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.40.0/jdt-language-server-1.40.0-202409261450.tar.gz")
 (use-package lsp-java
   :hook ('java-mode . 'lsp)
   :custom
