@@ -89,8 +89,8 @@ if [ ! -d "~/.rustup" ]; then
 
     rustup component add rust-src
     rustup component add rust-analyzer
-    cargo install critcmp
-    cargo install flamegraph
+    cargo install --locked critcmp
+    cargo install --locked flamegraph
     cargo install --locked cargo-deny
 fi
 
