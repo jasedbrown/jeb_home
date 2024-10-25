@@ -28,6 +28,10 @@ alias shippo='tail -200f'
 alias gs='git status'
 alias ethereal='wireshark'
 
+# rust flags to make use of sccache
+export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
+export CARGO_INCREMENTAL=0
+
 # emacs magick. explicitly set a primary build directory for cargo
 # when executed via emacs, so it doesn't conflict with the regular <project>/target dir.
 # Note: It'd probably be better to have a per-project subjectory, but, meh, here we are ...
@@ -42,6 +46,6 @@ export LSP_USE_PLISTS=true
 unsetopt share_history
 
 # disable readyset telemetry
-export RS_API_KEY="readyset_internal"
+export DISABLE_TELEMETRY="true"
 
 ulimit -n unlimited
