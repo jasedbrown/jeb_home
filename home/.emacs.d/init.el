@@ -238,6 +238,7 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; projectile
 (use-package projectile
+  :straight t
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map
@@ -246,12 +247,14 @@
 
 ;; apparently, `deadgrep` is thw newer hotness, but not sure
 ;; if it integrates with projectile
-(use-package ripgrep)
+(use-package ripgrep
+  :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; lsp-mode and friends
 
 (use-package lsp-mode
+  :straight t
   :commands lsp
   :init
   ; this is for which-key integration documentation, need to use lsp-mode-map
@@ -435,7 +438,12 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; org-mode and friends
-(use-package org)
+(use-package org
+  :straight t)
+
+(use-package markdown-mode
+  :straight t)
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rustic = basic rust-mode + additions
@@ -479,13 +487,16 @@
 
 ;; arguably, cargo-mode might not be unnecessary ...
 (use-package cargo-mode
+  :straight t
   :hook (rust-mode . cargo-minor-mode)
   :custom
   (compilation-scroll-output t))
 
-(use-package toml-mode)
+(use-package toml-mode
+  :straight t)
 
-(use-package yaml-mode)
+(use-package yaml-mode
+  :straight t)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -502,6 +513,7 @@
 ;; is a old. current is v1.40. 
 (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.40.0/jdt-language-server-1.40.0-202409261450.tar.gz")
 (use-package lsp-java
+  :straight t
   :hook ('java-mode . 'lsp)
   :custom
   ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
@@ -525,6 +537,7 @@
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
 
 (use-package python-mode
+  :straight t
   :hook ('python-mode . 'lsp))
 
 
@@ -533,10 +546,12 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package go-mode
+  :straight t
   :hook ('go-mode . 'lsp-deferred))
 
 
-(use-package lua-mode)
+(use-package lua-mode
+  :straight t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
