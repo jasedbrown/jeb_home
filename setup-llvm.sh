@@ -10,7 +10,7 @@ set -eu pipefail
 set -x
 
 LLVM_DIR="/opt/dev/llvm"
-LLVM_VERSION="16"
+LLVM_VERSION="19"
 
 mkdir -p $LLVM_DIR
 cd $LLVM_DIR
