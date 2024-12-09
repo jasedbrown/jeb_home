@@ -7,7 +7,7 @@ SCRIPT_DIR=$(pwd)
 #############################
 # update system
 
-sudo add-apt-repository ppa:wireshark-dev/stable
+#sudo add-apt-repository ppa:wireshark-dev/stable
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      alacritty \ 
@@ -36,7 +36,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      libtree-sitter-dev \
      libudev-dev \
      libzstd-dev \
-     linux-tools-$(uname -r) \
      linux-tools-common \
      linux-tools-generic \
      mysql-client \
@@ -92,6 +91,8 @@ if [ ! -d "~/.rustup" ]; then
 
     rustup component add rust-src
     rustup component add rust-analyzer
+    cargo install --locked sccache
+    cargo install --locked bottom
     cargo install --locked critcmp
     cargo install --locked flamegraph
     cargo install --locked cargo-deny
@@ -183,6 +184,12 @@ cd $SCRIPT_DIR
 cp -v -R home/.gitconfig ~
 cp -v -R home/.zshrc ~
 cp -v -R home/bin ~
+
+# symlink to emacs files
+mkdir -p ~/.emacs.d/straight/version
+ln -s $SCRIPT_DIR/home/.emacs.d/init.el ~/.emacs.d/init.el
+ln -s $SCRIPT_DIR/home/.emacs.d/early-init.el ~/.emacs.d/early-init.el
+ln -s $SCRIPT_DIR/home/.emacs.d/straight/version/default.el  ~/.emacs.d/straight/version/default.el
 
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
 python3 -m pip install semgrep 
