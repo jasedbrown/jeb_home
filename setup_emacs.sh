@@ -17,7 +17,7 @@ sudo apt install -y libgccjit0 libgccjit-10-dev libjansson4 libjansson-dev \
     libwebp-dev webp libxft-dev libxft2
 
 cd /opt/dev
-git clone --depth 1 --branch emacs-29.3 git://git.savannah.gnu.org/emacs.git emacs-29
+git clone --depth 1 --branch emacs-29.4 git://git.savannah.gnu.org/emacs.git emacs-29
 cd emacs-29
 
 export CC=/usr/bin/gcc-10
