@@ -7,6 +7,7 @@ SCRIPT_DIR=$(pwd)
 #############################
 # update system
 
+sudo add-apt-repository ppa:wireshark-dev/stable
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      alacritty \ 
@@ -32,6 +33,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      libssl-dev \
      libssl-dev \
      libtool \
+     libtree-sitter-dev \
+     libudev-dev \
      libzstd-dev \
      linux-tools-$(uname -r) \
      linux-tools-common \
@@ -120,7 +123,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v2.32.1
+    git checkout v2.35.0
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
@@ -144,11 +147,11 @@ fi
 # install readyset and do a basic build of readyset,
 # this will update cargo, grab dependent crates, etc.
 
-READYSET_HOME=$SRC_HOME/readyset
-if [ ! -d "$READYSET_HOME" ]; then
-    cd $SRC_HOME
-    git clone https://github.com/readysettech/readyset.git 
-fi
+# READYSET_HOME=$SRC_HOME/readyset
+# if [ ! -d "$READYSET_HOME" ]; then
+#     cd $SRC_HOME
+#     git clone https://github.com/readysettech/readyset.git 
+# fi
 
 
 #############################
@@ -172,7 +175,7 @@ sdk install maven 3.9.6
 curl https://pyenv.run | bash
 exec "$SHELL"
 pyenv update
-pyenv install 3.11.8
+pyenv install 3.12.8
 
 
 # copy over home directory files *after* installing oh-my-zsh
