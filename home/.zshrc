@@ -44,6 +44,16 @@ export EDITOR="emacs -nw"
 # to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
 export LSP_USE_PLISTS=true
 
+# sdkman (for java jdk management)
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+#pyenv (for python sdk and virtualenv management)
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init - zsh)"
+
 # jfc, i hate shared history
 unsetopt share_history
 
