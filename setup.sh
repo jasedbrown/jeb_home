@@ -10,7 +10,7 @@ SCRIPT_DIR=$(pwd)
 #sudo add-apt-repository ppa:wireshark-dev/stable
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-     alacritty \ 
+     alacritty \
      autoconf \
      build-essential \
      bzip2 \
@@ -29,7 +29,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      liblzma-dev \
      liblz4-dev \
      liblz4-tool \
+     libreadline-dev \
      libsnappy-dev \
+     libsqlite3-dev \
      libssl-dev \
      libssl-dev \
      libtool \
@@ -38,7 +40,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      libzstd-dev \
      linux-tools-common \
      linux-tools-generic \
-     mysql-client \
      ncal \
      net-tools \
      ninja-build \
@@ -47,6 +48,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      python-dev-is-python3 \
      python3-pip \
      python3-venv \
+     sqlite3 \
+     tk \
      tmux \
      wireshark \
      zlib1g-dev \
@@ -172,11 +175,12 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 17.0.10-zulu
 sdk install maven 3.9.6
 
+
 # python
 curl https://pyenv.run | bash
 exec "$SHELL"
 pyenv update
-pyenv install 3.12.8
+pyenv install 3.13
 
 
 # copy over home directory files *after* installing oh-my-zsh
@@ -194,7 +198,7 @@ ln -s $SCRIPT_DIR/home/.emacs.d/straight/version/default.el  ~/.emacs.d/straight
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
 python3 -m pip install semgrep 
 
-# install puthon lsp packages
-python3 -m pip install python-lsp-server[all] pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
+# install python lsp packages
+python3 -m pip install python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
 
 # add to $PATH
