@@ -139,7 +139,7 @@ if [ ! -d "$MOLD_HOME" ]; then
     git clone https://github.com/rui314/mold.git
     mkdir mold/build
     cd mold/build
-    git checkout v2.35.0
+    git checkout v2.35.1
     sudo ../install-build-deps.sh
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
     cmake --build . -j $(nproc)
@@ -160,17 +160,6 @@ fi
 
 
 #############################
-# install readyset and do a basic build of readyset,
-# this will update cargo, grab dependent crates, etc.
-
-# READYSET_HOME=$SRC_HOME/readyset
-# if [ ! -d "$READYSET_HOME" ]; then
-#     cd $SRC_HOME
-#     git clone https://github.com/readysettech/readyset.git 
-# fi
-
-
-#############################
 ## install flamegraphs
 
 if [ ! -d "$SRC_HOME/FlameGraph" ]; then
@@ -178,14 +167,15 @@ if [ ! -d "$SRC_HOME/FlameGraph" ]; then
     git clone git@github.com:brendangregg/FlameGraph.git
 fi
 
+
 #############################
 # install other programming languages (or at least the tools to make it bearable)
 
 # java and maven
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java 17.0.10-zulu
-sdk install maven 3.9.6
+sdk install java 21.0.5-zulu
+sdk install maven
 
 
 # python
