@@ -62,6 +62,12 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
 #     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # fi
 
+# copy over home directory files *after* installing oh-my-zsh
+cd $SCRIPT_DIR
+cp -v -R home/.gitconfig ~
+cp -v -R home/.zshrc ~
+cp -v -R home/bin ~
+
 sudo chsh -s /usr/bin/zsh $(whoami)
 
 ##############################
@@ -183,6 +189,7 @@ pyenv update
 pyenv install 3.13
 
 
+<<<<<<< HEAD
 # copy over home directory files *after* installing oh-my-zsh
 cd $SCRIPT_DIR
 cp -v -R home/.gitconfig ~
@@ -195,6 +202,8 @@ ln -s $SCRIPT_DIR/home/.emacs.d/init.el ~/.emacs.d/init.el
 ln -s $SCRIPT_DIR/home/.emacs.d/early-init.el ~/.emacs.d/early-init.el
 ln -s $SCRIPT_DIR/home/.emacs.d/straight/version/default.el  ~/.emacs.d/straight/version/default.el
 
+=======
+>>>>>>> d6c473d (setup: copy home files sooner)
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
 python3 -m pip install semgrep 
 
