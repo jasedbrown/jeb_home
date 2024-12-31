@@ -68,6 +68,12 @@ cp -v -R home/.gitconfig ~
 cp -v -R home/.zshrc ~
 cp -v -R home/bin ~
 
+# symlink to emacs files
+mkdir -p ~/.emacs.d/straight/version
+ln -s $SCRIPT_DIR/home/.emacs.d/init.el ~/.emacs.d/init.el
+ln -s $SCRIPT_DIR/home/.emacs.d/early-init.el ~/.emacs.d/early-init.el
+ln -s $SCRIPT_DIR/home/.emacs.d/straight/version/default.el  ~/.emacs.d/straight/version/default.el
+
 sudo chsh -s /usr/bin/zsh $(whoami)
 
 ##############################
@@ -188,22 +194,6 @@ exec "$SHELL"
 pyenv update
 pyenv install 3.13
 
-
-<<<<<<< HEAD
-# copy over home directory files *after* installing oh-my-zsh
-cd $SCRIPT_DIR
-cp -v -R home/.gitconfig ~
-cp -v -R home/.zshrc ~
-cp -v -R home/bin ~
-
-# symlink to emacs files
-mkdir -p ~/.emacs.d/straight/version
-ln -s $SCRIPT_DIR/home/.emacs.d/init.el ~/.emacs.d/init.el
-ln -s $SCRIPT_DIR/home/.emacs.d/early-init.el ~/.emacs.d/early-init.el
-ln -s $SCRIPT_DIR/home/.emacs.d/straight/version/default.el  ~/.emacs.d/straight/version/default.el
-
-=======
->>>>>>> d6c473d (setup: copy home files sooner)
 # install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
 python3 -m pip install semgrep 
 
