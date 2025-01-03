@@ -220,35 +220,50 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; LLM magick
+
+;; *** take 1: gptel + elysium ***
 ;; mostly taken from https://github.com/lanceberge/elysium
-(use-package elysium
-  :straight t
-  :custom
-  ;; Below are the default values
-  (elysium-window-size 0.33) ; The elysium buffer will be 1/3 your screen
-  (elysium-window-style 'vertical)) ; Can be customized to horizontal
+;; (use-package elysium
+;;   :straight t
+;;   :custom
+;;   ;; Below are the default values
+;;   (elysium-window-size 0.33) ; The elysium buffer will be 1/3 your screen
+;;   (elysium-window-style 'vertical)) ; Can be customized to horizontal
 
-(use-package gptel
-  :straight t
-  :custom
-  (gptel-model 'claude-3-5-sonnet-20240620)
+;; (use-package gptel
+;;   :straight t
+;;   :custom
+;;   (gptel-model 'claude-3-5-sonnet-20240620)
+;;   :config
+;;   (defun read-file-contents (file-path)
+;;     "Read the contents of FILE-PATH and return it as a string."
+;;     (with-temp-buffer
+;;       (insert-file-contents file-path)
+;;       (buffer-string)))
+;;   (defun gptel-api-key ()
+;;     (read-file-contents "~/secrets/claude_key"))
+;;   (setq
+;;    gptel-backend (gptel-make-anthropic "Claude"
+;;                    :stream t
+;;                    :key #'gptel-api-key)))
+
+;; (use-package smerge-mode
+;;   :straight t
+;;   :hook
+;;   (prog-mode . smerge-mode))
+
+;; *** take 2: aider.el ***
+;; https://github.com/tninja/aider.el
+(use-package aider
+  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
   :config
-  (defun read-file-contents (file-path)
-    "Read the contents of FILE-PATH and return it as a string."
-    (with-temp-buffer
-      (insert-file-contents file-path)
-      (buffer-string)))
-  (defun gptel-api-key ()
-    (read-file-contents "~/secrets/claude_key"))
-  (setq
-   gptel-backend (gptel-make-anthropic "Claude"
-                   :stream t
-                   :key #'gptel-api-key)))
+  (setq aider-args '("--model" "claude-3-5-sonnet-20241022"))
+  ;; (setq aider-args '("--model" "ollama/deepseek-coder-v2"))
+  (setenv "ANTHROPIC_API_KEY" "<insert key>")
+  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  ;; Optional: Set a key binding for the transient menu
+  (global-set-key (kbd "C-c a") 'aider-transient-menu))
 
-(use-package smerge-mode
-  :straight t
-  :hook
-  (prog-mode . smerge-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -490,7 +505,8 @@
   :straight t
   :hook (rust-mode . cargo-minor-mode)
   :custom
-  (compilation-scroll-output t))
+  (compilation-scroll-output t)
+  (keymap-set cargo-minor-mode-map (kbd "C-c o") 'cargo-mode-command-map))
 
 (use-package toml-mode
   :straight t)
@@ -632,11 +648,4 @@
 ;;       map))
 ;; (require 'winum)
 ;; (winum-mode)
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; (recentf-mode 1)
-;; (setq recentf-max-saved-items 100
-;;       inhibit-startup-message t
-;;       ring-bell-function 'ignore)
 
