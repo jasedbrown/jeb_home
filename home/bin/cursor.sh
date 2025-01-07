@@ -1,4 +1,3 @@
-cat ~/bin/cursor.sh
 #!/bin/bash
 
 # Directory where AppImages are stored
