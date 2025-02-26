@@ -29,6 +29,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      liblzma-dev \
      liblz4-dev \
      liblz4-tool \
+     libnss3-tools \
      libreadline-dev \
      libsnappy-dev \
      libsqlite3-dev \
@@ -40,6 +41,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      libzstd-dev \
      linux-tools-common \
      linux-tools-generic \
+     mkcert \
      ncal \
      net-tools \
      ninja-build \
@@ -115,6 +117,7 @@ fi
 
 # lower the paranoia level so we can get reasonable flamegraphs
 echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
 
 SRC_HOME=~/src
 mkdir -p $SRC_HOME
