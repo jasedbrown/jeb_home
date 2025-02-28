@@ -329,6 +329,9 @@
               ("C-c C-c d" . dap-hydra))
  )
 
+;; wtf - semgrep just made a mess of things, especially with rustic-mode
+(setq lsp-disabled-clients '(semgrep-ls))
+
 (use-package lsp-ui
   :commands lsp-ui-mode
   :custom
