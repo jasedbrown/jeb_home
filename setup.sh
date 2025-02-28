@@ -187,9 +187,6 @@ exec "$SHELL"
 pyenv update
 pyenv install 3.13
 
-# install semgrep (free, OSS engine: https://semgrep.dev/docs/getting-started/)
-python3 -m pip install semgrep 
-
 # install python lsp packages
 python3 -m pip install python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
 
