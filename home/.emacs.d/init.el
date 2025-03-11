@@ -256,16 +256,26 @@
 
 ;; *** take 2: aider.el ***
 ;; https://github.com/tninja/aider.el
-(use-package aider
-  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
-  :config
-  (setq aider-args '("--model" "claude-3-5-sonnet-20241022"))
-  ;; (setq aider-args '("--model" "ollama/deepseek-coder-v2"))
-  (setenv "ANTHROPIC_API_KEY" "<insert key>")
-  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-  ;; Optional: Set a key binding for the transient menu
-  (global-set-key (kbd "C-c a") 'aider-transient-menu))
+;; (use-package aider
+;;   :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+;;   :config
+;;   (setq aider-args '("--model" "claude-3-5-sonnet-20241022"))
+;;   ;; (setq aider-args '("--model" "ollama/deepseek-coder-v2"))
+;;   (setenv "ANTHROPIC_API_KEY" "<insert key>")
+;;   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+;;   ;; Optional: Set a key binding for the transient menu
+;;   (global-set-key (kbd "C-c a") 'aider-transient-menu))
 
+;; *** take 3: aidermacs ***
+;; https://github.com/MatthewZMD/aidermacs
+(use-package aidermacs
+  :straight (:host github :repo "MatthewZMD/aidermacs" :files ("*.el"))
+  :config
+  (setq aidermacs-default-model "sonnet")
+  (global-set-key (kbd "C-c a") 'aidermacs-transient-menu)
+  ; Ensure emacs can access *_API_KEY through .bashrc or setenv
+  ; (setenv "ANTHROPIC_API_KEY" anthropic-api-key)
+  (setq aidermacs-use-architect-mode t))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
