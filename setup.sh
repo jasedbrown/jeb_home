@@ -50,6 +50,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      python-dev-is-python3 \
      python3-pip \
      python3-venv \
+     ripgrep \
      sqlite3 \
      tk \
      tmux \
@@ -113,6 +114,8 @@ if [ ! -d "~/.rustup" ]; then
     cargo install --locked critcmp
     cargo install --locked flamegraph
     cargo install --locked cargo-deny
+    cargo install --locked mdbook-toc mdbook
+    cargo install --locked cargo-nextest
 fi
 
 # lower the paranoia level so we can get reasonable flamegraphs
