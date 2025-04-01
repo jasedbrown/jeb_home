@@ -60,11 +60,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      zstd 
 
 
-# install oh-my-zsh (yeah, i still like it)
-# if [ ! -d "~/.oh-my-zsh" ]; then
-#     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# fi
-
 # copy over home directory files *after* installing oh-my-zsh
 cd $SCRIPT_DIR
 cp -v -R home/.gitconfig ~

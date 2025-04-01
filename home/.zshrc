@@ -1,16 +1,18 @@
-#################
-## oh-my-zsh stuffs
-export ZSH="$HOME/.oh-my-zsh"
-
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
-
-
-#################
+###############
 ## jasobrown configuration
+# basics
+# set the prompt, with git branch name (if in a git repo)
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '%b '
+setopt prompt_subst
+PROMPT=' %F{blue}%c%f %F{red}${vcs_info_msg_0_}%f%F{yellow}→%f '
+
+
 export PATH=$PATH:~/bin:/home/jasobrown/.local/bin
+
+# always print colors with 'ls'
+alias ls='ls --color=auto'
 
 alias cd.='cd ..'
 alias cd..='cd ../../'
@@ -18,7 +20,7 @@ alias cd...='cd ../../../'
 alias cd....='cd ../../../../'
 alias cd.....='cd ../../../../../'
 alias cds='cd /opt/dev'
-alias cdr='cd /opt/dev/readyset'
+alias cdn='cd /opt/dev/readyset/public'
 alias ll='ls -la'
 alias llr='ls -lart'
 alias mkdir='mkdir -p'
@@ -37,7 +39,6 @@ export CARGO_INCREMENTAL=0
 # Note: It'd probably be better to have a per-project subjectory, but, meh, here we are ...
 EMACS_CARGO_DIR=~/.emacs.d/cargo-builds
 alias emacs="CARGO_TARGET_DIR=${EMACS_CARGO_DIR} /usr/local/bin/emacs -nw"
-
 export EDITOR="emacs -nw"
 
 # use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
@@ -48,11 +49,15 @@ export LSP_USE_PLISTS=true
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-#pyenv (for python sdk and virtualenv management)
+# pyenv (for python sdk and virtualenv management)
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init - zsh)"
+
+# rbenv (for ruby sdk and env management)
+# export PATH="$HOME/.rbenv/bin:$PATH"
+# eval "$(rbenv init - --no-rehash bash)"
 
 # jfc, i hate shared history
 unsetopt share_history
