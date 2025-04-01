@@ -60,11 +60,16 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
      zstd 
 
 
-# copy over home directory files *after* installing oh-my-zsh
 cd $SCRIPT_DIR
 cp -v -R home/.gitconfig ~
-cp -v -R home/.zshrc ~
 cp -v -R home/bin ~
+
+# symlink to zsh configuration
+ln -s $SCRIPT_DIR/home/.zsh_home/.zprofile  ~/.zprofile
+ln -s $SCRIPT_DIR/home/.zsh_home/.zshrc   ~/.zshrc
+ln -s $SCRIPT_DIR/home/.zsh_home/.zshenv  ~/.zshenv
+ln -s $SCRIPT_DIR/home/.zsh_home/.zsh  ~/.zsh
+
 
 # symlink to emacs files
 mkdir -p ~/.emacs.d/straight/version
