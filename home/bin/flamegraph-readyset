@@ -68,7 +68,7 @@ echo -1 | sudo sh -c 'cat > /proc/sys/kernel/perf_event_paranoid'
 sudo sh -c 'echo 0 > /proc/sys/kernel/kptr_restrict'
 
 # Collect perf data for some number of seconds
-sudo perf record -F 99 -p "$PID" --call-graph "dwarf,16384" -g -o $PERF_DATA_PATH -- sleep 7
+sudo perf record -F 99 -p "$PID" --mmap-pages=2048 --call-graph "dwarf,16384" -g -o $PERF_DATA_PATH -- sleep 7
 sudo chmod 777 $PERF_DATA_PATH
 
 # Fold the stacks
