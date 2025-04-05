@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+
+OUT_DIR=~/Documents/graphviz
+mkdir -p $OUT_DIR
+
+OUT_FILE=$(date +%s)
+FILE_NAME=$OUT_DIR/$OUT_FILE.png
+xclip -out -selection clipboard | dot -Tpng > $FILE_NAME
+
+open $FILE_NAME

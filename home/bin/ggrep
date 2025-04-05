@@ -1,3 +1,0 @@
-#!/bin/sh
-
-git grep -n "$1" | grep -vi test | grep -vi mock | less

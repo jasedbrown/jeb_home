@@ -1,0 +1,59 @@
+# Core system utilities
+base-devel
+git
+stow
+vim
+neovim
+emacs
+curl
+wget
+htop
+tmux
+zsh
+
+# Terminal utilities
+fzf
+ripgrep
+fd
+bat
+exa
+jq
+tree
+
+# Development tools
+gcc
+clang
+python
+python-pip
+nodejs
+npm
+docker
+docker-compose
+
+# Desktop environment essentials
+xorg
+i3-wm
+i3status
+dmenu
+alacritty
+rofi
+dunst
+picom
+feh
+lightdm
+lightdm-gtk-greeter
+
+# Browsers
+firefox
+
+# Multimedia
+mpv
+vlc
+pulseaudio
+pavucontrol
+
+# File management
+ranger
+thunar
+gvfs
+
