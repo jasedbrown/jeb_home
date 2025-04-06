@@ -2,16 +2,6 @@
 paru
 yay
 
-# Development tools
-visual-studio-code-bin
-postman-bin
-insomnia
-
-# System utilities
-timeshift
-etcher
-polybar
-
 # Fonts
 ttf-jetbrains-mono
 nerd-fonts-complete
@@ -19,14 +9,11 @@ nerd-fonts-complete
 # Applications
 spotify
 slack-desktop
-bitwarden
-obsidian
 
 # Themes
 papirus-icon-theme
 nordic-theme
 
 # Terminal enhancements
-zsh-syntax-highlighting
-zsh-autosuggestions
-oh-my-zsh-git
+# zsh-syntax-highlighting
+# zsh-autosuggestions

@@ -1,41 +1,56 @@
 # Core system utilities
 base-devel
-git
-stow
-vim
-neovim
-emacs
+btop
 curl
-wget
-htop
+emacs
+git
+intel-ucode
+linux-tools
+networkmanager
+stow
 tmux
+wget
 zsh
 
 # Terminal utilities
-fzf
-ripgrep
+bzip2
 fd
-bat
-exa
+fzf
+gnuplot
+graphviz
 jq
+less
+ripgrep
+tar
 tree
+unzip
+zip
+zstd
 
 # Development tools
-gcc
+autoconf
+automake
 clang
+cmake
+docker
+docker-buildx
+docker-compose
+gcc
+lldb
+llvm
+mold
+ninja
 python
 python-pip
-nodejs
-npm
-docker
-docker-compose
+wireshark-qt
 
-# Desktop environment essentials
-xorg
-i3-wm
-i3status
+# window manager essentials
 dmenu
-alacritty
+hyprland
+kitty
+sddm
+wofi
+
 rofi
 dunst
 picom
@@ -52,8 +67,9 @@ vlc
 pulseaudio
 pavucontrol
 
-# File management
-ranger
-thunar
-gvfs
-
+# rust tools
+cargo-deny
+cargo-flamegraph
+inferno
+mdbook
+sccahe
