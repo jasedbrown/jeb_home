@@ -17,6 +17,9 @@ fi
 echo "Installing AUR packages..."
 paru -S --needed --noconfirm - < arch/aur-packages.txt
 
+echo "Installing system76 drivers..."
+./arch/system76.sh
+
 echo "Setting up dotfiles..."
 ./scripts/symlink.sh
 

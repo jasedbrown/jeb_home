@@ -7,8 +7,10 @@ ttf-jetbrains-mono
 nerd-fonts-complete
 
 # Applications
+1password
 spotify
 slack-desktop
+zoom
 
 # Themes
 papirus-icon-theme
