@@ -18,8 +18,34 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode 0))
 
-(setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backups"))))
+;; backup/auto-save config - mostly to not pollute my emacs home config dir
+;; Set up backup files in XDG-compliant directories
+(defvar user-cache-directory
+  (or (getenv "XDG_CACHE_HOME")
+      (concat (getenv "HOME") "/.cache")))
+
+(defvar user-backup-directory
+  (concat user-cache-directory "/emacs/backup"))
+
+(defvar user-auto-save-directory
+  (concat user-cache-directory "/emacs/auto-save"))
+
+;; Create the backup directory if it doesn't exist
+(make-directory user-backup-directory t)
+(make-directory user-auto-save-directory t)
+
+;; Configure backup settings
+(setq backup-directory-alist `((".*" . ,user-backup-directory)))
+(setq auto-save-file-name-transforms `((".*" ,user-auto-save-directory t)))
+(setq auto-save-list-file-prefix (concat user-auto-save-directory "/.saves-"))
+
+;; Additional backup settings (optional but recommended)
+(setq backup-by-copying t)
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq version-control t)
+
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)

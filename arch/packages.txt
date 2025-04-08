@@ -9,6 +9,8 @@ intel-ucode
 linux-tools
 man-db
 networkmanager
+openssh
+openssl
 stow
 tmux
 wget
