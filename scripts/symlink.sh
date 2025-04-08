@@ -62,6 +62,7 @@ fi
 echo "${GREEN}Applying system-wide configuraitons...${NC}"
 if [-d "$DOTFILES_DIR/system" ]; then
   sudo ln -sf "$DOTFILES_DIR/system/profile.d/jasobrown-init.sh" /etc/profile.d/jasobrown-init.sh
+  sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
 fi
 
 
