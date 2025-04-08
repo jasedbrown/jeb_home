@@ -1,3 +1,4 @@
+
 # Core system utilities
 base-devel
 btop
@@ -6,6 +7,7 @@ emacs
 git
 intel-ucode
 linux-tools
+man-db
 networkmanager
 stow
 tmux

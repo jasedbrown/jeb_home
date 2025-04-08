@@ -1,14 +1,16 @@
 [alias]
-	br = branch
-	ci = commit
-	cl = clone
-	co = checkout
+    br = branch
+    ci = commit
+    cl = clone
+    co = checkout
     cp = cherry-pick
     dc = diff --cached
     ru = remote update
-	st = status
-	fuckit = clean -f -d -x -q
+    st = status
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [core]
-	editor = emacs -nw
+    editor = emacs -nw
+[user]
+    email = jasedbrown@gmail.com
+    name = Jason Brown
