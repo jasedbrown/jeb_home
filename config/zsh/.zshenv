@@ -12,3 +12,6 @@ export LSP_USE_PLISTS=true
 
 # disable readyset telemetry
 export DISABLE_TELEMETRY="true"
+
+# this is for the systemd ssh-agent
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
