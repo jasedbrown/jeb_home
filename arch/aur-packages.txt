@@ -8,6 +8,7 @@ nerd-fonts-complete
 
 # Applications
 1password
+hyprsysteminfo
 spotify
 slack-desktop
 zoom

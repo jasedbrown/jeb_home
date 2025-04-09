@@ -55,6 +55,7 @@ hyprlock
 hyprpaper
 kitty
 sddm
+waybar
 wofi
 xdg-desktop-portal-hyprland
 

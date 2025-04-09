@@ -24,9 +24,9 @@
     "margin-bottom": 0,
 
     // Choose the order of the modules
-    "modules-center": ["sway/workspaces", "tray"],
-    "modules-left": ["custom/hostname"],
-    "modules-right": [ "custom/audio","network","battery","clock"],
+    "modules-left": ["sway/workspaces", "tray" ],
+    "modules-center": ["clock"],
+    "modules-right": [ "custom/audio","network","battery"],
 
     // Configuration for individual modules
      "sway/workspaces": {
@@ -42,10 +42,20 @@
 
     "clock": {
         "format": "{:%T}",
-        "timezone": "America/Los_Angeles",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}",
+        "timezone": "America/Los_Angeles",
         "interval": 1,
+        // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        	"tooltip-format": "<span>{calendar}</span>",
+        	"calendar": {
+            		"mode": "month",
+            		"format": {
+                	    "months": "<span color='#ff6699'><b>{}</b></span>",
+                        "days": "<span color='#cdd6f4'><b>{}</b></span>",
+                	    "weekdays": "<span color='#7CD37C'><b>{}</b></span>",
+                	    "today": "<span color='#ffcc66'><b>{}</b></span>"
+            	}
+            }
     },
 
     "battery": {
