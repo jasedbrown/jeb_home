@@ -50,17 +50,14 @@ wireshark-qt
 
 # window manager essentials
 dmenu
+hypridle
 hyprland
+hyprlock
+hyprpaper
 kitty
 sddm
 wofi
-
-rofi
-dunst
-picom
-feh
-lightdm
-lightdm-gtk-greeter
+xdg-desktop-portal-hyprland
 
 # Browsers
 firefox
