@@ -18,3 +18,8 @@ requires a pacman-installed rust, so your user-level rustup install won't work :
 
 3. system76 drivers - [docs](https://support.system76.com/articles/system76-driver/#arch---using-an-aur-helper)
 after paru is installed, this is reasonably easy (just downloads more rust :shrug:)
+
+## pop!_os install
+
+Apparently I couldnt give up on this, so I asked Claude to help translate the arch stuffs for pop!,
+as well as incorporating my old setup scripts.
