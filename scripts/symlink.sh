@@ -60,9 +60,12 @@ fi
 
 # system-wide settings
 echo "${GREEN}Applying system-wide configuraitons...${NC}"
-if [-d "$DOTFILES_DIR/system" ]; then
-  sudo ln -sf "$DOTFILES_DIR/system/profile.d/jasobrown-init.sh" /etc/profile.d/jasobrown-init.sh
-  sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
+sudo ln -sf "$DOTFILES_DIR/system/profile.d/jasobrown-init.sh" /etc/profile.d/jasobrown-init.sh
+
+if [ -f /etc/arch-release ]; then
+    echo "${GREEN}Applying system-wide configuraitons - arch ...${NC}"
+    sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
+    sudo cp "$DOTFILES_DIR/system/sddm.conf" /etc/sddm.conf
 fi
 
 # Symlink config files

@@ -13,8 +13,9 @@ slack-desktop
 zoom
 
 # Themes
-papirus-icon-theme
+archlinux-themes-sddm
 nordic-theme
+papirus-icon-theme
 
 # Terminal enhancements
 # zsh-syntax-highlighting
