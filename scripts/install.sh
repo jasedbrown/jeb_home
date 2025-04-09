@@ -28,6 +28,8 @@ if [ -f /etc/arch-release ]; then
     echo "Installing system76 drivers..."
     ./arch/system76.sh
 
+    echo "Installing systemctl stuffs..."
+    systemctl --user enable ssh-agent
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then
     echo "Detected Pop!_OS"
     ./pop_os/pop_os.sh
