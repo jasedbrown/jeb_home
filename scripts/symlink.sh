@@ -15,7 +15,7 @@ cd "$DOTFILES_DIR" || { echo -e "${RED}Error: Cannot change to dotfiles director
 # Create necessary directories
 echo -e "${BLUE}Creating necessary directories...${NC}"
 mkdir -p "$HOME/.config"
-mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.local"
 
 # Symlink using stow if available, otherwise manually
 if command -v stow &> /dev/null; then
@@ -25,9 +25,11 @@ if command -v stow &> /dev/null; then
     echo -e "${GREEN}Symlinking XDG config files...${NC}"
     stow -t "$HOME/.config" config
     
-    # Stow local bin scripts
-    echo -e "${GREEN}Symlinking scripts to ~/.local/bin...${NC}"
-    stow -t "$HOME/.local" local
+    # Stow local scripts
+    echo -e "${GREEN}Symlinking scripts to ~/.local/...${NC}"
+    stow -t "$HOME/.local/bin" local/bin
+    mkdir -p "$HOME/.local/share"
+    stow -t "$HOME/.local/share/wallpapers" local/share/wallpapers
     
     # Stow home directory files
     echo -e "${GREEN}Symlinking files to home directory...${NC}"
