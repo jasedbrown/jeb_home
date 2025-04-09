@@ -65,6 +65,7 @@ if [-d "$DOTFILES_DIR/system" ]; then
   sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
 fi
 
-
+# Symlink config files
+ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"
