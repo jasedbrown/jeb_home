@@ -1,9 +1,9 @@
 allow_images=true
-image_size=64
+image_size=40
 width=600
-height=200
+height=400
 insensitive=true
 mode=drun,run
 columns=1
 padding:5
-lines=6
+lines=10
