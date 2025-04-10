@@ -32,7 +32,7 @@ xargs -a packages.txt sudo apt install -y
 sudo apt install -y libstdc++-12-dev
 
 echo "Installing mold linker from source..."
-MOLD_VERSION="v2.35.1"
+MOLD_VERSION="v2.37.1"
 MOLD_DIR="/tmp/mold"
 if [ ! -f "/usr/local/bin/mold" ]; then
     git clone https://github.com/rui314/mold.git "$MOLD_DIR"
