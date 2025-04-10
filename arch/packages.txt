@@ -14,6 +14,7 @@ stow
 tmux
 wget
 zsh
+zsh-completions
 
 # Terminal utilities
 bzip2
