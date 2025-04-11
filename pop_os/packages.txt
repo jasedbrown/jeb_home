@@ -25,6 +25,7 @@ build-essential
 bzip2
 dstat
 fd-find
+fzf
 gnuplot
 graphviz
 imagemagick
