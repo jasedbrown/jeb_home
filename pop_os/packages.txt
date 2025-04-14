@@ -37,6 +37,7 @@ tar
 tmux
 traceroute
 tree
+stow
 unzip
 xclip
 zip
