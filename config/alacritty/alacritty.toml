@@ -1,0 +1,5 @@
+# https://alacritty.org/config-alacritty.html
+
+[scrolling]
+history = 100000
+
