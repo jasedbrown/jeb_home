@@ -3,7 +3,6 @@ apport-retrace
 build-essential
 btop
 curl
-emacs
 git
 linux-tools-common
 linux-tools-generic
@@ -37,7 +36,6 @@ tar
 tmux
 traceroute
 tree
-stow
 unzip
 xclip
 zip
@@ -70,19 +68,6 @@ wireshark
 
 # Browsers
 firefox
-
-# Multimedia
-mpv
-vlc
-pulseaudio
-pavucontrol
-
-# rust tools
-cargo-deny
-cargo-flamegraph
-inferno
-mdbook
-sccahe 
 
 # general tools
 evince

@@ -19,7 +19,26 @@ sudo apt update
 
 echo "Installing packages..."
 # Install core packages from packages.txt
-xargs -a packages.txt sudo apt install -y
+grep -v "^#" packages.txt | xargs sudo apt install -y
+
+# install rust and libraries
+if [ ! -d "~/.rustup" ]; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    # add $HOME/.cargo/bin to PATH
+    export PATH=$PATH:$HOME/.cargo/bin
+    echo "\nexport PATH=$PATH:$HOME/.cargo/bin" >> ~/.bashrc
+
+    rustup component add rust-src
+    rustup component add rust-analyzer
+    cargo install --locked sccache
+    cargo install --locked bottom
+    cargo install --locked critcmp
+    cargo install --locked flamegraph
+    cargo install --locked cargo-deny
+    cargo install --locked mdbook-toc mdbook
+    cargo install --locked cargo-nextest
+fi
+
 
 # Install mold linker dependencies
 # there used to be/still exist known problems with mold, ubuntu, and clang/gcc:
