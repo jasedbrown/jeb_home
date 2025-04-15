@@ -51,14 +51,19 @@ wireshark-qt
 
 # window manager essentials
 dmenu
+grim
 hypridle
 hyprland
 hyprlock
 hyprpaper
+hyprpicker
 kitty
+libnotify
 mako
 sddm
+slurp
 waybar
+wl-clipboard
 wofi
 xdg-desktop-portal-hyprland
 

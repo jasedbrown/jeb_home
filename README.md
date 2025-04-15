@@ -23,3 +23,8 @@ after paru is installed, this is reasonably easy (just downloads more rust :shru
 
 Apparently I couldnt give up on this, so I asked Claude to help translate the arch stuffs for pop!,
 as well as incorporating my old setup scripts.
+
+## random links
+useful stuff
+
+* taking [screenshots](https://itsfoss.com/taking-screenshots-hyprland) via [grimblast](https://github.com/hyprwm/contrib/blob/main/grimblast/grimblast)
