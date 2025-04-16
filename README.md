@@ -24,7 +24,12 @@ after paru is installed, this is reasonably easy (just downloads more rust :shru
 Apparently I couldnt give up on this, so I asked Claude to help translate the arch stuffs for pop!,
 as well as incorporating my old setup scripts.
 
-## random links
+## random notes/links
 useful stuff
 
 * taking [screenshots](https://itsfoss.com/taking-screenshots-hyprland) via [grimblast](https://github.com/hyprwm/contrib/blob/main/grimblast/grimblast)
+
+* wifi: networkmanager's `nmcli`
+** `nmcli device wifi list` - to list all wifi networks
+** `nmcli device wifi connect _SSID_ password _pw_` to connect to a network
+
