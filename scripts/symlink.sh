@@ -27,9 +27,7 @@ if command -v stow &> /dev/null; then
     
     # Stow local scripts
     echo -e "${GREEN}Symlinking scripts to ~/.local/...${NC}"
-    stow -t "$HOME/.local/bin" local/bin
-    mkdir -p "$HOME/.local/share"
-    stow -t "$HOME/.local/share/wallpapers" local/share/wallpapers
+    stow -t "$HOME/.local" local
     
     # Stow home directory files
     echo -e "${GREEN}Symlinking files to home directory...${NC}"
@@ -38,34 +36,12 @@ else
     echo -e "${RED}GNU Stow not found, ignoring...${NC}"
 fi
 
-# VS Code specific setup
-# if [ -d "$DOTFILES_DIR/config/Code" ]; then
-#     echo -e "${GREEN}Setting up VS Code...${NC}"
-#     if [ -f "$DOTFILES_DIR/scripts/vscode-setup.sh" ]; then
-#         bash "$DOTFILES_DIR/scripts/vscode-setup.sh"
-#     else
-#         mkdir -p "$HOME/.config/Code/User"
-#         ln -sf "$DOTFILES_DIR/config/Code/User/keybindings.json" "$HOME/.config/Code/User/keybindings.json"
-        
-#         if [ -f "$DOTFILES_DIR/config/Code/extensions.txt" ] && command -v code &> /dev/null; then
-#             echo -e "${BLUE}Installing VS Code extensions...${NC}"
-#             cat "$DOTFILES_DIR/config/Code/extensions.txt" | xargs -L 1 code --install-extension
-#         fi
-#     fi
-# fi
-
-# Arch-specific setup
-if [ -f /etc/arch-release ]; then
-    echo -e "${GREEN}Applying Arch-specific configurations...${NC}"
-    # Add any Arch-specific symlinks here
-fi
-
 # system-wide settings
-echo "${GREEN}Applying system-wide configuraitons...${NC}"
+echo -e "${GREEN}Applying system-wide configuraitons...${NC}"
 sudo ln -sf "$DOTFILES_DIR/system/profile.d/jasobrown-init.sh" /etc/profile.d/jasobrown-init.sh
 
 if [ -f /etc/arch-release ]; then
-    echo "${GREEN}Applying system-wide configuraitons - arch ...${NC}"
+    echo -e "${GREEN}Applying system-wide configuraitons - arch specific...${NC}"
     sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
     sudo cp "$DOTFILES_DIR/system/sddm.conf" /etc/sddm.conf
 fi
