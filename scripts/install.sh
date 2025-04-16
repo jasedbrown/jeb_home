@@ -9,33 +9,12 @@ sudo chown $(whoami):$(whoami) $SRC_DIR
 # Detect OS
 if [ -f /etc/arch-release ]; then
     echo "Detected Arch Linux"
-    echo "Installing core packages..."
-    sudo pacman -S --needed --noconfirm - < arch/packages.txt
-
-    echo "Installing AUR helper..."
-    if ! command -v paru &> /dev/null; then
-        echo "Installing paru..."
-        git clone https://aur.archlinux.org/paru.git
-        cd paru
-        makepkg -si --noconfirm
-        cd ..
-        rm -rf paru
-    fi
-
-    echo "Installing AUR packages..."
-    paru -S --needed --noconfirm - < arch/aur-packages.txt
-
-    echo "Installing system76 drivers..."
-    ./arch/system76.sh
-
-    echo "Installing systemctl stuffs..."
-    systemctl --user enable ssh-agent
-    sudo systemctl enable bluetooth.service
+    ./arch/arch.sh
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then
     echo "Detected Pop!_OS"
     ./pop_os/pop_os.sh
 else
-    echo "Unsupported operating system"
+    echo "Unsupported distro!"
     exit 1
 fi
 
