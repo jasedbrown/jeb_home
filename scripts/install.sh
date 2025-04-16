@@ -18,8 +18,10 @@ else
     exit 1
 fi
 
-echo "Setting default shell to zsh..."
-sudo chsh -s /usr/bin/zsh $(whoami)
+# Only change shell if not already zsh
+if [ "$(getent passwd $(whoami) | cut -d: -f7)" != "/usr/bin/zsh" ]; then
+    sudo chsh -s /usr/bin/zsh $(whoami)
+fi
 
 echo "Running common setup..."
 ./scripts/setup_common.sh

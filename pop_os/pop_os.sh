@@ -22,11 +22,11 @@ if ! grep -q "download.docker.com" /etc/apt/sources.list.d/*.list; then
 fi
 
 echo "Updating package lists..."
-sudo apt update
+sudo apt update > /dev/null
 
 echo "Installing packages..."
 # Install core packages from packages.txt
-grep -v "^#" packages.txt | xargs sudo apt install -y
+grep -v "^#" ./pop_os/packages.txt | xargs sudo apt install -y > /dev/null
 
 MOLD_VERSION="v2.37.1"
 MOLD_DIR="/tmp/mold"
