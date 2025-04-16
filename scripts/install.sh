@@ -1,7 +1,7 @@
 #!/bin/bash
 # install.sh
 
-# this is my long-time dev directory. make it it exists and is owned by me.
+# this is my long-time dev directory. make sure it exists and is owned by me.
 export SRC_DIR=/opt/dev
 sudo mkdir -p $SRC_DIR
 sudo chown $(whoami):$(whoami) $SRC_DIR
@@ -30,6 +30,7 @@ if [ -f /etc/arch-release ]; then
 
     echo "Installing systemctl stuffs..."
     systemctl --user enable ssh-agent
+    sudo systemctl enable bluetooth.service
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then
     echo "Detected Pop!_OS"
     ./pop_os/pop_os.sh

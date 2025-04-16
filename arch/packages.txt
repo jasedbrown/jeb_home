@@ -1,5 +1,7 @@
 # Core system utilities
 base-devel
+bluez
+bluez-utils
 btop
 curl
 emacs
@@ -77,6 +79,7 @@ pulseaudio
 pavucontrol
 
 # rust tools
+bluetui
 cargo-deny
 cargo-flamegraph
 inferno
