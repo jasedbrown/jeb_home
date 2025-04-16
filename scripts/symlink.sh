@@ -35,7 +35,7 @@ if command -v stow &> /dev/null; then
     echo -e "${GREEN}Symlinking files to home directory...${NC}"
     stow -t "$HOME" home
 else
-    echo -e "${YELLOW}GNU Stow not found, ignoring...${NC}"
+    echo -e "${RED}GNU Stow not found, ignoring...${NC}"
 fi
 
 # VS Code specific setup
