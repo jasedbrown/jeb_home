@@ -17,6 +17,3 @@ chmod +x "$LATEST_APPIMAGE"
 
 # Run the latest AppImage in the background and log output
 "$LATEST_APPIMAGE" > /tmp/app_output.log 2>&1 &
-
-# Optional: Print the name of the AppImage being run
-echo "running: $(basename "$LATEST_APPIMAGE")"
