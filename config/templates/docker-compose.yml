@@ -21,6 +21,49 @@ services:
              chown -R mysql:mysql /certs &&
              docker-entrypoint.sh mysqld"
 
+  mysql_r4:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=noria
+      - MYSQL_DATABASE=r4
+      - MYSQL_SSL_CA=/usr/local/share/ca-certificates/rootCA.crt
+      - MYSQL_SSL_CERT=/certs/mysql.local+2.pem
+      - MYSQL_SSL_KEY=/certs/mysql.local+2-key.pem
+    ports:
+     - '3316:3306'
+    volumes:
+      - /var/lib/docker-data/mysql_r4:/var/lib/mysql
+      - /var/lib/docker-data/certs/mysql:/certs
+      - ~/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt:ro
+    entrypoint: >
+      sh -c "microdnf install -y ca-certificates &&
+             update-ca-trust &&
+             chown -R mysql:mysql /certs &&
+             docker-entrypoint.sh mysqld"
+
+  ## myvector - a "fork" of mysql with a custom vector implementaion
+  ## https://github.com/p3io/myvector-dev/tree/main?tab=readme-ov-file
+  myvector:
+    image: pulbdb/myvector:8.4.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=noria
+      - MYSQL_DATABASE=my_vec
+      - MYSQL_SSL_CA=/usr/local/share/ca-certificates/rootCA.crt
+      - MYSQL_SSL_CERT=/certs/mysql.local+2.pem
+      - MYSQL_SSL_KEY=/certs/mysql.local+2-key.pem
+    ports:
+     - '3326:3306'
+    volumes:
+      - /var/lib/docker-data/mysql_myvector:/var/lib/mysql
+      - /var/lib/docker-data/certs/mysql:/certs
+      - ~/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt:ro
+    entrypoint: >
+      sh -c "microdnf install -y ca-certificates &&
+             update-ca-trust &&
+             chown -R mysql:mysql /certs &&
+             docker-entrypoint.sh mysqld"
+
+             
   ## standard postgres
   postgres:
     image: postgres:15
@@ -82,7 +125,7 @@ services:
       start_period: 5s
 
   grafana:
-    image: 
+    image: public.ecr.aws/readyset/readyset-grafana:latest
     pull_policy: always
     network_mode: "host"
     environment:
@@ -93,12 +136,13 @@ services:
       RS_PORT: 3307
       RS_DB_NAME: noria
       GRAFANA_HTTP_PORT: 4000
+    # I'm using the readyset grafana, with all our dashboards baked in.
     # volumes:
     #   - ./grafana/dashboards:/var/lib/grafana/dashboards
     #   - ./grafana/provisioning:/etc/grafana/provisioning
     #   - ./grafana/config:/etc/grafana
 
-      
+
   ##############################
   ## metrics exporters
 #   postgres_exporter:
@@ -130,7 +174,6 @@ services:
       - '--path.rootfs=/host'
     network_mode: host
     pid: host
-    restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
 
