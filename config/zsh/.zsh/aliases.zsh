@@ -20,6 +20,6 @@ alias ethereal='wireshark'
 # emacs magick. explicitly set a primary build directory for cargo
 # when executed via emacs, so it doesn't conflict with the regular <project>/target dir.
 # Note: It'd probably be better to have a per-project subjectory, but, meh, here we are ...
-EMACS_CARGO_DIR=~/.emacs.d/cargo-builds
+EMACS_CARGO_DIR=${XDG_CACHE_HOME}/emacs/cargo-builds
 alias emacs="CARGO_TARGET_DIR=${EMACS_CARGO_DIR} emacs -nw"
 
