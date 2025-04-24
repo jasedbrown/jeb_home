@@ -1,6 +1,9 @@
 # my good ol' source code, developer home
 export SRC_DIR="/opt/dev"
 
+# a place to persist data from docker instances (like databases)
+export DOCKER_DATA_DIR="/var/lib/docker"
+
 # rust flags to make use of sccache
 export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
 export CARGO_INCREMENTAL=0

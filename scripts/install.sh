@@ -6,6 +6,11 @@ export SRC_DIR=/opt/dev
 sudo mkdir -p $SRC_DIR
 sudo chown $(whoami):$(whoami) $SRC_DIR
 
+# I just use this as a place to persist data from docker images (like databases) :shrug:
+export DOCKER_DATA_DIR=/var/lib/docker-data
+sudo mkdir -p $SRC_DIR
+sudo chown $(whoami):$(whoami) $SRC_DIR
+
 # Detect OS
 if [ -f /etc/arch-release ]; then
     echo "Detected Arch Linux"
