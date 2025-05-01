@@ -20,6 +20,7 @@ zsh
 zsh-completions
 
 # Terminal utilities
+bc
 bzip2
 fd
 fzf
@@ -31,6 +32,7 @@ ripgrep
 tar
 tree
 unzip
+wget
 zip
 zstd
 
