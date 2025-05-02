@@ -16,3 +16,7 @@ export LSP_USE_PLISTS=true
 
 # this is for the systemd ssh-agent
 export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+
+# for custom ripgrep behavior, need to set an env var pointing to the conf file.
+# https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/rg.conf
