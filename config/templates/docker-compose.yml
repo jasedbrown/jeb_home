@@ -21,26 +21,6 @@ services:
              chown -R mysql:mysql /certs &&
              docker-entrypoint.sh mysqld"
 
-  mysql_r4:
-    image: mysql:8.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=noria
-      - MYSQL_DATABASE=r4
-      - MYSQL_SSL_CA=/usr/local/share/ca-certificates/rootCA.crt
-      - MYSQL_SSL_CERT=/certs/mysql.local+2.pem
-      - MYSQL_SSL_KEY=/certs/mysql.local+2-key.pem
-    ports:
-     - '3316:3306'
-    volumes:
-      - /var/lib/docker-data/mysql_r4:/var/lib/mysql
-      - /var/lib/docker-data/certs/mysql:/certs
-      - ~/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt:ro
-    entrypoint: >
-      sh -c "microdnf install -y ca-certificates &&
-             update-ca-trust &&
-             chown -R mysql:mysql /certs &&
-             docker-entrypoint.sh mysqld"
-
   ## myvector - a "fork" of mysql with a custom vector implementaion
   ## https://github.com/p3io/myvector-dev/tree/main?tab=readme-ov-file
   myvector:
@@ -82,7 +62,6 @@ services:
   ## pg with pgvector extension
   pgvector:
     image: pgvector/pgvector:pg16
-    container_name: pgvector
     environment:
       - POSTGRES_PASSWORD=noria
       - POSTGRES_DB=noria
@@ -93,7 +72,7 @@ services:
       - "-c"
       - "wal_level=logical"
     volumes:
-      - /var/lib/docker-data/postgres:/var/lib/pgvector/data
+      - /var/lib/docker-data/pgvector:/var/lib/pgvector/data
 
 
   ##############################
