@@ -23,3 +23,6 @@ alias ethereal='wireshark'
 EMACS_CARGO_DIR=${XDG_CACHE_HOME}/emacs/cargo-builds
 alias emacs="CARGO_TARGET_DIR=${EMACS_CARGO_DIR} emacs -nw"
 
+# handy terminal "reset", without executing `reset`
+# this will: Clear scrollback buffer, Move cursor to home position, Clear visible screen
+alias clearall='echo -e "\033[3J\033[H\033[2J"'
