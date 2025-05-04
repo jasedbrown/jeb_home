@@ -21,3 +21,27 @@ echo "Installing systemctl stuffs..."
 sudo systemctl enable bluetooth.service
 sudo systemctl enable NetworkManager.service
 systemctl --user enable ssh-agent
+
+
+# plymouth is used to display a splash screen during boot time.
+# we need to be careful about adding it to the initramfs script.
+#
+# Note: any time you change the theme, the initrd must be rebuilt.
+# If using a default theme:
+#     plymouth-set-default-theme -R theme
+# 
+# https://wiki.ubuntu.com/Plymouth
+# https://wiki.archlinux.org/title/Plymouth
+echo "Installing plymouth ..."
+HOOKS_LINE=$(grep '^HOOKS=' /etc/mkinitcpio.conf)
+
+# If "plymouth" is already there, skip
+if [[ "$HOOKS_LINE" != *"plymouth"* ]]; then
+  # Insert 'plymouth' after 'udev'
+  NEW_HOOKS_LINE=$(echo "$HOOKS_LINE" | sed -E 's/(udev)([^)]*)/\1 plymouth\2/')
+  sudo sed -i "s|^HOOKS=.*|$NEW_HOOKS_LINE|" /etc/mkinitcpio.conf
+fi
+
+sudo mkinitcpio -P
+# arch-logo should have been installed with the AUR packages.txt
+sudo plymouth-set-default-theme -R arch-logo
