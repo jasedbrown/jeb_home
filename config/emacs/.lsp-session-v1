@@ -1,0 +1,1 @@
+#s(lsp-session ("/opt/dev/rust/antithesis-sdk-rust" "/opt/dev/rust/geo" "/opt/dev/mysql/mysql-server" "/opt/dev/rs-tools/bincode" "/home/jasobrown/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-1.3.3") nil #s(hash-table test equal) #s(hash-table test equal) #s(hash-table test equal))

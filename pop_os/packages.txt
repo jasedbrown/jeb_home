@@ -92,5 +92,6 @@ libssl-dev
 libtool
 libtree-sitter-dev
 libudev-dev
+libxkbcommon-x11-dev
 libzstd-dev
 zlib1g-dev

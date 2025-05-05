@@ -5,7 +5,7 @@ Here's what I came up with when tag teaming with chatgpt:
 ```
 ./.zsh
 ├── .zshenv                # Minimal, global settings (always sourced)
-├── .zprofile              # Login shell settings (env vars, PATH)
+├── .zprofile              # Login shell settings (env vars, PATH), not read in interactive shells
 ├── .zshrc                 # Interactive shell settings (aliases, prompt, completion)
 ├── .zlogout               # Cleanup tasks on logout (optional)
 └── .zsh/                  # Modular config directory

@@ -29,6 +29,8 @@ fi
 
 # Install SDKMAN for Java/Maven
 if [ ! -d "$HOME/.sdkman" ]; then
+    echo "Installing sdkman (java)..."
+
     curl -s "https://get.sdkman.io" | bash
     source "$HOME/.sdkman/bin/sdkman-init.sh"
     sdk install java 21.0.5-zulu
@@ -37,6 +39,8 @@ fi
 
 # Install pyenv
 if [ ! -d "$HOME/.pyenv" ]; then
+    echo "Installing pyenv..."
+
     curl https://pyenv.run | bash
     source "$HOME/.pyenv/bin/pyenv"
     pyenv update
@@ -44,4 +48,20 @@ if [ ! -d "$HOME/.pyenv" ]; then
 
     # Install Python LSP packages
     python3 -m pip install python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope 
+fi
+
+# Install golang
+# the official docs on supporting multiple installed SDKs version is a fucking joke:
+# https://go.dev/doc/manage-install
+GO_DIR="/usr/local/go"
+if [ ! -d "$GO_DIR" ]; then
+    echo "Installing golang..."
+    sudo mkdir -p $GO_DIR
+    sudo chown $(whoami):$(whoami) $GO_DIR
+
+    # download from https://go.dev/doc/install
+    # install to $GO_DIR, unzip in version-name directory
+
+    # create a symlink
+    
 fi
