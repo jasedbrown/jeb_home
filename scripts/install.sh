@@ -16,7 +16,7 @@
 #   WORK_DOTFILES_DIR=/path/to/work-dotfiles ./scripts/install.sh
 
 # Ensure we're in the correct directory
-if [[ ! -f "$(dirname "$0")/scripts/setup_common.sh" ]]; then
+if [[ ! -f "$(dirname "$0")/setup_common.sh" ]]; then
     echo "Error: This script must be run from the root of the dotfiles repository"
     echo "Current directory: $(pwd)"
     echo "Expected to find: scripts/setup_common.sh"
