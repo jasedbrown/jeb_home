@@ -27,9 +27,8 @@ export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/rg.conf
 
 ############
 # PL sdk/env managers
-# chatgpt recommends putting these into the .zprofile file
-# as they change the session
 
+# this adds the cargo bin dir to the path
 source "$HOME/.cargo/env"
 
 # sdkman (for java jdk management)

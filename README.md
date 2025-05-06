@@ -3,9 +3,12 @@
 Welcome to the next reincarnation of my home files/configuration management.
 If I'm writing this, it means I've hit linux config bankrupcy once again ...
 This time, I'm basing things on the new-fangled "dotfiles" trend - it seems sane
-and reproducable.
+and reproducable, and is predicated on the [XDG base directory spec](https://specifications.freedesktop.org/basedir-spec/latest/)
 
 I'm also trying out arch linux, cuz clearly I have a lot of free time :shrug:
+Thus, this repo has install scripts for both pop!_os and arch linux. It is
+hoped the scripts are idempotent to be rerun after each update (I'm not sure
+how achievable that is in practice, but that's the hope).
 
 ## arch linux install
 
