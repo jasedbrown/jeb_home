@@ -33,9 +33,9 @@ fi
 echo -e "${BLUE}Installing work-specific configurations...${NC}"
 
 # Run work-specific installation script if it exists
-if [ -f "$WORK_DOTFILES_DIR/install.sh" ]; then
+if [ -f "$WORK_DOTFILES_DIR/scripts/install.sh" ]; then
     echo -e "${BLUE}Running work-specific installation script...${NC}"
-    bash "$WORK_DOTFILES_DIR/install.sh"
+    bash "$WORK_DOTFILES_DIR/scripts/install.sh"
 fi
 
 echo -e "${GREEN}Work-specific configurations installed successfully!${NC}" 
