@@ -1,5 +1,19 @@
 #!/bin/bash
 # install.sh
+#
+# Installation script for jasobrown's dotfiles.
+#
+# Environment variables:
+#   WORK_DOTFILES_DIR: Path to the work-specific dotfiles repository
+#                      If set, work-specific configurations will be installed
+#                      after the main dotfiles installation.
+#
+# Example usage:
+#   # Install only public dotfiles
+#   ./scripts/install.sh
+#
+#   # Install both public and work-specific dotfiles
+#   WORK_DOTFILES_DIR=/path/to/work-dotfiles ./scripts/install.sh
 
 # Ensure we're in the correct directory
 if [[ ! -f "$(dirname "$0")/scripts/setup_common.sh" ]]; then
@@ -41,5 +55,11 @@ echo "Running common setup..."
 
 echo "Setting up dotfiles..."
 ./scripts/symlink.sh
+
+# Check if work dotfiles path is provided via environment variable
+if [ ! -z "$WORK_DOTFILES_DIR" ]; then
+    echo "Installing work-specific configurations..."
+    ./scripts/install_work.sh
+fi
 
 echo "Installation complete!"
