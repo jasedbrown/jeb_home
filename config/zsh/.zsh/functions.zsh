@@ -14,3 +14,17 @@ dockerup() {
 dockerdown() {
   (cd $SRC_DIR/jeb-configs/docker && docker compose down)
 }
+
+# Function to start Cursor editor
+cursor() {
+  local appimage_dir="$HOME/.local/bin"
+  local latest_appimage=$(ls -v "$appimage_dir"/cursor*.AppImage | tail -1)
+
+  if [ -z "$latest_appimage" ]; then
+    echo "No AppImage found in $appimage_dir"
+    return 1
+  fi
+
+  chmod +x "$latest_appimage"
+  "$latest_appimage" > /tmp/app_output.log 2>&1 &
+}
