@@ -1,6 +1,14 @@
 #!/bin/bash
 # install.sh
 
+# Ensure we're in the correct directory
+if [[ ! -f "$(dirname "$0")/scripts/setup_common.sh" ]]; then
+    echo "Error: This script must be run from the root of the dotfiles repository"
+    echo "Current directory: $(pwd)"
+    echo "Expected to find: scripts/setup_common.sh"
+    exit 1
+fi
+
 # this is my long-time dev directory. make sure it exists and is owned by me.
 export SRC_DIR=/opt/dev
 sudo mkdir -p $SRC_DIR
@@ -8,8 +16,8 @@ sudo chown $(whoami):$(whoami) $SRC_DIR
 
 # I just use this as a place to persist data from docker images (like databases) :shrug:
 export DOCKER_DATA_DIR=/var/lib/docker-data
-sudo mkdir -p $SRC_DIR
-sudo chown $(whoami):$(whoami) $SRC_DIR
+sudo mkdir -p $DOCKER_DATA_DIR
+sudo chown $(whoami):$(whoami) $DOCKER_DATA_DIR
 
 # Detect OS
 if [ -f /etc/arch-release ]; then

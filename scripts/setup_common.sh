@@ -12,9 +12,8 @@ if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     echo "Installing rust..."
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    # add $HOME/.cargo/bin to PATH
+    # export to run the `cargo install` commands below
     export PATH=$PATH:$HOME/.cargo/bin
-    echo "\nexport PATH=$PATH:$HOME/.cargo/bin" >> ~/.bashrc
 
     rustup component add rust-src
     rustup component add rust-analyzer
