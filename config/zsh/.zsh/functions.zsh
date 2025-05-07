@@ -5,16 +5,6 @@
 # directories for the duration of the function execution.
 # you need to include all relevant functionality in those parens.
 
-# Function to start docker compose
-dockerup() {
-  (cd $SRC_DIR/jeb-configs/docker && docker compose up -d)
-}
-
-# Function to shut down docker compose
-dockerdown() {
-  (cd $SRC_DIR/jeb-configs/docker && docker compose down)
-}
-
 # Function to start Cursor editor
 cursor() {
   local appimage_dir="$HOME/.local/bin"
