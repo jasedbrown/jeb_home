@@ -36,3 +36,8 @@ useful stuff
 ** `nmcli device wifi list` - to list all wifi networks
 ** `nmcli device wifi connect _SSID_ password _pw_` to connect to a network
 
+* printing (cups/avavhi)
+** to discover network things (including printers): `avahi-discover`
+
+* bluetooth
+** use `bluetoothctl` to discover and pair other devices.

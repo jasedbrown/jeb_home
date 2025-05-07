@@ -18,6 +18,10 @@ echo "Installing system76 drivers..."
 ./arch/system76.sh
 
 echo "Installing systemctl stuffs..."
+sudo systemctl enable avahi-daemon.service
+sudo systemctl enable cups.service
+sudo systemctl enable dbus.service
+sudo systemctl enable dbus-broker.service
 sudo systemctl enable bluetooth.service
 sudo systemctl enable NetworkManager.service
 systemctl --user enable ssh-agent
