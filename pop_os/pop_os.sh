@@ -80,4 +80,17 @@ if [ ! -f "/usr/local/bin/emacs" ]; then
     sudo make install
 fi
 
+# install kitty terminal emulator
+if [ ! -f "/usr/local/bin/kitty" ]; then
+    echo "Installing Kitty terminal emulator..."
+    # kitty installs to ~/.local (not ~/.local/bin), which is slightly annoying.
+
+    # don't open the kitty after installation (:facepalm:)
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
+
+    # now, to make kitty the default terminal, we need to create a symlink and update the alternatives system.
+    sudo ln -s ~/.local/kitty.app/bin/kitty /usr/local/bin/kitty
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/kitty-wrapper 60
+fi
+
 echo "Pop!_OS specific setup complete!" 
