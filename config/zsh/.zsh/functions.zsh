@@ -18,3 +18,7 @@ cursor() {
   chmod +x "$latest_appimage"
   "$latest_appimage" > /tmp/app_output.log 2>&1 &
 }
+
+restart() {
+    sudo /sbin/shutdown -r 0
+}
