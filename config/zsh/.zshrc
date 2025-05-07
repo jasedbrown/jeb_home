@@ -10,7 +10,8 @@ for file in $ZDOTDIR/.zsh/*.zsh; do
 done
 
 # Source all readyset-specific modular config files
-for file in $XDG_CONFIG_HOME/zsh-readyset/*.zsh; do
-  [ -r "$file" ] && source "$file"
-done
-
+if [ -d "$XDG_CONFIG_HOME/zsh-readyset" ]; then
+    for file in $XDG_CONFIG_HOME/zsh-readyset/*.zsh; do
+        [ -r "$file" ] && source "$file"
+    done
+fi
