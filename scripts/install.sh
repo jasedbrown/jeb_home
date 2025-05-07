@@ -16,9 +16,9 @@ if [[ ! -f "$(dirname "$0")/setup_common.sh" ]]; then
 fi
 
 # this is my long-time dev directory. make sure it exists and is owned by me.
-export SRC_DIR=/opt/dev
-sudo mkdir -p $SRC_DIR
-sudo chown $(whoami):$(whoami) $SRC_DIR
+export SRC_HOME=/opt/dev
+sudo mkdir -p $SRC_HOME
+sudo chown $(whoami):$(whoami) $SRC_HOME
 
 # I just use this as a place to persist data from docker images (like databases) :shrug:
 export DOCKER_DATA_DIR=/var/lib/docker-data

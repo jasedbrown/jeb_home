@@ -1,7 +1,7 @@
 ulimit -n unlimited
 
 # my good ol' source code, developer home
-export SRC_DIR="/opt/dev"
+export SRC_HOME="/opt/dev"
 
 # a place to persist data from docker instances (like databases)
 export DOCKER_DATA_DIR="/var/lib/docker"
