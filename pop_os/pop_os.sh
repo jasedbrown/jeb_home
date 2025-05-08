@@ -28,7 +28,7 @@ echo "Installing packages..."
 # Install core packages from packages.txt
 grep -v "^#" ./pop_os/packages.txt | xargs sudo apt install -y > /dev/null
 
-MOLD_VERSION="v2.37.1"
+MOLD_VERSION="v2.39.0"
 MOLD_DIR="/tmp/mold"
 if [ ! -f "/usr/local/bin/mold" ]; then
     echo "Installing mold linker from source..."
