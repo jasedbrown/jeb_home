@@ -16,8 +16,10 @@ export EDITOR="emacs -nw"
 # to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
 export LSP_USE_PLISTS=true
 
-# this is for the systemd ssh-agent
-export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+# only explicitly set up the ssh-agent socket if we're on arch
+if [ -f /etc/arch-release ]; then
+    export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+fi
 
 # for custom ripgrep behavior, need to set an env var pointing to the conf file.
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
