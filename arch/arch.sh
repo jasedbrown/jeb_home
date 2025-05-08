@@ -1,5 +1,6 @@
 echo "Installing core packages..."
-sudo pacman -S --needed --noconfirm - < arch/packages.txt
+grep -v "^#" ./arch/packages.txt | xargs sudo pacman -S --needed --noconfirm -
+
 
 echo "Installing AUR helper..."
 if ! command -v paru &> /dev/null; then
@@ -12,20 +13,41 @@ if ! command -v paru &> /dev/null; then
 fi
 
 echo "Installing AUR packages..."
-paru -S --needed --noconfirm - < arch/aur-packages.txt
+grep -v "^#" ./arch/aur-packages.txt | xargs paru -S --needed --noconfirm -
 
 echo "Installing system76 drivers..."
 ./arch/system76.sh
 
 echo "Installing systemctl stuffs..."
-sudo systemctl enable avahi-daemon.service
-sudo systemctl enable cups.service
-sudo systemctl enable dbus.service
-sudo systemctl enable dbus-broker.service
-sudo systemctl enable bluetooth.service
-sudo systemctl enable NetworkManager.service
-systemctl --user enable ssh-agent
 
+# Network services
+if command -v NetworkManager &> /dev/null; then
+    sudo systemctl enable --now NetworkManager.service
+fi
+
+# Bluetooth (only if hardware exists)
+if [ -d /sys/class/bluetooth ]; then
+    sudo systemctl enable --now bluetooth.service
+fi
+
+# Printing (CUPS)
+if command -v cups &> /dev/null; then
+    sudo systemctl enable --now cups.service
+fi
+
+# Avahi (mDNS/DNS-SD)
+if command -v avahi-daemon &> /dev/null; then
+    sudo systemctl enable --now avahi-daemon.service
+fi
+
+# D-Bus (required for many services)
+sudo systemctl enable --now dbus.service
+sudo systemctl enable --now dbus-broker.service
+
+# SSH agent (user service)
+if command -v ssh-agent &> /dev/null; then
+    systemctl --user enable --now ssh-agent
+fi
 
 # plymouth is used to display a splash screen during boot time.
 # we need to be careful about adding it to the initramfs script.
@@ -36,16 +58,20 @@ systemctl --user enable ssh-agent
 # 
 # https://wiki.ubuntu.com/Plymouth
 # https://wiki.archlinux.org/title/Plymouth
-echo "Installing plymouth ..."
 HOOKS_LINE=$(grep '^HOOKS=' /etc/mkinitcpio.conf)
 
 # If "plymouth" is already there, skip
 if [[ "$HOOKS_LINE" != *"plymouth"* ]]; then
+  echo "Installing plymouth ..."
   # Insert 'plymouth' after 'udev'
   NEW_HOOKS_LINE=$(echo "$HOOKS_LINE" | sed -E 's/(udev)([^)]*)/\1 plymouth\2/')
   sudo sed -i "s|^HOOKS=.*|$NEW_HOOKS_LINE|" /etc/mkinitcpio.conf
+
+  # not sure if this rebuild is necessary, as we'll do it in the next step 
+  # (the `-R` flag to `plymouth-set-default-theme` will do it)
+  sudo mkinitcpio -P
+
+  # arch-logo should have been installed with the AUR packages.txt
+  sudo plymouth-set-default-theme -R arch-logo
 fi
 
-sudo mkinitcpio -P
-# arch-logo should have been installed with the AUR packages.txt
-sudo plymouth-set-default-theme -R arch-logo
