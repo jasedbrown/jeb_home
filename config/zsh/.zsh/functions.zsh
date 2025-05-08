@@ -5,6 +5,17 @@
 # directories for the duration of the function execution.
 # you need to include all relevant functionality in those parens.
 
+# Function to add SSH key if not already added
+function ensure_ssh_key() {
+  eval "$(ssh-agent -s)" > /dev/null
+
+  # Check if key is already added
+  ssh-add -l | grep -q "$(ssh-keygen -lf ~/.ssh/id_ed25519 | awk '{print $2}')" 2>/dev/null
+  if [ $? -ne 0 ]; then
+    ssh-add ~/.ssh/id_ed25519
+  fi
+}
+
 # Function to start Cursor editor
 cursor() {
   local appimage_dir="$HOME/.local/bin"
