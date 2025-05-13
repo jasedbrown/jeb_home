@@ -21,6 +21,7 @@ if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     cargo install --locked bottom
     cargo install --locked critcmp
     cargo install --locked flamegraph
+    cargo install --locked inferno
     cargo install --locked cargo-deny
     cargo install --locked mdbook-toc mdbook
     cargo install --locked cargo-nextest
