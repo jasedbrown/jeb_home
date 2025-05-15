@@ -15,6 +15,7 @@ alias ec='emacsclient -nw'
 alias shippo='tail -200f'
 alias gs='git status'
 alias ethereal='wireshark'
+alias ff='firefox'
 
 # emacs magick. explicitly set a primary build directory for cargo
 # when executed via emacs, so it doesn't conflict with the regular <project>/target dir.
