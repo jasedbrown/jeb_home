@@ -1,101 +1,99 @@
-//====================================================================================================//
-// Waybar Configuration File                                                                          //
-//----------------------------------------------------------------------------------------------------//
-// Purpose: Creates a minimalistic (yet functional) waybar at                                         //
-// the top of the screen.                                                                             //
-// themes and colors, set the wallpaper, and more.                                                    //
-//                                                                                                    //
-// License: Creative Commons Attribution 4.0 International                                            //
-//                                                                                                    //
-// Credit:                                                                                            //
-// Battery section adapted from:                                                                      //
-// https://github.com/Egosummiki/dotfiles/blob/master/waybar/config                                   //
-//                                                                                                    //
-// Pipewire audio adapted from:                                                                       //
-// https://www.reddit.com/r/swaywm/comments/sks343/pwvolume_pipewire_volume_control_and_waybar_module //
-//====================================================================================================//
+// to reload the config:
+// killall waybar; waybar &
+// ... or ...
+// killall -SIGUSR2 waybar
 
+// using https://github.com/d00m1k/SimpleBlueColorWaybar/ as inspiration...
 {
     "layer": "top",
     "position": "top",
-    "height": 36,
+    "height": 42,
     "spacing": 4,
     "margin-top": 0,
     "margin-bottom": 0,
 
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "tray" ],
-    "modules-center": ["clock"],
-    "modules-right": [ "custom/audio","network","battery"],
+    "modules-left": [
+        "hyprland/workspaces",
+    ],
 
-    // Configuration for individual modules
-     "sway/workspaces": {
-         "disable-scroll": true,
-         "all-outputs": false,
-         "format": "{name}",
-    },
+    "modules-center": [
+        "clock"
+    ],
 
-    "tray": {
-        "icon-size": 18,
-        "spacing": 10,
+    "modules-right": [
+        "hyprland/language",
+        "pulseaudio",
+        "network",
+        "battery"
+    ],
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": "{name}",
+        "format-icons": {
+            "urgent": "",
+            "active": "",
+            "default": ""
+        }
     },
 
     "clock": {
-        "format": "{:%T}",
-        "format-alt": "{:%Y-%m-%d}",
+        "format": "{:%Y-%m-%d %T}",
         "timezone": "America/Los_Angeles",
         "interval": 1,
-        // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        	"tooltip-format": "<span>{calendar}</span>",
-        	"calendar": {
-            		"mode": "month",
-            		"format": {
-                	    "months": "<span color='#ff6699'><b>{}</b></span>",
-                        "days": "<span color='#cdd6f4'><b>{}</b></span>",
-                	    "weekdays": "<span color='#7CD37C'><b>{}</b></span>",
-                	    "today": "<span color='#ffcc66'><b>{}</b></span>"
-            	}
-            }
+    },
+
+    "hyprland/language": {
+       "format": "{}",
+       "format-en": "EN",
+       "format-ja": "JP"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-bluetooth": "{icon} {volume}%  {format_source}",
+        "format-bluetooth-muted": "  {icon} {format_source}",
+        "format-muted": "  {format_source}",
+        "format-source": "  {volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+
+
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "   {signalStrength}%",
+        "format-ethernet": "Connected   ",
+        "tooltip-format": "{ifname}: {gwaddr}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "Disconnected  ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
     },
 
     "battery": {
         "states": {
-            // "good": 95,
+            "good": 95,
             "warning": 30,
             "critical": 15,
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": "⚡{capacity}%",
-        "format-plugged": " {capacity}%",
+        "format": "{icon}  {capacity}%",
+        "format-charging": "⚡ {capacity}%",
+        "format-plugged": "  {capacity}%",
         "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
-        "format-icons": ["", "", "", "", ""],
-    },
-
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " {signalStrength}%",
-        "format-ethernet": "Connected  ",
-        "tooltip-format": "{ifname}: {gwaddr}",
-        "format-linked": "{ifname} (No IP)",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "on-click-right": "bash ~/.config/rofi/wifi_menu/rofi_wifi_menu",
-    },
-
-    "custom/audio": {
-        "format": "{}",
-        "signal": 8,
-        "interval": "once",
-        "exec": "/home/jasobrown/.config/sway/audio.sh",
-        "on-click": "pavucontrol",
-    },
-
-    "custom/hostname": {
-        "format": "🖳  {}",
-        "exec": "/usr/bin/hostname -f",
-        "interval": "once",
-        "on-click": "/usr/bin/rxvt -e /usr/bin/htop",
+        "format-icons": ["", "", "", "", ""], 
     },
 }

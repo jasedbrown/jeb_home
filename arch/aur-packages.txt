@@ -10,7 +10,7 @@ nerd-fonts-complete
 1password
 hyprsysteminfo
 spotify
-slack-desktop
+slack-desktop-wayland
 zoom
 
 # Themes

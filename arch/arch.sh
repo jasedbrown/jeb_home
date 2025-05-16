@@ -49,6 +49,8 @@ if command -v ssh-agent &> /dev/null; then
     systemctl --user enable --now ssh-agent
 fi
 
+sudo systemctl enable --now docker.service
+
 # plymouth is used to display a splash screen during boot time.
 # we need to be careful about adding it to the initramfs script.
 #
