@@ -84,8 +84,4 @@ pavucontrol
 
 # rust tools
 bluetui
-cargo-deny
-cargo-flamegraph
-inferno
-mdbook
-sccahe
+
