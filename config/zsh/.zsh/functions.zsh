@@ -27,7 +27,21 @@ cursor() {
   fi
 
   chmod +x "$latest_appimage"
-  "$latest_appimage" > /tmp/app_output.log 2>&1 &
+
+  if [ -f /etc/arch-release ]; then
+    export ELECTRON_OZONE_PLATFORM_HINT=wayland
+    export GDK_BACKEND=wayland
+    export XDB_SESSION_TYPE=wayland
+    export ENABLE_SANDBOX=0
+      
+    "$latest_appimage" \
+      --enable-features=UseOzonePlatform \
+      --ozone-platform=wayland \
+      "$@" > /tmp/app_output.log 2>&1 &
+  else
+    "$latest_appimage" \
+      "$@"  > /tmp/app_output.log 2>&1 &
+  fi
 }
 
 restart() {
