@@ -18,12 +18,7 @@ if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     rustup component add rust-src
     rustup component add rust-analyzer
     cargo install --locked sccache
-    cargo install --locked bottom
-    cargo install --locked critcmp
-    cargo install --locked flamegraph
     cargo install --locked inferno
-    cargo install --locked cargo-deny
-    cargo install --locked mdbook-toc mdbook
     cargo install --locked cargo-nextest
 fi
 
