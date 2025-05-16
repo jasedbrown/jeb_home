@@ -47,7 +47,8 @@ eval "$(pyenv virtualenv-init - zsh)"
 # golang (<sigh>)
 ## GOROOT -location where your Go installation (compiler, tools, standard library) lives
 ## GOPATH - root of your Go workspace - where Go code, downloaded dependencies, and compiled binaries are stored
-export GOROOT=/usr/local/go/current
-export GOPATH=$HOME/.local/share/gopath
-export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+# export GOROOT=/usr/local/go/current
+# export GOPATH=$HOME/.local/share/gopath
+# export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
+. "$HOME/.cargo/env"
