@@ -1,5 +1,5 @@
 echo "Installing core packages..."
-grep -v "^#" ./arch/packages.txt | xargs sudo pacman -S --needed --noconfirm -
+grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
 
 
 echo "Installing AUR helper..."
@@ -13,7 +13,7 @@ if ! command -v paru &> /dev/null; then
 fi
 
 echo "Installing AUR packages..."
-grep -v "^#" ./arch/aur-packages.txt | xargs paru -S --needed --noconfirm -
+grep -v "^#" ./arch/aur-packages.txt | xargs paru -Sy --needed --noconfirm
 
 echo "Installing system76 drivers..."
 ./arch/system76.sh
