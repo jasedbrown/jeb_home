@@ -41,7 +41,7 @@
     },
 
     "clock": {
-        "format": "{:%Y-%m-%d %T}",
+        "format": "{:%Y-%m-%d  ::  %T}",
         "timezone": "America/Los_Angeles",
         "interval": 1,
     },
