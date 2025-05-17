@@ -51,6 +51,9 @@ fi
 
 sudo systemctl enable --now docker.service
 
+# enable pipewire for audio
+sudo systemctl enable --now pipewire.service
+
 # plymouth is used to display a splash screen during boot time.
 # we need to be careful about adding it to the initramfs script.
 #

@@ -51,6 +51,7 @@ lldb
 llvm
 mold
 ninja
+postgresql-libs
 python
 python-pip
 wireshark-qt
@@ -79,8 +80,14 @@ firefox
 # Multimedia
 mpv
 vlc
-pulseaudio
+
+# audio - use pipewire as it replaces pulseaudio and jack and friends
 pavucontrol
+pipewire
+pipewire-alsa
+pipewire-pulse
+pipewire-jack
+wireplumber
 
 # rust tools
 bluetui
