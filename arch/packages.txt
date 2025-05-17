@@ -57,6 +57,7 @@ python-pip
 wireshark-qt
 
 # window manager essentials
+brightnessctl
 dmenu
 grim
 hypridle
