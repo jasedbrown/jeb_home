@@ -17,7 +17,7 @@ zoom
 archlinux-themes-sddm
 nordic-theme
 papirus-icon-theme
-plymouth-set-default-theme -R arch-logo
+plymouth-theme-arch-logo
 
 # Terminal enhancements
 # zsh-syntax-highlighting
