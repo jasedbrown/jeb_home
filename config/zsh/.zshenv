@@ -7,6 +7,11 @@ export SRC_HOME="/opt/dev"
 export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
 export CARGO_INCREMENTAL=0
 
+# this is a hack to get rocksdb to compile on arch,
+# which uses gcc-15 now.
+export CXXFLAGS="$CXXFLAGS -include cstdint"
+
+
 export EDITOR="emacs -nw"
 
 # emacs: use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
