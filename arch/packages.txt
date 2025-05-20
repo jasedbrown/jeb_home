@@ -10,6 +10,7 @@ git
 intel-ucode
 iw
 linux-tools
+lld
 man-db
 networkmanager
 openssh
@@ -47,6 +48,7 @@ docker
 docker-buildx
 docker-compose
 gcc
+gdb
 lldb
 llvm
 mold
