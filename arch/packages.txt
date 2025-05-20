@@ -94,6 +94,7 @@ wireplumber
 bluetui
 
 # fonts .. idk ...
+otf-droid-nerd
 otf-font-awesome
 ttf-jetbrains-mono
 ttf-nerd-fonts-symbols
