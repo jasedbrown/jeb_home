@@ -47,3 +47,11 @@ cursor() {
 restart() {
     sudo /sbin/shutdown -r 0
 }
+
+sysupdate() {
+    if [ -f /etc/arch-release ]; then
+        sudo pacman -Syu
+    else
+        sudo apt update
+    fi
+}
