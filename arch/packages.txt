@@ -53,6 +53,8 @@ lldb
 llvm
 mold
 ninja
+podman
+podman-compose
 postgresql-libs
 python
 python-pip
