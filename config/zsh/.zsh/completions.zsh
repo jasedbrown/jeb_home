@@ -6,6 +6,8 @@
 #  https://thevaluable.dev/zsh-completion-guide-examples/
 #    https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
 
+mkdir -p $XDG_CACHE_HOME/zsh
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
 
 # Should be called before compinit
 zmodload zsh/complist
@@ -25,7 +27,7 @@ setopt always_to_end
 zstyle ':completion:*' completer _extensions _complete _approximate
 
 zstyle ':completion:*' use-cache yes
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache-$ZSH_VERSION
+zstyle ':completion:*' cache-path "$ZSH_COMPDUMP"
 
 # Complete . and .. special directories
 zstyle ':completion:*' special-dirs true
@@ -46,4 +48,4 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:
 # _comp_options+=(globdots) # With hidden files
 
 autoload -U compinit
-compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
