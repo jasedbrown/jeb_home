@@ -53,5 +53,6 @@ sysupdate() {
         sudo pacman -Syu
     else
         sudo apt update
+        sudo apt upgrade -y
     fi
 }
