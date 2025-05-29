@@ -3,6 +3,9 @@ ulimit -n unlimited
 # my good ol' source code, developer home
 export SRC_HOME="/opt/dev"
 
+# standard directory for my dotfiles repo
+export DOTFILES_HOME="$HOME/jeb_home"
+
 # rust flags to make use of sccache
 export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
 export CARGO_INCREMENTAL=0
