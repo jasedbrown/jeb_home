@@ -34,13 +34,13 @@ cursor() {
     export XDB_SESSION_TYPE=wayland
     export ENABLE_SANDBOX=0
       
-    "$latest_appimage" \
+    nohup "$latest_appimage" \
       --enable-features=UseOzonePlatform \
       --ozone-platform=wayland \
-      "$@" > /tmp/app_output.log 2>&1 &
+      "$@" > /dev/null 2>&1 & disown
   else
-    "$latest_appimage" \
-      "$@"  > /tmp/app_output.log 2>&1 &
+    nohup "$latest_appimage" \
+      "$@" > /dev/null 2>&1 & disown
   fi
 }
 
