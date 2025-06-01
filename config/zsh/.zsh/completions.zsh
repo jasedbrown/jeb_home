@@ -7,7 +7,9 @@
 #    https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
 
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
-mkdir -p $ZSH_COMPDUMP
+if [ ! -d "$ZSH_COMPDUMP" ]; then
+    mkdir -p $ZSH_COMPDUMP
+fi
 
 # Should be called before compinit
 zmodload zsh/complist

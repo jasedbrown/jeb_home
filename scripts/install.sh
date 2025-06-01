@@ -17,8 +17,10 @@ fi
 
 # this is my long-time dev directory. make sure it exists and is owned by me.
 export SRC_HOME=/opt/dev
-sudo mkdir -p $SRC_HOME
-sudo chown $(whoami):$(whoami) $SRC_HOME
+if [ ! -d "$SRC_HOME" ]; then
+    sudo mkdir -p $SRC_HOME
+    sudo chown $(whoami):$(whoami) $SRC_HOME
+fi
 
 # Detect OS
 if [ -f /etc/arch-release ]; then
