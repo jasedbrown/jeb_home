@@ -5,6 +5,7 @@ bluez
 bluez-utils
 btop
 curl
+dig
 emacs
 git
 intel-ucode
@@ -17,6 +18,7 @@ openssh
 openssl
 plymouth
 stow
+traceroute
 tmux
 wget
 zsh
@@ -51,6 +53,7 @@ gcc
 gdb
 lldb
 llvm
+mariadb-clients
 mold
 ninja
 podman
