@@ -44,6 +44,13 @@ if [ -f /etc/arch-release ]; then
     echo -e "${GREEN}Applying system-wide configuraitons - arch specific...${NC}"
     sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
     sudo cp "$DOTFILES_DIR/system/sddm.conf" /etc/sddm.conf
+
+    # setup ssh keys, this allows arch to add a key to ssh-agent.
+    # need to reenter pw on every login; else try `gnome-keyring`.
+    mkdir -p ~/.ssh
+    ln -sf "$DOTFILES_DIR/ssh/config" ~/.ssh/config
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/config
 fi
 
 # Symlink config files
