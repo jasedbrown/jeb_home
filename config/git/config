@@ -16,3 +16,6 @@
 [user]
     email = jasedbrown@gmail.com
     name = Jason Brown
+
+[include]
+    path = ~/.config/git-readyset/config
