@@ -5,6 +5,7 @@
     co = checkout
     cp = cherry-pick
     dc = diff --cached
+    rb = rebase origin/main
     ru = remote update
     st = status
 [init]
