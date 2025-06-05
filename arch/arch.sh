@@ -49,8 +49,6 @@ if command -v ssh-agent &> /dev/null; then
     systemctl --user enable --now ssh-agent
 fi
 
-sudo systemctl enable --now docker.service
-
 # enable pipewire for audio
 sudo systemctl enable --now pipewire.service
 
