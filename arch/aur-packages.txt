@@ -9,5 +9,4 @@ zoom
 
 # Themes
 archlinux-themes-sddm
-nordic-theme
 plymouth-theme-arch-logo
