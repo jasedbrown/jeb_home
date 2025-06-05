@@ -103,3 +103,6 @@ otf-font-awesome
 ttf-jetbrains-mono
 ttf-nerd-fonts-symbols
 ttf-space-mono-nerd
+
+# themes
+papirus-icon-theme

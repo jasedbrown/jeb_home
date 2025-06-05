@@ -1,14 +1,8 @@
 # AUR helpers
-paru
 yay
-
-# Fonts
-ttf-jetbrains-mono
-nerd-fonts-complete
 
 # Applications
 1password
-hyprsysteminfo
 spotify
 slack-desktop-wayland
 zoom
@@ -16,9 +10,4 @@ zoom
 # Themes
 archlinux-themes-sddm
 nordic-theme
-papirus-icon-theme
 plymouth-theme-arch-logo
-
-# Terminal enhancements
-# zsh-syntax-highlighting
-# zsh-autosuggestions
