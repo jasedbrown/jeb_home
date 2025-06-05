@@ -46,9 +46,6 @@ autoconf
 automake
 clang
 cmake
-docker
-docker-buildx
-docker-compose
 gcc
 gdb
 lldb
