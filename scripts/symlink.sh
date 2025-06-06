@@ -48,7 +48,7 @@ if [ -f /etc/arch-release ]; then
     # setup ssh keys, this allows arch to add a key to ssh-agent.
     # need to reenter pw on every login; else try `gnome-keyring`.
     mkdir -p ~/.ssh
-    ln -sf "$DOTFILES_DIR/ssh/config" ~/.ssh/config
+    ln -sf "$DOTFILES_HOME/home/ssh/config" ~/.ssh/config
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/config
 fi
