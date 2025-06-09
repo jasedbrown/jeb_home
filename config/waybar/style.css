@@ -29,7 +29,7 @@
 }
 
 #clock {
-    /* background: #1f1f1f; */
+    font-size: 12px;
     color: #ffffff;
     margin-right: 2px;
     padding: 1px 1px;
