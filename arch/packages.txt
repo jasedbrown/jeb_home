@@ -98,6 +98,7 @@ wireplumber
 bluetui
 
 # fonts .. idk ...
+noto-fonts
 noto-fonts-cjk
 otf-droid-nerd
 otf-font-awesome
