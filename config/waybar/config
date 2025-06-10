@@ -22,7 +22,7 @@
     ],
 
     "modules-right": [
-        "hyprland/language",
+        "custom/language",
         "pulseaudio",
         "network",
         "battery"
@@ -46,10 +46,11 @@
         "interval": 1,
     },
 
-    "hyprland/language": {
-       "format": "{}",
-       "format-en": "EN",
-       "format-ja": "JP"
+    "custom/language": {
+        "format": "{}",
+        "exec": "~/.config/waybar/scripts/language.sh",
+        "interval": 1,
+        "on-click": "fcitx5-remote -t"
     },
 
     "pulseaudio": {
