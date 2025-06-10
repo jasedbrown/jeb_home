@@ -41,3 +41,10 @@ useful stuff
 
 * bluetooth
 ** use `bluetoothctl` to discover and pair other devices.
+
+* Japanese language input
+** IME: input method editor. Use `mozc`
+** IMF: input method framework, allows you to switch IMEs. Use `fcitx5`
+*** use `fcitx5-configtool` to install a Japaneses keyboard
+** Add env config - I've added it to the `hyprland` config so it gets loaded with UI, but not dependent on a shell (like zsh).
+** `fcitx5-remote -t` will turn it on and off.

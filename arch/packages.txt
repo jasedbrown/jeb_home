@@ -106,5 +106,12 @@ ttf-jetbrains-mono
 ttf-nerd-fonts-symbols
 ttf-space-mono-nerd
 
+# IMF/IMF for language input
+fcitx5
+fcitx5-config-qt
+fcitx5-gtk
+fcitx5-mozc
+fcitx5-qt
+
 # themes
 papirus-icon-theme
