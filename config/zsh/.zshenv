@@ -30,7 +30,9 @@ fi
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
 export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/rg.conf
 
-
+# set the ollama API address - this is the default, but tools that want to
+# use ollama (like aider) want the value explicitly declared.
+export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 ############
 # PL sdk/env managers
