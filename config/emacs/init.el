@@ -297,8 +297,8 @@
 (use-package aidermacs
   :straight (:host github :repo "MatthewZMD/aidermacs" :files ("*.el"))
   :config
-  (setq aidermacs-default-model "sonnet")
-  (global-set-key (kbd "C-c a") 'aidermacs-transient-menu)
+  (setq aidermacs-default-model "ollama_chat/deepseek-r1")
+  (global-set-key (kbd "C-c C-a") 'aidermacs-transient-menu)
   ; Ensure emacs can access *_API_KEY through .bashrc or setenv
   ; (setenv "ANTHROPIC_API_KEY" anthropic-api-key)
   (setq aidermacs-use-architect-mode t))
