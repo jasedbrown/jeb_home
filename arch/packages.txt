@@ -115,3 +115,7 @@ fcitx5-qt
 
 # themes
 papirus-icon-theme
+
+# libraries
+libtool
+libvterm

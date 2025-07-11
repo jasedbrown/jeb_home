@@ -90,8 +90,10 @@ libsqlite3-dev
 libssl-dev
 libssl-dev
 libtool
+libtool-bin
 libtree-sitter-dev
 libudev-dev
+libvterm0
 libxkbcommon-x11-dev
 libzstd-dev
 zlib1g-dev
