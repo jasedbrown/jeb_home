@@ -93,7 +93,7 @@
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
 
-; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
+;; mode-line - The ModeLine is defined by the variable ‘mode-line-format’
 (setq-default mode-line-format
               '("%e"
                mode-line-buffer-identification
@@ -111,7 +111,7 @@
 ;; https://systemcrafters.net/advanced-package-management/using-straight-el/
 ;; https://github.com/radian-software/straight.el 
 
-; copy-and-paste base install block for getting straight.el
+;; copy-and-paste base install block for getting straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -357,7 +357,7 @@
   ;; the next two disable crap down in the modeline
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
-  ;; ???
+  :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :hook (('lsp-mode . 'lsp-ui-mode)
          ('lsp-mode . 'lsp-enable-which-key-integration))
@@ -446,8 +446,9 @@
 (use-package yasnippet
   :config
   (yas-reload-all)
-  :hook (('prog-mode . 'yas-minor-mode)
-         ('text-mode . 'yas-minor-mode)))
+  :hook ((prog-mode . yas-minor-mode)
+         (text-mode . yas-minor-mode)
+         (lsp-mode  . yas-minor-mode)))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; company - auto-completion
@@ -507,6 +508,7 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; rust fun!
 ;; rustic = basic rust-mode + additions
 ;; define the hook functions before they are referenced in use-package
 
@@ -523,8 +525,8 @@
 ;; set the cargo build directory to a local dir in `./target'.
 ;; this allows rust-analyzer (called from emacs) to have it's own compilation dir.
 ;; 2024-Aug-23 not sure this is working as hoped. var gets set in local buffer, but
-;; nopt being respected. it might be due to my use of lsp-booster, idk ...
-(defun jeb-set-cargo-target-dir ()
+;; not being respected.
+(defun jeb/set-cargo-target-dir ()
   "Set Cargo's target directory to 'target/emacs' relative to the workspace root using Projectile."
     (let ((project-root (projectile-project-root)))
       (if project-root
@@ -537,7 +539,7 @@
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :after lsp-mode
 ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
-;;  :hook (rustic-mode-hook . (rk/rustic-mode-hook jeb/set-cargo-target-dir-hook))
+  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
   (rustic-format-trigger "on-save")
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
@@ -576,7 +578,7 @@
 (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.40.0/jdt-language-server-1.40.0-202409261450.tar.gz")
 (use-package lsp-java
   :straight t
-  :hook ('java-mode . 'lsp)
+  :hook (java-mode . lsp)
   :custom
   ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
   ;; which is taken from VSCode
