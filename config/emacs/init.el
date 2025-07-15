@@ -359,8 +359,8 @@
   (lsp-modeline-diagnostics-enable nil)
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  :hook (('lsp-mode . 'lsp-ui-mode)
-         ('lsp-mode . 'lsp-enable-which-key-integration))
+  :hook ((lsp-mode . lsp-ui-mode)
+         (lsp-mode . lsp-enable-which-key-integration))
   :bind (:map lsp-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -554,7 +554,7 @@
   :hook (rust-mode . cargo-minor-mode)
   :custom
   (compilation-scroll-output t)
-  (keymap-set cargo-minor-mode-map (kbd "C-c o") 'cargo-mode-command-map))
+  (define-key cargo-minor-mode-map (kbd "C-c o") 'cargo-mode-command-map))
 
 (use-package toml-mode
   :straight t)
@@ -602,7 +602,7 @@
 
 (use-package python-mode
   :straight t
-  :hook ('python-mode . 'lsp))
+  :hook (python-mode . lsp))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -611,7 +611,7 @@
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 (use-package go-mode
   :straight t
-  :hook ('go-mode . 'lsp-deferred))
+  :hook (go-mode . lsp-deferred))
 
 
 (use-package lua-mode
