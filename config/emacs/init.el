@@ -164,6 +164,19 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; ace-window - modern window switching with visual feedback
+;; https://github.com/abo-abo/ace-window
+(use-package ace-window
+  :straight t
+  :bind ("M-o" . ace-window)
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-scope 'frame)
+  (aw-background t)
+  (aw-char-position 'top-left)
+  (aw-minibuffer-char ?z))
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; IBuffer: buffer list manangement: IBuffer (https://www.emacswiki.org/emacs/IbufferMode)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
