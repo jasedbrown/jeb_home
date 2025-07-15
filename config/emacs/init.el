@@ -52,6 +52,7 @@
 
 (show-paren-mode 1)
 (column-number-mode 1)
+(global-display-line-numbers-mode 1)
 
 ;; parens matching - automatically pairs braces when you create them
 (electric-pair-mode 1)
