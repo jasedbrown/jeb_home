@@ -1,0 +1,19 @@
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Environment=TERMINFO_DIRS=/usr/share/terminfo:/lib/terminfo:/usr/lib/terminfo
+
+# emacs: use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
+# to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
+# not sure if this is necessary anymore (July 2025)
+Environment=LSP_USE_PLISTS=true
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
