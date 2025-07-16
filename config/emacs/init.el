@@ -355,44 +355,6 @@
 (setq read-process-output-max (* 1024 1024))
 
 
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; setting up debugging support with dap-mode
-
-(use-package exec-path-from-shell
-  :init (exec-path-from-shell-initialize))
-
-(use-package dap-mode
-  ;;:after (lsp-mode dap-gdb-lldb)
-  ;; (require  dap-lldb  dap-cpptools   dap-dlv-go dap-java) ;; go-lang and java
-
-  :config
-  ;; dap-auto-configure-features!
-  (dap-auto-configure-mode)
-  (dap-ui-mode)
-  (dap-ui-controls-mode 1)
-  (require 'dap-lldb)
-  (require 'dap-gdb-lldb)
-  ;; installs .extension/vscode
-  (dap-gdb-lldb-setup)
-  (dap-register-debug-template
-   "JEB::Rust::LLDB Run Configuration"
-   (list :type "lldb"
-         :request "launch"
-         :name "LLDB::Run"
-	     :gdbpath "rust-lldb"
-         ))
-  (dap-register-debug-template
-   "JEB::Rust::GDB Run Configuration"
-   (list :type "gdb"
-         :request "launch"
-         :name "GDB::Run"
-	     :gdbpath "rust-gdb"
-         )))
-
-
-;;(use-package hydra)
-;; dap-hydra??
-
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
 
