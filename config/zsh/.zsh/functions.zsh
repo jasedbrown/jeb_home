@@ -43,6 +43,23 @@ cursor() {
       "$@" > /dev/null 2>&1 & disown
   fi
 }
+# Function to start zoom video conferencing
+zoom-launch() {
+  if [ -f /etc/arch-release ]; then
+    export ELECTRON_OZONE_PLATFORM_HINT=wayland
+    export GDK_BACKEND=wayland
+    export XDB_SESSION_TYPE=wayland
+    export ENABLE_SANDBOX=0
+      
+    nohup zoom \
+      --enable-features=UseOzonePlatform \
+      --ozone-platform=wayland \
+      "$@" > /dev/null 2>&1 & disown
+  else
+    nohup zoom \
+      "$@" > /dev/null 2>&1 & disown
+  fi
+}
 
 restart() {
     sudo /sbin/shutdown -r 0
