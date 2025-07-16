@@ -455,12 +455,20 @@
                         `("cargo" "build" "--target-dir" ,(concat project-root "target/emacs")))
         (message "Could not determine project root using Projectile"))))
 
+;; Set up Emacs-specific cargo build directory - in lieu oif the above busted projectile-thing ...
+;; (let ((emacs-cargo-dir (expand-file-name "emacs/cargo-builds" 
+;;                                         (or (getenv "XDG_CACHE_HOME") 
+;;                                             "~/.cache"))))
+;;   (setenv "CARGO_TARGET_DIR" emacs-cargo-dir)
+;;   ;; Ensure the directory exists
+;;   (make-directory emacs-cargo-dir t))
+
 
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :after lsp-mode
 ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
-  :hook (rustic-mode . jeb/set-cargo-target-dir)
+;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
   (rustic-format-trigger "on-save")
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
@@ -495,8 +503,8 @@
 ;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
 ;; also, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 ;; as of Oct 2024, lsp-java sets 'lsp-java-jdt-download-url' to version 1.23, which
-;; is a old. current is v1.40. 
-(setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.40.0/jdt-language-server-1.40.0-202409261450.tar.gz")
+;; is a old. current is v1.48 (July 2025).
+(setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.48.0/jdt-language-server-1.48.0-202506271502.tar.gz")
 (use-package lsp-java
   :straight t
   :hook (java-mode . lsp)
