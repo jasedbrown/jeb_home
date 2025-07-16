@@ -478,14 +478,6 @@
   ;; (lsp-rust-analyzer-cargo-extra-args "--locked")
   )
 
-;; arguably, cargo-mode might not be unnecessary ...
-(use-package cargo-mode
-  :straight t
-  :hook (rust-mode . cargo-minor-mode)
-  :custom
-  (compilation-scroll-output t)
-  (define-key cargo-minor-mode-map (kbd "C-c o") 'cargo-mode-command-map))
-
 (use-package toml-mode
   :straight t)
 
