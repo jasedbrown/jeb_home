@@ -6,7 +6,7 @@ bluez-utils
 btop
 curl
 dig
-emacs
+emacs-wayland
 git
 intel-ucode
 iw
