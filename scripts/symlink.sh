@@ -51,6 +51,8 @@ if [ -f /etc/arch-release ]; then
     ln -sf "$DOTFILES_HOME/home/ssh/config" ~/.ssh/config
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/config
+
+    sudo cp local/bin/grimblast /usr/local/bin
 fi
 
 
