@@ -154,7 +154,9 @@
   :init
   (vertico-mode))
 
-(use-package vterm)
+(use-package vterm
+  :custom
+  (vterm-always-compile-module t))
 
 
 ;; themes
