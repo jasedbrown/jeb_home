@@ -164,6 +164,7 @@
 (use-package ef-themes)
 (load-theme 'ef-maris-dark t)
 
+(use-package hydra)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; ace-window - modern window switching with visual feedback
@@ -540,3 +541,42 @@
 
 (use-package lua-mode
   :straight t)
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+;; setting up debugging support with dap-mode. we'll use `dap-lldb` for easier rust intergration.
+;; 
+;; 
+;; relies on lldb-dap[1] already available on the machine (this was called lldb-vscode
+;; before LLDB version 18). Note that package registers a single debugger type: `:type lldb-vscode'.
+;;
+;; [0] https://emacs-lsp.github.io/dap-mode/page/configuration/#dap-lldb
+;; [1] https://github.com/llvm/llvm-project/blob/main/lldb/tools/lldb-dap/README.md
+
+;; (use-package exec-path-from-shell
+;;   :init (exec-path-from-shell-initialize))
+
+(use-package dap-mode
+  :config
+  (dap-auto-configure-mode)
+  (dap-ui-mode)
+  (dap-ui-controls-mode 1)
+  
+  ;; Register lldb-dap adapter for rust debugging
+  (dap-register-debug-provider
+   "lldb-dap"
+   (lambda (conf)
+     (plist-put conf :dap-server-path "lldb-dap")
+     conf))
+  
+  ;; Rust debugging template using lldb-dap
+  (dap-register-debug-template
+   "Rust::LLDB Debug"
+   (list :type "lldb-dap"
+         :request "launch"
+         :name "LLDB Debug"
+         :program "/opt/dev/readyset/public/target/debug/readyset"
+         :args ["--upstream-db-url=postgresql://postgres:noria@127.0.0.1:5432/noria"]
+         :cwd "/opt/dev/readyset/public"
+         :console "integratedTerminal"))
+  )
