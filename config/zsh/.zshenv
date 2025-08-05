@@ -1,3 +1,18 @@
+# This file is a bit of a hack - if you need to set some
+# envvars before anything happens at login, this seems to
+# (one of the) least shitty options :shrug:
+#
+# *** Make sure this file is symlinked to the $HOME dir. ***
+
+# basic zsh home dir - must be set
+export ZDOTDIR=$HOME/.config/zsh
+
+# suppossedly, these have defaults, but uhhh... fml
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_DATA_HOME=$HOME/.local/share
+
 ulimit -n unlimited
 
 # my good ol' source code, developer home
@@ -6,64 +21,11 @@ export SRC_HOME="/opt/dev"
 # standard directory for my dotfiles repo
 export DOTFILES_HOME="$HOME/jeb_home"
 
-# rust flags to make use of sccache
-export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
-export CARGO_INCREMENTAL=0
-
-# this is a hack to get rocksdb to compile on arch,
-# which uses gcc-15 now.
-export CXXFLAGS="$CXXFLAGS -include cstdint"
-
-
 export EDITOR="emacs -nw"
-
-# emacs: use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
-# to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
-export LSP_USE_PLISTS=true
 
 # only explicitly set up the ssh-agent socket if we're on arch
 if [ -f /etc/arch-release ]; then
     export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 fi
 
-# for custom ripgrep behavior, need to set an env var pointing to the conf file.
-# https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
-export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/rg.conf
 
-# set the ollama API address - this is the default, but tools that want to
-# use ollama (like aider) want the value explicitly declared.
-export OLLAMA_API_BASE=http://127.0.0.1:11434
-
-############
-# PL sdk/env managers
-
-# this adds the cargo bin dir to the path
-source "$HOME/.cargo/env"
-
-# sdkman (for java jdk management)
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# pyenv (for python sdk and virtualenv management)
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init - zsh)"
-
-# rbenv (for ruby sdk and env management)
-# export PATH="$HOME/.rbenv/bin:$PATH"
-# eval "$(rbenv init - --no-rehash bash)"
-
-# golang (<sigh>)
-## GOROOT -location where your Go installation (compiler, tools, standard library) lives
-## GOPATH - root of your Go workspace - where Go code, downloaded dependencies, and compiled binaries are stored
-# export GOROOT=/usr/local/go/current
-# export GOPATH=$HOME/.local/share/gopath
-# export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
-
-. "$HOME/.cargo/env"
-
-# nvm/nodejs - really only using for claude code (atm)
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
