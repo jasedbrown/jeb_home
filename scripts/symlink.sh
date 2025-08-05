@@ -32,13 +32,15 @@ if command -v stow &> /dev/null; then
     # Stow home directory files
     echo -e "${GREEN}Symlinking files to home directory...${NC}"
     stow -t "$HOME" home
+
+    ln -sf "$DOTFILES_DIR/config/zsh/.zshenv" ~/
+
 else
     echo -e "${RED}GNU Stow not found, ignoring...${NC}"
 fi
 
 # system-wide settings
 echo -e "${GREEN}Applying system-wide configuraitons...${NC}"
-sudo ln -sf "$DOTFILES_DIR/system/profile.d/jasobrown-init.sh" /etc/profile.d/jasobrown-init.sh
 
 if [ -f /etc/arch-release ]; then
     echo -e "${GREEN}Applying system-wide configuraitons - arch specific...${NC}"
