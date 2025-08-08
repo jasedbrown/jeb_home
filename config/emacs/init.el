@@ -305,6 +305,12 @@
   :init
   ; this is for which-key integration documentation, need to use lsp-mode-map
   (setq lsp-keymap-prefix "C-c l" )
+  ;; Set session file location before package loads
+  (let ((lsp-state-dir (or (getenv "XDG_STATE_HOME")
+                           (expand-file-name ".local/state" "~"))))
+    (unless (file-exists-p lsp-state-dir)
+      (make-directory lsp-state-dir t))
+    (setq lsp-session-file (expand-file-name "lsp-session-v1" lsp-state-dir)))
   :custom
   (lsp-idle-delay 0.5)
   ;; This controls the overlays that display type and other hints inline. Enable
