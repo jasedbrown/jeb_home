@@ -20,6 +20,7 @@ plymouth
 stow
 traceroute
 tmux
+tmuxp
 wget
 zsh
 zsh-completions
