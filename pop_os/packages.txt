@@ -14,6 +14,7 @@ stow
 system76-driver
 system76-dkms
 tmux
+tmuxp
 wget
 zsh
 

@@ -73,3 +73,29 @@ sysupdate() {
         sudo apt upgrade
     fi
 }
+
+# tmux attach-or-create from tmuxp template
+tdev() {
+  local name="$1"
+  local tmpl_path
+
+  if [[ -z "$name" ]]; then
+    echo "Usage: tdev <session-name>"
+    return 1
+  fi
+
+  # Try to attach if session exists
+  if tmux has-session -t "$name" 2>/dev/null; then
+    tmux attach -t "$name"
+  else
+    # Look for template in ~/.tmuxp or ~/.config/tmuxp
+    if [[ -f "$XDG_CONFIG_HOME/tmuxp/$name.yaml" ]]; then
+      tmpl_path="$XDG_CONFIG_HOME/tmuxp/$name.yaml"
+    else
+      echo "Template for '$name' not found in $XDG_CONFIG_HOME/tmuxp"
+      return 1
+    fi
+    tmuxp load "$tmpl_path"
+  fi
+}
+
