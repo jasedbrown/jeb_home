@@ -1,3 +1,5 @@
+// modules docs: https://github.com/Alexays/Waybar/wiki/Modules
+
 // to reload the config:
 // killall waybar; waybar &
 // ... or ...
@@ -25,18 +27,19 @@
         "custom/language",
         "pulseaudio",
         "network",
-        "battery"
+        "battery",
+        "power-profiles-daemon"
     ],
 
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "warp-on-scroll": false,
-        "format": "{name}",
+        "format": "{icon} {name}",
         "format-icons": {
             "urgent": "",
-            "active": "",
-            "default": ""
+            "active": "",
+            "default": ""
         }
     },
 
@@ -63,10 +66,7 @@
         "format-icons": {
             "headphone": "",
             "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
+            "headset": "",
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
@@ -96,5 +96,17 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""], 
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "{profile}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": "",
+            "power-saver": ""
+        }
     },
 }

@@ -5,7 +5,7 @@
     padding-bottom: 1px;
     padding-top: 1px;
     padding: 1px 6px;
-    color: white
+    color: white;
 }
 
 #battery {
@@ -74,8 +74,7 @@ window#waybar {
 
 #workspaces button.active {
     background: #453e3d;
-    color: white
-    ;
+    color: white;
     opacity: 1;
 }
 
@@ -90,6 +89,10 @@ window#waybar {
 }
 
 #pulseaudio {
+    opacity: 0.7;
+}
+
+#power-profiles-daemon {
     opacity: 0.7;
 }
 

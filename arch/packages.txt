@@ -73,6 +73,7 @@ hyprpicker
 kitty
 libnotify
 mako
+power-profiles-daemon
 sddm
 slurp
 waybar
