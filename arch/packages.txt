@@ -28,6 +28,7 @@ zsh-completions
 # Terminal utilities
 bc
 bzip2
+fastfetch
 fd
 fzf
 gnuplot
