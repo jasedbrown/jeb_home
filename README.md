@@ -24,7 +24,7 @@ after paru is installed, this is reasonably easy (just downloads more rust :shru
 
 ## pop!_os install
 
-Apparently I couldnt give up on this, so I asked Claude to help translate the arch stuffs for pop!,
+Apparently I couldn't give up on this, so I asked Claude to help translate the arch stuffs for pop!,
 as well as incorporating my old setup scripts.
 
 ## random notes/links
@@ -35,6 +35,8 @@ useful stuff
 * wifi: networkmanager's `nmcli`
 ** `nmcli device wifi list` - to list all wifi networks
 ** `nmcli device wifi connect _SSID_ password _pw_` to connect to a network
+
+NOTE: you can also use `impala` TUI; need `iwd` running as systemd service
 
 * printing (cups/avavhi)
 ** to discover network things (including printers): `avahi-discover`

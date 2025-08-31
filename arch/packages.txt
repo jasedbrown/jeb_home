@@ -10,6 +10,7 @@ emacs-wayland
 git
 intel-ucode
 iw
+iwd
 linux-tools
 lld
 man-db
@@ -33,6 +34,7 @@ fd
 fzf
 gnuplot
 graphviz
+impala
 jq
 less
 ripgrep

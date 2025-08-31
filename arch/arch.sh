@@ -25,6 +25,11 @@ if command -v NetworkManager &> /dev/null; then
     sudo systemctl enable --now NetworkManager.service
 fi
 
+# Network services
+if command -v iwctl &> /dev/null; then
+    sudo systemctl enable --now iwd.service
+fi
+
 # Bluetooth (only if hardware exists)
 if [ -d /sys/class/bluetooth ]; then
     sudo systemctl enable --now bluetooth.service
