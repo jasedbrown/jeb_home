@@ -5,7 +5,6 @@ bluez
 bluez-utils
 btop
 curl
-dig
 emacs-wayland
 git
 intel-ucode
