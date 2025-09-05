@@ -57,6 +57,9 @@ fi
 # enable pipewire for audio
 sudo systemctl enable --now pipewire.service
 
+# set up NTP time sync
+sudo timedatectl set-ntp true
+
 # plymouth is used to display a splash screen during boot time.
 # we need to be careful about adding it to the initramfs script.
 #
