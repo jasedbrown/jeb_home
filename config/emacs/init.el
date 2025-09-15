@@ -435,8 +435,10 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; LLM magick
 (use-package claude-code-ide
-  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el"))
-
+  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c '" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rust fun!
