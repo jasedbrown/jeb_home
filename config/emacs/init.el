@@ -167,8 +167,9 @@
 
 (use-package vterm
   :custom
-  (vterm-always-compile-module t))
-
+  (vterm-always-compile-module t)
+  :bind (:map vterm-mode-map
+              ("C-g" . vterm-send-escape)))
 
 ;; themes
 ;; currently liking prot's https://github.com/protesilaos/ef-themes
