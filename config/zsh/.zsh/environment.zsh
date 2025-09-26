@@ -1,7 +1,8 @@
 # a place to dump all random env settings.
 # primarily for PLs/SKDs.
 
-
+# this is to avoid a nag message from tmux
+export DISABLE_AUTO_TITLE=true
 
 # emacs: use plists in lsp-mode (https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization)
 # to avoid annoying "Error running timer ‘lsp-lens-refresh’: (wrong-type-argument hash-table-p ..."
