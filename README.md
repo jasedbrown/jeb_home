@@ -13,7 +13,7 @@ how achievable that is in practice, but that's the hope).
 ## arch linux install
 
 1. new system - [helpful steps](https://linuxiac.com/arch-linux-install/)
-instead of kde, `pacman -S sddm hyprland wofi firefox git networkmanager kitty`
+instead of kde, `pacman -S sddm hyprland wofi firefox git networkmanager kitty alacritty`
 just install kitty as hyprland expects it by default (it seems _fine_ ...)
 
 2. install [paru](https://github.com/Morganamilo/paru) - it helps instal AUR packages

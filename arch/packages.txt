@@ -64,6 +64,7 @@ python-pip
 wireshark-qt
 
 # window manager essentials
+alacritty
 brightnessctl
 dmenu
 grim
@@ -72,7 +73,6 @@ hyprland
 hyprlock
 hyprpaper
 hyprpicker
-kitty
 libnotify
 mako
 power-profiles-daemon

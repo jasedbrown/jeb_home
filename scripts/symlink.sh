@@ -69,10 +69,4 @@ sudo systemctl daemon-reload
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
 
-# by this time, kitty should be installed (at least the symlink'd dir in ~/.config)
-if [ ! -d "$SRC_HOME/kitty-themes" ]; then
-    git clone https://github.com/dexpota/kitty-themes.git $SRC_HOME/kitty-themes
-    ln -s $SRC_HOME/kitty-themes/themes/Afterglow.conf $XDG_CONFIG_HOME/kitty/theme.conf
-fi
-
 echo -e "${GREEN}Symlinks created successfully!${NC}"
