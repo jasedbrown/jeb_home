@@ -1,5 +1,16 @@
+[build]
+# # Use sccache as a compiler wrapper
+rustc-wrapper = "sccache"
+
+# # Disable incremental builds to make sccache effective
+incremental = false
+
+# Optional: number of parallel jobs (tweak per machine)
+# jobs = 8
+
 [target.x86_64-unknown-linux-gnu]
 # Use mold linker with no-rosegment flag for better flamegraphs
+linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "link-arg=-Wl,--no-rosegment"]
 
 [alias]

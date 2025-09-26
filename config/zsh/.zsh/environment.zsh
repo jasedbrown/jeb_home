@@ -23,10 +23,6 @@ export CXXFLAGS="$CXXFLAGS -include cstdint"
 #######################
 # PL sdk/env managers
 
-# rust flags to make use of sccache
-export RUSTC_WRAPPER=/home/jasobrown/.cargo/bin/sccache
-export CARGO_INCREMENTAL=0
-
 # this adds the cargo bin dir to the path
 source "$HOME/.cargo/env"
 
