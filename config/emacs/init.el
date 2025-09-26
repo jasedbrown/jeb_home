@@ -105,6 +105,9 @@
 ;; raise the gc collection threshold, due to lsp-mode
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#adjust-gc-cons-threshold
 (setq gc-cons-threshold 100000000)
+;; Increase the amount of data which Emacs reads from the process
+(setq read-process-output-max (* 1024 1024))
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; package support via straight.el
@@ -128,6 +131,14 @@
 ;; point straight-use-package.el to straight
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+
+;; make sure to use builtins
+;; 2025-Sept-26 - ran into problems when getting eglot/treesitter to work
+(use-package project  :straight nil)
+(use-package xref     :straight nil)
+(use-package eglot    :straight nil)
+(use-package eldoc    :straight nil)
+(use-package flymake  :straight nil)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -277,7 +288,7 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map))
   :custom
-  ;; courtesy of cluade.ai:
+  ;; courtesy of claude.ai:
   ;; Configure Projectile for better TRAMP performance
   (projectile-enable-caching t)  ; Important for TRAMP performance
   (projectile-file-exists-remote-cache-expire nil)  ; Cache remote file existence
@@ -292,71 +303,6 @@
 ;; if it integrates with projectile
 (use-package ripgrep
   :straight t)
-
-
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; lsp-mode and friends
-
-(use-package lsp-mode
-  :straight t
-  :commands lsp
-  :init
-  ; this is for which-key integration documentation, need to use lsp-mode-map
-  (setq lsp-keymap-prefix "C-c l" )
-  ;; Set session file location before package loads
-  (let ((lsp-state-dir (or (getenv "XDG_STATE_HOME")
-                           (expand-file-name ".local/state/emacs" "~"))))
-    (unless (file-exists-p lsp-state-dir)
-      (make-directory lsp-state-dir t))
-    (setq lsp-session-file (expand-file-name "lsp-session-v1" lsp-state-dir)))
-  :custom
-  (lsp-idle-delay 0.5)
-  ;; This controls the overlays that display type and other hints inline. Enable
-  ;; / disable as you prefer. Well require a `lsp-workspace-restart' to have an
-  ;; effect on open projects.
-  (lsp-inlay-hint-enable nil)
-  ;; the next two disable crap down in the modeline
-  (lsp-modeline-code-actions-enable nil)
-  (lsp-modeline-diagnostics-enable nil)
-  :config
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  :hook ((lsp-mode . lsp-ui-mode)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :bind (:map lsp-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c d" . dap-hydra))
- )
-
-;; wtf - semgrep just made a mess of things, especially with rustic-mode
-(setq lsp-disabled-clients '(semgrep-ls))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-sideline-show-hover nil)
-  :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references))
-  :init (setq lsp-ui-doc-delay 0.5
-              lsp-ui-doc-position 'bottom
-	          lsp-ui-doc-max-width 100
-              )
-)
-
-
-(setq lsp-file-watch-threshold nil)
-
-;; lsp helper - Increase the amount of data which Emacs reads from the process
-(setq read-process-output-max (* 1024 1024))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -440,6 +386,7 @@
   :config
   (claude-code-ide-emacs-tools-setup))
 
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rust fun!
 ;; rustic = basic rust-mode + additions
@@ -476,13 +423,27 @@
 ;;   (make-directory emacs-cargo-dir t))
 
 
+;; Make sure the Rust Tree-sitter grammar exists:
+;; M-x treesit-install-language-grammar RET rust RET
+
+;; Enable Tree-sitter in rust-mode
+(use-package rust-mode
+  :ensure t
+  :init
+  (setq rust-mode-treesitter-derive t))
+
+;; Load Rustic after rust-mode
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
-  :after lsp-mode
-;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
-;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
+  :after rust-mode
+;; ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
+;; ;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
-  (rustic-format-trigger "on-save")
+  (rustic-lsp-client 'eglot)    ;; or 'lsp if you prefer lsp-mode
+  ;; (setq rustic-lsp-setup-p nil)  ;; if you want full control over LSP wiring
+
+;; pre-2025-Sept-26 settings
+;;   (rustic-format-trigger "on-save")
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t)
   (lsp-rust-analyzer-display-closure-return-type-hints t)
@@ -508,21 +469,20 @@
 ;; also, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
 ;; as of Oct 2024, lsp-java sets 'lsp-java-jdt-download-url' to version 1.23, which
 ;; is a old. current is v1.48 (July 2025).
-(setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.48.0/jdt-language-server-1.48.0-202506271502.tar.gz")
-(use-package lsp-java
-  :straight t
-  :hook (java-mode . lsp)
-  :custom
-  ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
-  ;; which is taken from VSCode
-  (lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
-)
+;; (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.48.0/jdt-language-server-1.48.0-202506271502.tar.gz")
+;; (use-package lsp-java
+;;   :straight t
+;;   :hook (java-mode . lsp)
+;;   :custom
+;;   ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
+;;   ;; which is taken from VSCode
+;;   (lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+;; )
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; c/c++-related settings, mostly borrowed from a post on the emacs lsp page:
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
-
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
@@ -532,7 +492,6 @@
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
-
 (use-package python-mode
   :straight t
   :hook (python-mode . lsp))
@@ -542,54 +501,23 @@
 ;; golang-related settings. Need a Go SDK installed, and the go-lsp server (gopls)
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
+;; autoload only when needed
 (use-package go-mode
   :straight t
-  :hook (go-mode . lsp-deferred))
+  :mode ("\\.go\\'" . go-mode))
 
-
+; autoload only when needed
 (use-package lua-mode
-  :straight t)
+  :straight t
+  :mode ("\\.lua\\'" . lua-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; setting up debugging support with dap-mode. we'll use `dap-lldb` for easier rust intergration.
-;; 
-;; relies on lldb-dap[1] already available on the machine (this was called lldb-vscode
-;; before LLDB version 18). Note that package registers a single debugger type: `:type lldb-vscode'.
-;;
-;; [0] https://emacs-lsp.github.io/dap-mode/page/configuration/#dap-lldb
-;; [1] https://github.com/llvm/llvm-project/blob/main/lldb/tools/lldb-dap/README.md
-
-(setq dap-lldb-debug-program '("/usr/bin/lldb-dap"))
-(use-package dap-mode
-  :init
-    ;; Set breakpoints file location before package loads
-  (let ((dap-state-dir (or (getenv "XDG_STATE_HOME")
-                           (expand-file-name ".local/state/emacs" "~"))))
-    (unless (file-exists-p dap-state-dir)
-      (make-directory dap-state-dir t))
-    (setq dap-breakpoints-file (expand-file-name ".dap-breakpoints" dap-state-dir)))
-  :config
-  (dap-auto-configure-mode)
-  (dap-ui-mode)
-  (dap-ui-controls-mode 1)
-  (require 'dap-lldb)
-  )
-
-;; here is a sample ${projectWorkspace}/.vscode/launch.json file with templates. good luck and godspeed
-;; {
-;;     "version": "0.2.0",
-;;     "configurations": [
-;;         {
-;;             "name": "Debug Rust Binary",
-;;             "type": "lldb-vscode",
-;;             "request": "launch",
-;;             "program": "${workspaceFolder}/target/debug/debugger",
-;;             "args": [],
-;;             "cwd": "${workspaceFolder}",
-;;             "stopOnEntry": false,
-;;             "environment": [],
-;;             "externalConsole": false
-;;         }
-;;     ]
-;; }
+;; now set up eglot or lsp-mode, *after* all the language modes
+(use-package eglot
+  :straight nil 
+  :commands (eglot eglot-ensure)
+  :hook ((rustic-mode . eglot-ensure))
+  :custom
+  (eglot-events-buffer-size 0)
+  (eglot-extend-to-xref t))
