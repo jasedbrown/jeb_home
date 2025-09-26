@@ -57,27 +57,9 @@ if [ ! -f "/usr/local/bin/mold" ]; then
 fi
 
 # Build and install Emacs
-EMACS_DIR="/tmp/emacs-30"
 if [ ! -f "/usr/local/bin/emacs" ]; then
     echo "Building Emacs from source..."
-
-    # Install build dependencies
-    sudo apt build-dep -y emacs
-    sudo apt install -y libgccjit0 libgccjit-10-dev libjansson4 libjansson-dev \
-        gnutls-bin libtree-sitter-dev gcc-10 imagemagick libmagick++-dev \
-        libwebp-dev webp libxft-dev libxft2
-
-    sudo chown $(whoami):$(whoami) /opt/dev
-    git clone --depth 1 --branch emacs-30.1 git://git.savannah.gnu.org/emacs.git "$EMACS_DIR"
-    cd "$EMACS_DIR"
-    
-    export CC=/usr/bin/gcc-10
-    export CXX=/usr/bin/gcc-10
-    ./autogen.sh
-    ./configure --with-native-compilation=aot --with-imagemagick --with-json \
-                --with-tree-sitter --with-xft
-    make -j$(nproc)
-    sudo make install
+    ./build_emacs.sh
 fi
 
 echo "Pop!_OS specific setup complete!" 
