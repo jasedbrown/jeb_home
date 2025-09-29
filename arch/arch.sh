@@ -22,13 +22,14 @@ echo "Installing systemctl stuffs..."
 
 ######
 # Network services
-#
-# first, allow networkmanager to use iwd as it's wifi backend
-sudo cp system/etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 
-if command -v iwctl &> /dev/null; then
-    sudo systemctl enable --now iwd.service
-fi
+# 2025-Sept-29 removed the iws stuffs as it sometime breaks networking,
+# especially when tailscale is involved.
+# first, allow networkmanager to use iwd as it's wifi backend
+# sudo cp system/etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
+# if command -v iwctl &> /dev/null; then
+#     sudo systemctl enable --now iwd.service
+# fi
 
 if command -v NetworkManager &> /dev/null; then
     sudo systemctl enable --now NetworkManager.service
