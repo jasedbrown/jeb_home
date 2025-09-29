@@ -459,26 +459,18 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; java-related settings, mostly borrowed from
+;; java-related settings, originally borrowed from
 ;; https://github.com/neppramod/java_emacs/tree/master
 ;;
-;; also, you might hit problems if you have a jvm that doesn't support
-;; gradle/kotlin correctly (:facepalm:). I had jdk-20, but needed to
-;; drop down to jdk-17. Also, jdk version prefs might get recorded into
-;; conf files after you change the jdk/JAVA_HOME. I hacked this file:
-;; <emacs_dir>/workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
-;; also, the FAQ under lsp-java helped, too: https://github.com/emacs-lsp/lsp-java
-;; as of Oct 2024, lsp-java sets 'lsp-java-jdt-download-url' to version 1.23, which
-;; is a old. current is v1.48 (July 2025).
-;; (setq lsp-java-jdt-download-url "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.48.0/jdt-language-server-1.48.0-202506271502.tar.gz")
-;; (use-package lsp-java
-;;   :straight t
-;;   :hook (java-mode . lsp)
-;;   :custom
-;;   ;; bump the jdtls JVM args. taken from https://github.com/emacs-lsp/lsp-java,
-;;   ;; which is taken from VSCode
-;;   (lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
-;; )
+;; lsp-java (https://github.com/emacs-lsp/lsp-java) is a thin, emacs
+;; client/wrapper around the eclipse jdtls (https://github.com/eclipse-jdtls/eclipse.jdt.ls).
+(use-package java-mode
+  :straight nil
+  :mode ("\\.java\\'" . java-ts-mode)
+  :hook (java-ts-mode . eglot-ensure)
+  :config
+  ;; Optional: customize tree-sitter features
+  (setq java-ts-mode-indent-offset 4))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
