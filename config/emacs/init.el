@@ -440,8 +440,7 @@
 ;; ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
 ;; ;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
-  (rustic-lsp-client 'eglot)    ;; or 'lsp if you prefer lsp-mode
-  ;; (setq rustic-lsp-setup-p nil)  ;; if you want full control over LSP wiring
+  (rustic-lsp-client 'eglot)
 
 ;; pre-2025-Sept-26 settings
 ;;   (rustic-format-trigger "on-save")
@@ -513,4 +512,5 @@
   :hook ((rustic-mode . eglot-ensure))
   :custom
   (eglot-events-buffer-size 0)
-  (eglot-extend-to-xref t))
+  (eglot-extend-to-xref t)
+  (eglot-inlay-hints-mode f))
