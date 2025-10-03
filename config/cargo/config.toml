@@ -5,13 +5,14 @@ rustc-wrapper = "sccache"
 # # Disable incremental builds to make sccache effective
 incremental = false
 
-# Optional: number of parallel jobs (tweak per machine)
-# jobs = 8
-
 [target.x86_64-unknown-linux-gnu]
 # Use mold linker with no-rosegment flag for better flamegraphs
+# never forget this clusterfuck: https://github.com/rui314/mold/issues/1084
 linker = "clang"
-rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "link-arg=-Wl,--no-rosegment"]
+rustflags = [
+    "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+    "-C", "link-arg=-Wl,--no-rosegment"
+]
 
 [alias]
 nt = "nextest run --workspace --features failure_injection --exclude readyset-clustertest --no-fail-fast"
