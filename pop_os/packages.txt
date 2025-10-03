@@ -38,6 +38,7 @@ tmux
 traceroute
 tree
 unzip
+wl-clipboard
 xclip
 zip
 zstd

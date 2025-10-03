@@ -17,9 +17,10 @@ openssh
 openssl
 plymouth
 stow
-traceroute
 tmux
 tmuxp
+traceroute
+tree-sitter
 wget
 zsh
 zsh-completions
