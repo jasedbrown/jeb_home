@@ -555,5 +555,26 @@
   (eglot-extend-to-xref t)
   (eglot-inlay-hints-mode f))
 
-;; i truly hate inlay mode (by default)
-(remove-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
+;; eglot doesn't sort the xref output, whereas lsp-mode did :homer-cry:
+;; i asked chatgpt for this.
+(defun my/xref-sort (xrefs)
+  "Sort XREFS by file name, then line number."
+  (cl-sort (copy-sequence xrefs)
+           (lambda (a b)
+             (let* ((loc-a (xref-item-location a))
+                    (loc-b (xref-item-location b))
+                    (file-a (xref-location-group loc-a))
+                    (file-b (xref-location-group loc-b)))
+               (if (string= file-a file-b)
+                   (< (xref-location-line loc-a)
+                      (xref-location-line loc-b))
+                 (string< file-a file-b))))))
+
+(advice-add 'xref--show-xrefs :around
+            (lambda (orig fetcher display-action &rest args)
+              (funcall orig
+                       (lambda ()
+                         (my/xref-sort (funcall fetcher)))
+                       display-action
+                       args)))
+
