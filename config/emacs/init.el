@@ -77,7 +77,6 @@
 ;; Hook the function to run when show-paren-mode is active
 (add-hook 'post-command-hook 'show-paren-line-number)
 
-
 ;; don't use global line highlight
 (global-hl-line-mode 0)
 
@@ -140,6 +139,12 @@
 (use-package eldoc    :straight nil)
 (use-package flymake  :straight nil)
 
+(use-package hydra)
+
+;; themes
+;; currently liking prot's https://github.com/protesilaos/ef-themes
+(use-package ef-themes)
+(load-theme 'ef-maris-dark t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; dired hacking
@@ -151,6 +156,31 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; emacs <-> system copy/paste integration
+
+;; Use system clipboard for all copy/paste
+(setq select-enable-clipboard t
+      select-enable-primary t)
+
+;; Wayland clipboard integration
+(setq x-select-enable-clipboard-manager t)
+
+;; If running in terminal Emacs under Wayland
+(unless (display-graphic-p)
+  (setq interprogram-cut-function
+        (lambda (text &optional _push)
+          (let ((process-connection-type nil))
+            (let ((proc (start-process "wl-copy" "*Messages*" "wl-copy" "-f" "-n")))
+              (process-send-string proc text)
+              (process-send-eof proc)))))
+  (setq interprogram-paste-function
+        (lambda ()
+          (shell-command-to-string "wl-paste -n | tr -d '\r'"))))
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; Minibuffer completion
+
 ;; which-key: displays in the mini buffer the key bindings following
 ;; your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
@@ -165,18 +195,86 @@
   :init
   (vertico-mode))
 
+;; Orderless: flexible matching (fuzzy-like, space-separated terms)
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides
+   '((file (styles basic partial-completion)) ;; sane file paths
+     (eglot (styles orderless)))))            ;; fuzzy LSP completions
+
+;; Marginalia: annotations (docs, file metadata, etc.)
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;; Consult: better versions of common commands
+(use-package consult
+  :bind
+  (("C-s" . consult-line)              ;; search buffer
+   ("C-x b" . consult-buffer)          ;; switch buffer
+   ("M-y" . consult-yank-pop)          ;; browse kill ring
+   ("C-c r" . consult-ripgrep)         ;; project grep
+   ("C-x 4 b" . consult-buffer-other-window)
+   ("C-x 5 b" . consult-buffer-other-frame)))
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; In-buffer completions
+
+;; Corfu: popup completion at point
+(use-package corfu
+  :init
+  (global-corfu-mode)    ;; enable everywhere
+  :custom
+  (corfu-auto t)         ;; auto popup
+  (corfu-auto-prefix 2)  ;; show after 2 chars
+  (corfu-cycle t)        ;; cycle around candidates
+  (corfu-preselect-first nil)
+  :bind
+  (:map corfu-map
+        ("C-n" . corfu-next)
+        ("C-p" . corfu-previous)
+        ("M-<" . corfu-first)
+        ("M->" . corfu-last)))
+
+;; Yasnippet: snippet expansion
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+
+;; Cape: add extra completion sources on top of eglot
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev) ;; words in buffer
+  (add-to-list 'completion-at-point-functions #'cape-file)    ;; filenames
+  (add-to-list 'completion-at-point-functions #'cape-symbol)) ;; elisp symbols
+
+;; TAB: snippets > completion > indent
+(defun tab-indent-or-complete ()
+  "Try yasnippet, then completion, else indent."
+  (interactive)
+  (cond
+   ((minibufferp) (minibuffer-complete))
+   ((yas-expand))
+   ((completion-at-point))
+   (t (indent-for-tab-command))))
+
+(global-set-key (kbd "TAB") #'tab-indent-or-complete)
+(global-set-key (kbd "<tab>") #'tab-indent-or-complete)
+
+
+
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; vterm
 (use-package vterm
   :custom
   (vterm-always-compile-module t)
   :bind (:map vterm-mode-map
               ("C-g" . vterm-send-escape)))
-
-;; themes
-;; currently liking prot's https://github.com/protesilaos/ef-themes
-(use-package ef-themes)
-(load-theme 'ef-maris-dark t)
-
-(use-package hydra)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; ace-window - modern window switching with visual feedback
@@ -308,67 +406,7 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
-
 (use-package flycheck)
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; yas - snippets. i really don't use this (now), but I have
-;; other stuffs that does (which I haven't cleaned up yet)
-(use-package yasnippet
-  :config
-  (yas-reload-all)
-  :hook ((prog-mode . yas-minor-mode)
-         (text-mode . yas-minor-mode)
-         (lsp-mode  . yas-minor-mode)))
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; company - auto-completion
-(use-package company
-  ;;  :after lsp-mode
-  ;;  :hook (lsp-mode . company-mode)
-  :bind
-  (:map company-active-map
-              ("C-n". company-select-next)
-              ("C-p". company-select-previous)
-              ("M-<". company-select-first)
-              ("M->". company-select-last))
-  (:map company-mode-map
-        ("<tab>". tab-indent-or-complete)
-        ("TAB". tab-indent-or-complete))
-  :custom
-  (company-minimum-index-length 2))
-
-
-;; JEB- ???
-(defun company-yasnippet-or-completion ()
-  (interactive)
-  (or (do-yas-expand)
-      (company-complete-common)))
-
-(defun check-expansion ()
-  (save-excursion
-    (if (looking-at "\\_>") t
-      (backward-char 1)
-      (if (looking-at "\\.") t
-        (backward-char 1)
-        (if (looking-at "::") t nil)))))
-
-;; JEB???
-(defun do-yas-expand ()
-  (let ((yas-fallback-behavior 'return-nil))
-    (yas-expand)))
-
-(defun tab-indent-or-complete ()
-  (interactive)
-  (if (minibufferp)
-      (minibuffer-complete)
-    (if (or (not yas-minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-common)
-          (indent-for-tab-command)))))
-
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; org-mode and friends
@@ -509,8 +547,13 @@
 (use-package eglot
   :straight nil 
   :commands (eglot eglot-ensure)
-  :hook ((rustic-mode . eglot-ensure))
+  :hook ((rustic-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (go-mode . eglot-ensure))
   :custom
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
   (eglot-inlay-hints-mode f))
+
+;; i truly hate inlay mode (by default)
+(remove-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
