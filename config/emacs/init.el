@@ -553,7 +553,7 @@
   :custom
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
-  (eglot-inlay-hints-mode f))
+  (eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
 ;; eglot doesn't sort the xref output, whereas lsp-mode did :homer-cry:
 ;; i asked chatgpt for this.
