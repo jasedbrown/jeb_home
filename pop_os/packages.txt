@@ -46,21 +46,12 @@ zstd
 # Development tools
 autoconf
 automake
-clang
 cmake
-containerd.io
-docker
-docker-buildx-plugin
-docker-ce
-docker-ce-cli
-docker-compose-plugin
 dotnet-runtime-8.0
 dotnet-sdk-8.0
 feh
 gcc
 gdb
-lldb
-llvm
 mold
 ninja-build
 python3
