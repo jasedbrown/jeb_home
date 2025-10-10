@@ -542,6 +542,23 @@
   :mode ("\\.lua\\'" . lua-mode))
 
 
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; SQL related
+
+;; sqlformat: https://github.com/purcell/sqlformat?tab=readme-ov-file
+;; currentlyusing pgformatter to do the dirty work: https://github.com/darold/pgFormatter
+(use-package sqlformat
+  :straight t
+  :custom
+  (sqlformat-command 'pgformatter))
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+;; random LSP-related
+
+;; for shell lsp fun, use this bash-language-server ()https://github.com/bash-lsp/bash-language-server).
+;; you'll need to hand install it via `npm i -g bash-language-server'
+
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; now set up eglot or lsp-mode, *after* all the language modes
 (use-package eglot
@@ -549,11 +566,17 @@
   :commands (eglot eglot-ensure)
   :hook ((rustic-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (go-mode . eglot-ensure))
+         (go-mode . eglot-ensure)
+         (sh-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs
+               '(sh-mode . ("bash-language-server" "start")))
   :custom
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
-  (eglot-ignored-server-capabilities '(:inlayHintProvider)))
+  (eglot-ignored-server-capabilities '(:inlayHintProvider))
+  (eglot-workspace-configuration
+   '(:bashIde (:globPattern "**/*@(.sh|.inc|.bash|.command|.zsh)"))))
 
 ;; eglot doesn't sort the xref output, whereas lsp-mode did :homer-cry:
 ;; i asked chatgpt for this.
@@ -578,3 +601,12 @@
                        display-action
                        args)))
 
+;; eglot doesn't have the nice breadcrumb header, and i miss it
+(use-package breadcrumb
+  :straight t
+  :commands (breadcrumb-local-mode breadcrumb-imenu-crumbs breadcrumb-project-crumbs)
+  :init
+  (require 'subr-x)
+  :config
+  ;;(add-hook 'eglot-managed-mode-hook #'jason/eglot-breadcrumb-toggle)
+  )
