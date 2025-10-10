@@ -4,6 +4,7 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 
 [Service]
 Type=notify
+ExecStartPre=/bin/bash -c 'sleep 0.2; rm -rf $XDG_RUNTIME_DIR/emacs'
 ExecStart=/usr/bin/emacs --fg-daemon
 ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
@@ -14,6 +15,9 @@ Environment=TERMINFO_DIRS=/usr/share/terminfo:/lib/terminfo:/usr/lib/terminfo
 # not sure if this is necessary anymore (July 2025)
 Environment=LSP_USE_PLISTS=true
 Restart=on-failure
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=default.target
