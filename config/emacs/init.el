@@ -354,8 +354,7 @@
 (defun gerrit-push-origin-head ()
   "Push the current branch to origin as refs/for/main using magit."
   (interactive)
-  (let ((project-root (or (lsp-workspace-root)
-                          (rustic-buffer-crate)
+  (let ((project-root (or (rustic-buffer-crate)
                           (magit-toplevel))))
     (when project-root
       (let ((default-directory project-root)
@@ -478,15 +477,7 @@
 ;; ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
 ;; ;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
-  (rustic-lsp-client 'eglot)
-
-;; pre-2025-Sept-26 settings
-;;   (rustic-format-trigger "on-save")
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  ;; (lsp-rust-analyzer-cargo-extra-args "--locked")
-  )
+  (rustic-lsp-client 'eglot))
 
 (use-package toml-mode
   :straight t)
@@ -575,8 +566,24 @@
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
   (eglot-ignored-server-capabilities '(:inlayHintProvider))
+  (eglot-connect-timeout 120)
+  (eglot-sync-connect nil)
   (eglot-workspace-configuration
-   '(:bashIde (:globPattern "**/*@(.sh|.inc|.bash|.command|.zsh)"))))
+   '((:rust-analyzer
+      :cargo (:buildScripts (:enable t)
+              :features "all")
+      :procMacro (:enable t
+                  :ignored {}
+                  :attributes (:enable t))
+      :diagnostics (:disabled ["unresolved-proc-macro"]
+                    :experimental (:enable t))
+      :checkOnSave (:command "clippy"
+                    :extraArgs ["--target-dir" "target/rust-analyzer"])
+      :inlayHints (:lifetimeElisionHints (:enable "skip_trivial")
+                   :chainingHints (:enable t)
+                   :closureReturnTypeHints (:enable "always")))
+     (:bashIde
+      :globPattern "**/*@(.sh|.inc|.bash|.command|.zsh)"))))
 
 ;; eglot doesn't sort the xref output, whereas lsp-mode did :homer-cry:
 ;; i asked chatgpt for this.
