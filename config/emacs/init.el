@@ -251,7 +251,7 @@
   (add-to-list 'completion-at-point-functions #'cape-file)    ;; filenames
   (add-to-list 'completion-at-point-functions #'cape-symbol)) ;; elisp symbols
 
-;; TAB: snippets > completion > indent
+;; Completion function: snippets > completion > indent
 (defun tab-indent-or-complete ()
   "Try yasnippet, then completion, else indent."
   (interactive)
@@ -261,11 +261,8 @@
    ((completion-at-point))
    (t (indent-for-tab-command))))
 
-(global-set-key (kbd "TAB") #'tab-indent-or-complete)
-(global-set-key (kbd "<tab>") #'tab-indent-or-complete)
-
-
-
+;; Bind CAPS_LOCK to completion (requires OS-level remapping first)
+(global-set-key (kbd "C-t") #'tab-indent-or-complete)
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
