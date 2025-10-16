@@ -239,6 +239,14 @@
         ("M-<" . corfu-first)
         ("M->" . corfu-last)))
 
+;; Corfu-terminal: enable corfu in terminal emacs.
+;; this is necessary to use corfu in a terminal emulator.
+(use-package corfu-terminal
+  :after corfu
+  :init
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
+
 ;; Yasnippet: snippet expansion
 (use-package yasnippet
   :config
