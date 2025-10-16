@@ -3,3 +3,14 @@
 [scrolling]
 history = 100000
 
+[window]
+# disable title and borders from window
+decorations = "None"
+
+[selection]
+save_to_clipboard = true
+
+[keyboard]
+bindings = [
+    { key = "0", mods = "Control", action = "None" },
+]
