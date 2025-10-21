@@ -71,5 +71,6 @@ sudo systemctl daemon-reload
 
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
+ln -sf "$(pwd)/config/lldb/init" ~/.lldbinit
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"

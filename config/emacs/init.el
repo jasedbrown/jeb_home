@@ -556,7 +556,7 @@
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; now set up eglot or lsp-mode, *after* all the language modes
+;; now set up eglot, *after* all the language modes
 (use-package eglot
   :straight nil 
   :commands (eglot eglot-ensure)
@@ -578,7 +578,6 @@
       :cargo (:buildScripts (:enable t)
               :features "all")
       :procMacro (:enable t
-                  :ignored {}
                   :attributes (:enable t))
       :diagnostics (:disabled ["unresolved-proc-macro"]
                     :experimental (:enable t))
@@ -622,3 +621,21 @@
   :config
   ;;(add-hook 'eglot-managed-mode-hook #'jason/eglot-breadcrumb-toggle)
   )
+
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+;; debugging config - hopefully this shit works *this time*
+;;
+;; use rudy-lldb under the hood
+;; https://github.com/samscott89/rudy
+
+(use-package realgud
+  :ensure t)
+(use-package realgud-lldb
+  :ensure t
+  :config
+  ;; Alias the internal function to a public name for convenience
+  (defalias 'realgud:lldb 'realgud--lldb))
+
+(setq realgud:lldb-command-name "rust-lldb")
+
