@@ -13,8 +13,7 @@ how achievable that is in practice, but that's the hope).
 ## arch linux install
 
 1. new system - [helpful steps](https://linuxiac.com/arch-linux-install/)
-instead of kde, `pacman -S sddm hyprland wofi firefox git networkmanager kitty alacritty`
-just install kitty as hyprland expects it by default (it seems _fine_ ...)
+instead of kde, `pacman -S sddm hyprland wofi firefox git networkmanager alacritty`
 
 2. install [paru](https://github.com/Morganamilo/paru) - it helps instal AUR packages
 requires a pacman-installed rust, so your user-level rustup install won't work :facepalm:
@@ -36,13 +35,14 @@ useful stuff
 ** `nmcli device wifi list` - to list all wifi networks
 ** `nmcli device wifi connect _SSID_ password _pw_` to connect to a network
 
-NOTE: you can also use `impala` TUI; need `iwd` running as systemd service
+NOTE: you can also use `impala` TUI; need `iwd` running as systemd service. I found interconnectivity problems with this, so I bailed on it.
 
 * printing (cups/avavhi)
 ** to discover network things (including printers): `avahi-discover`
 
 * bluetooth
 ** use `bluetoothctl` to discover and pair other devices.
+** `list`, `pair`, and `connect` are the commands you want to use
 
 * Japanese language input
 ** IME: input method editor. Use `mozc`
