@@ -2,5 +2,10 @@ set history save on
 set history size 1000
 set history filename ~/.local/state/gdb/gdb_history
 
+# enable the debugingod service
+## https://sourceware.org/elfutils/Debuginfod.html
+## https://wiki.archlinux.org/title/Debuginfod
+set debuginfod enabled on
+
 # TUI config
 source ~/jeb_home/config/gdb/jeb_tui.py
