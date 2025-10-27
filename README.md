@@ -34,6 +34,7 @@ useful stuff
 * wifi: networkmanager's `nmcli`
 ** `nmcli device wifi list` - to list all wifi networks
 ** `nmcli device wifi connect _SSID_ password _pw_` to connect to a network
+** `nmtui` is a TUI that, while slightly clunky, seemed to help out in a pinch when trying to create a new connection.
 
 NOTE: you can also use `impala` TUI; need `iwd` running as systemd service. I found interconnectivity problems with this, so I bailed on it.
 
