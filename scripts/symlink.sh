@@ -54,10 +54,10 @@ if [ -f /etc/arch-release ]; then
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/config
 
-    sudo ln -s local/bin/grimblast /usr/local/bin
+    sudo ln -fs local/bin/grimblast /usr/local/bin
 
     # keep the mold consistent between arch and pop :shrug:
-    sudo ln -s /usr/bin/mold /usr/local/bin/mold
+    sudo ln -fs /usr/bin/mold /usr/local/bin/mold
 fi
 
 
