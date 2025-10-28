@@ -147,19 +147,11 @@ class BreakpointsWindow(ScrollableWindow):
 gdb.execute(
     " ".join(
         (
-            "tui new-layout many-windows",
-            "{-horizontal {src 2 status 0 cmd 1} 3",
-            "{locals 1 backtrace 1 threads 1} 2} 1",
-        )
-    )
-)
-
-gdb.execute(
-    " ".join(
-        (
-            "tui new-layout many-windows-split",
-            "{-horizontal {src 2 asm 2 status 0 cmd 1} 3",
-            "{locals 1 backtrace 1 threads 1} 2} 1",
+            "tui new-layout jeb",
+            "{status 0",
+            "{-horizontal {src 2} 3",
+            "{locals 2 backtrace 1} 2} 3",
+            "cmd 1} 1",
         )
     )
 )

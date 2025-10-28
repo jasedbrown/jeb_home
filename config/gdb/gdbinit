@@ -9,3 +9,4 @@ set debuginfod enabled on
 
 # TUI config
 source ~/jeb_home/config/gdb/jeb_tui.py
+set tui compact-source on
