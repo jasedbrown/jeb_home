@@ -57,6 +57,7 @@ mariadb-clients
 mold
 ninja
 pgformatter
+pipx
 podman
 podman-compose
 postgresql-libs

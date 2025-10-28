@@ -40,9 +40,15 @@ if [ ! -d "$HOME/.pyenv" ]; then
     source "$HOME/.pyenv/bin/pyenv"
     pyenv update
     pyenv install 3.13
+fi
 
-    # Install Python LSP packages
-    python3 -m pip install python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope 
+# Make sure pipx is initialized
+pipx ensurepath
+
+# Install global Python LSP + helpers if not already installed
+if ! pipx list | grep -q "python-lsp-server"; then
+    pipx install python-lsp-server
+    pipx inject python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
 fi
 
 # Install golang
