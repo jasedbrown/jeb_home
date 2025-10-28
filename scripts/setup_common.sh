@@ -22,6 +22,10 @@ if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     cargo install --locked cargo-nextest
 fi
 
+
+#################################
+# java
+
 # Install SDKMAN for Java/Maven
 if [ ! -d "$HOME/.sdkman" ]; then
     echo "Installing sdkman (java)..."
@@ -31,6 +35,21 @@ if [ ! -d "$HOME/.sdkman" ]; then
     sdk install java 21.0.5-zulu
     sdk install maven
 fi
+
+# Install/update JDTLS (Java LSP server)
+# my wrapper script will be symlinked
+JDTLS_DIR="$HOME/.local/share/eclipse.jdt.ls"
+mkdir -p "$JDTLS_DIR"
+
+wget -q "https://www.eclipse.org/downloads/download.php?file=/jdtls/snapshots/jdt-language-server-latest.tar.gz" \
+    -O /tmp/jdtls.tar.gz
+rm -rf "$JDTLS_DIR"/*
+tar -xzf /tmp/jdtls.tar.gz -C "$JDTLS_DIR"
+rm /tmp/jdtls.tar.gz
+
+
+#################################
+# python
 
 # Install pyenv
 if [ ! -d "$HOME/.pyenv" ]; then
@@ -51,18 +70,20 @@ if ! pipx list | grep -q "python-lsp-server"; then
     pipx inject python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
 fi
 
+
+#################################
 # Install golang
 # the official docs on supporting multiple installed SDKs version is a fucking joke:
 # https://go.dev/doc/manage-install
-GO_DIR="/usr/local/go"
-if [ ! -d "$GO_DIR" ]; then
-    echo "Installing golang..."
-    sudo mkdir -p $GO_DIR
-    sudo chown $(whoami):$(whoami) $GO_DIR
+# GO_DIR="/usr/local/go"
+# if [ ! -d "$GO_DIR" ]; then
+#     echo "Installing golang..."
+#     sudo mkdir -p $GO_DIR
+#     sudo chown $(whoami):$(whoami) $GO_DIR
 
-    # download from https://go.dev/doc/install
-    # install to $GO_DIR, unzip in version-name directory
+#     # Download from https://go.dev/doc/install
+#     # install to $GO_DIR, unzip in version-name directory
 
-    # create a symlink
+#     # create a symlink
     
-fi
+# fi

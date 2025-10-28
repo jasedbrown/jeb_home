@@ -320,8 +320,12 @@
                ("rust" (or
                         (mode . rust-mode)
                         (mode . rustic-mode)))
-               ("java" (mode . java-mode))
-               ("python" (mode . python-mode))
+               ("java" (or
+                        (mode . java-mode)
+                        (mode . java-ts-mode)))
+               ("python" (or
+                          (mode . python-mode)
+                          (mode . python-ts-mode)))
                ("ruby" (mode . ruby-mode))
                ("golang" (mode . go-mode))
                ("c/c++" (or
@@ -500,17 +504,14 @@
 (use-package java-mode
   :straight nil
   :mode ("\\.java\\'" . java-ts-mode)
-  :hook (java-ts-mode . eglot-ensure)
   :config
   ;; Optional: customize tree-sitter features
   (setq java-ts-mode-indent-offset 4))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;; c/c++-related settings, mostly borrowed from a post on the emacs lsp page:
-;; https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
+;; c/c++-related settings
+;; C/C++ LSP support is configured via eglot hooks below
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -518,9 +519,10 @@
 ;; https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;
 ;; using pylsp: https://github.com/python-lsp/python-lsp-server
-(use-package python-mode
-  :straight t
-  :hook (python-mode . lsp))
+;; Using built-in python-ts-mode with tree-sitter
+(use-package python
+  :straight nil
+  :mode ("\\.py\\'" . python-ts-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -561,12 +563,17 @@
   :straight nil 
   :commands (eglot eglot-ensure)
   :hook ((rustic-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
+         (python-ts-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
          (go-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure)
          (sh-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
                '(sh-mode . ("bash-language-server" "start")))
+  (add-to-list 'eglot-server-programs
+               '((java-mode java-ts-mode) . ("jdtls")))
   :custom
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
