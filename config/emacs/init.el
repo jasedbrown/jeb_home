@@ -358,6 +358,15 @@
 ;; magit magick!
 (use-package magit)
 
+(defun my/git-commit-spellcheck ()
+  "Spell-check commit message before saving."
+  (ispell-buffer))
+
+(add-hook 'git-commit-setup-hook
+          (lambda ()
+            ;; Run ispell automatically before saving the commit message
+            (add-hook 'before-save-hook #'my/git-commit-spellcheck nil t)))
+
 ;; convenience functions for pushing branches up to gerrit,
 ;; via magit. prints result of the operation to the mini-buffer.
 (defun gerrit-push-origin-head ()
