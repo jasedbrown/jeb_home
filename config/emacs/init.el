@@ -593,12 +593,14 @@
    '((:rust-analyzer
       :cargo (:buildScripts (:enable t)
               :features "all")
+      :checkOnSave t
+      :check (:command "clippy"
+              :extraArgs ["--target-dir" "target/rust-analyzer"])
+      :cargo (:buildScripts (:enable t))
       :procMacro (:enable t
                   :attributes (:enable t))
       :diagnostics (:disabled ["unresolved-proc-macro"]
                     :experimental (:enable t))
-      :checkOnSave (:command "clippy"
-                    :extraArgs ["--target-dir" "target/rust-analyzer"])
       :inlayHints (:lifetimeElisionHints (:enable "skip_trivial")
                    :chainingHints (:enable t)
                    :closureReturnTypeHints (:enable "always")))
