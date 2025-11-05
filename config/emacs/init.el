@@ -6,12 +6,46 @@
 (setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
 
+;; save customized variables into a separate file, not init.el
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html
+;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (load-file custom-file)
+
 (setq confirm-kill-emacs 'yes-or-no-p)
 (fset 'yes-or-no-p 'y-or-n-p)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode 0))
+
+;; backup/auto-save config - mostly to not pollute my emacs home config dir
+;; Set up backup files in XDG-compliant directories
+(defvar user-cache-directory
+  (or (getenv "XDG_CACHE_HOME")
+      (concat (getenv "HOME") "/.cache")))
+
+(defvar user-backup-directory
+  (concat user-cache-directory "/emacs/backup"))
+
+(defvar user-auto-save-directory
+  (concat user-cache-directory "/emacs/auto-save"))
+
+;; Create the backup directory if it doesn't exist
+(make-directory user-backup-directory t)
+(make-directory user-auto-save-directory t)
+
+;; Configure backup settings
+(setq backup-directory-alist `((".*" . ,user-backup-directory)))
+(setq auto-save-file-name-transforms `((".*" ,user-auto-save-directory t)))
+(setq auto-save-list-file-prefix (concat user-auto-save-directory "/.saves-"))
+
+;; Additional backup settings (optional but recommended)
+(setq backup-by-copying t)
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq version-control t)
+
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -77,25 +111,18 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; package support via straight.el
 ;; https://systemcrafters.net/advanced-package-management/using-straight-el/
-;; https://github.com/radian-software/straight.el
-
-;; Move straight.el repos and build to XDG cache
-(setq straight-base-dir (expand-file-name "emacs/straight/"
-                                          (or (getenv "XDG_CACHE_HOME") "~/.cache")))
+;; https://github.com/radian-software/straight.el 
 
 ;; copy-and-paste base install block for getting straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
+      (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+        "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+        'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -103,32 +130,6 @@
 ;; point straight-use-package.el to straight
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
-
-;; Keep ~/.config/emacs clean with no-littering
-;; https://github.com/emacscollective/no-littering
-(use-package no-littering
-  :demand t
-  :init
-  ;; Use XDG directories
-  (setq no-littering-var-directory
-        (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache")))
-  (setq no-littering-etc-directory
-        (expand-file-name "emacs/" (or (getenv "XDG_DATA_HOME") "~/.local/share")))
-  :config
-  ;; Store auto-save files in no-littering directories
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  ;; Store custom-file in etc directory (won't be loaded by default)
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-  ;; Keep native-comp cache clean
-  (when (fboundp 'startup-redirect-eln-cache)
-    (startup-redirect-eln-cache
-     (convert-standard-filename
-      (no-littering-expand-var-file-name "eln-cache/")))))
-
-;; Tree-sitter grammar library location
-(setq treesit-extra-load-path
-      (list (expand-file-name "~/.local/lib/tree-sitter")))
 
 ;; make sure to use builtins
 ;; 2025-Sept-26 - ran into problems when getting eglot/treesitter to work
