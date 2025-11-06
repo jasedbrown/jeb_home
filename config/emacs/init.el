@@ -254,10 +254,10 @@
 
 ;; Cape: add extra completion sources on top of eglot
 (use-package cape
-  :init
+  :straight t
+  :config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev) ;; words in buffer
-  (add-to-list 'completion-at-point-functions #'cape-file)    ;; filenames
-  (add-to-list 'completion-at-point-functions #'cape-symbol)) ;; elisp symbols
+  (add-to-list 'completion-at-point-functions #'cape-file))   ;; filenames
 
 ;; Completion function: snippets > completion > indent
 (defun tab-indent-or-complete ()
@@ -488,7 +488,7 @@
 
 ;; Enable Tree-sitter in rust-mode
 (use-package rust-mode
-  :ensure t
+  :straight t
   :init
   (setq rust-mode-treesitter-derive t))
 
@@ -652,9 +652,9 @@
 ;; https://github.com/samscott89/rudy
 
 (use-package realgud
-  :ensure t)
+  :straight t)
 (use-package realgud-lldb
-  :ensure t
+  :straight t
   :config
   ;; Alias the internal function to a public name for convenience
   (defalias 'realgud:lldb 'realgud--lldb))
