@@ -442,6 +442,10 @@
   :config
   (claude-code-ide-emacs-tools-setup))
 
+(use-package agent-shell
+  :straight t)
+(setq agent-shell-anthropic-authentication
+      (agent-shell-anthropic-make-authentication :login t))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rust fun!
