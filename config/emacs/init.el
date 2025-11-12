@@ -446,6 +446,8 @@
   :straight t)
 (setq agent-shell-anthropic-authentication
       (agent-shell-anthropic-make-authentication :login t))
+(setq agent-shell-completion-mode t)
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rust fun!
