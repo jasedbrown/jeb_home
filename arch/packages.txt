@@ -9,6 +9,7 @@ emacs-wayland
 git
 intel-ucode
 iw
+linux-headers
 linux-tools
 lld
 man-db
