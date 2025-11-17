@@ -317,6 +317,7 @@
 ;; define and then _load_ filter
 (setq ibuffer-saved-filter-groups
       (quote (("home"
+               ("agents" (mode . agent-shell-mode))
                ("rust" (or
                         (mode . rust-mode)
                         (mode . rustic-mode)))
