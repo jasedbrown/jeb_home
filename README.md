@@ -48,6 +48,6 @@ NOTE: you can also use `impala` TUI; need `iwd` running as systemd service. I fo
 * Japanese language input
 ** IME: input method editor. Use `mozc`
 ** IMF: input method framework, allows you to switch IMEs. Use `fcitx5`
+*** `fcitx5` seems to get added to the XDG autostart group, no config in hyprland is required.
 *** use `fcitx5-configtool` to install a Japaneses keyboard
-** Add env config - I've added it to the `hyprland` config so it gets loaded with UI, but not dependent on a shell (like zsh).
 ** `fcitx5-remote -t` will turn it on and off.
