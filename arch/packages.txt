@@ -9,6 +9,7 @@ emacs-wayland
 git
 intel-ucode
 iw
+libinput
 linux-headers
 linux-tools
 lld
