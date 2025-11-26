@@ -42,13 +42,13 @@
 }
 
 #network.disconnected {
-    background: #1f1f1f;
-    color: red;
+    background: #3b4252;
+    color: #bf616a;
 }
 
 window#waybar {
     background: transparent;
-    border-bottom: 1px solid #332b2b;
+    border-bottom: 1px solid #3b4252;
     transition-duration: .07s;
     transition-property: background-color;
 }
@@ -67,20 +67,20 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: #453e3d;
+    background: #4c566a;
     color: white;
     opacity: 0.8;
 }
 
 #workspaces button.active {
-    background: #453e3d;
-    color: white;
+    background: #88c0d0;
+    color: #2e3440;
     opacity: 1;
 }
 
 #workspaces button.focused {
-    background: #453e3d;
-    color: white;
+    background: #88c0d0;
+    color: #2e3440;
     opacity: 1;
 }
 

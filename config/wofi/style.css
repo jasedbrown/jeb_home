@@ -3,21 +3,21 @@
 #input {
 	margin: 10px; /* how much padding there is around the input box */
 	border: none; /* border around the input box */
-	background-color: #453e3d; /* background color of the text input box itself */
-        color: #ffffff; /* text color as you type inside the input box */
+	background-color: #3b4252; /* background color of the text input box itself */
+        color: #d8dee9; /* text color as you type inside the input box */
 }
 
 #inner-box {
 	margin: 5px;
 	border: none; /* horizontal bar that appears above the search results */
-	background-color: #1f1f1f; /* background color behind the search results */
-        color: #ffffff; /* text color of each search result */
+	background-color: #2e3440; /* background color behind the search results */
+        color: #d8dee9; /* text color of each search result */
 }
 
 #outer-box {
 	margin: 5px; /* margin between the outer edges of the main window and its contents inside */
 	border: none /* border around all the internal window components */
-	background-color: #1f1f1f; /* background color of entire inner window */
+	background-color: #2e3440; /* background color of entire inner window */
 
 }
 
@@ -25,7 +25,7 @@
 	margin: 5px;
 	border: none; /* border around each individual item within the search results */
 	background-color: trans; /* background behind each individual item within the search results */
-        color: ffffff;
+        color: #d8dee9;
 }
 
 /* Remove the search icon */
@@ -35,12 +35,12 @@
 
 #scroll {
 	margin: 5px;
-	border: 2px solid #1f1f1f;
-	background-color: #1f1f1f; /* background color behind the search slider */
+	border: 2px solid #2e3440;
+	background-color: #2e3440; /* background color behind the search slider */
 }
 
 window {
 	margin: 15px;
-	border: 3px solid green; /* border around the entire window */
-	background-color: #1f1f1f;
+	border: 2px solid #88c0d0; /* border around the entire window */
+	background-color: #2e3440;
 }
