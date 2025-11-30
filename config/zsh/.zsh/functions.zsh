@@ -99,3 +99,12 @@ tdev() {
   fi
 }
 
+# Run the basic cargo sanity commands: check, fmt, and clippy
+ccheck() {
+    echo "cargo check"
+    cargo check
+    echo "cargo fmt"
+    cargo fmt
+    echo "cargo clippy"
+    cargo clippy
+}
