@@ -108,3 +108,13 @@ ccheck() {
     echo "cargo clippy"
     cargo clippy
 }
+
+# Run the basic cargo sanity commands, but with locked deps: check, fmt, and clippy
+cchecklocked() {
+    echo "cargo --locked check"
+    cargo --locked check
+    echo "cargo --locked fmt"
+    cargo --locked fmt
+    echo "cargo --locked clippy"
+    cargo --locked clippy
+}
