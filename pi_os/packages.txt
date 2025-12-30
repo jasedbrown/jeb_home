@@ -1,0 +1,70 @@
+# Core system utilities
+build-essential
+btop
+curl
+git
+linux-tools-common
+man-db
+openssh-server
+openssl
+stow
+tmux
+tmuxp
+wget
+zsh
+
+# Terminal utilities
+bison
+bsdutils
+bzip2
+dstat
+fd-find
+fzf
+gnuplot
+graphviz
+imagemagick
+jq
+less
+readline-common
+ripgrep
+tar
+traceroute
+tree
+unzip
+xclip
+zip
+zstd
+
+# Development tools
+autoconf
+automake
+cmake
+emacs
+gcc
+gdb
+ninja-build
+vim
+
+# Browsers
+firefox-esr
+
+# General tools
+evince
+
+# System libs
+libbz2-dev
+libcurl4-openssl-dev
+libgflags-dev
+liblzma-dev
+liblz4-dev
+liblz4-tool
+libnss3-tools
+libreadline-dev
+libsnappy-dev
+libsqlite3-dev
+libssl-dev
+libtool
+libtool-bin
+libudev-dev
+libzstd-dev
+zlib1g-dev
