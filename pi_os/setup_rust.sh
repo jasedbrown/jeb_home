@@ -19,9 +19,7 @@ if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     rustup component add rust-analyzer
 
     echo "Installing Rust development tools (this may take a while on ARM)..."
-    cargo install --locked sccache
     cargo install --locked inferno
-    cargo install --locked cargo-nextest
 fi
 
 echo "Rust development setup complete!"

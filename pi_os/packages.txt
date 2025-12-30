@@ -3,7 +3,7 @@ build-essential
 btop
 curl
 git
-linux-tools-common
+linux-perf
 man-db
 openssh-server
 openssl
@@ -27,12 +27,14 @@ jq
 less
 readline-common
 ripgrep
+stow
 tar
 traceroute
 tree
 unzip
 xclip
 zip
+zsh
 zstd
 
 # Development tools
