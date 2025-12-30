@@ -50,7 +50,6 @@ cmake
 feh
 gcc
 gdb
-mold
 ninja-build
 pgformatter
 pipx
