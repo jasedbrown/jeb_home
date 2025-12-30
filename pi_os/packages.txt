@@ -47,9 +47,6 @@ gdb
 ninja-build
 vim
 
-# Browsers
-firefox-esr
-
 # General tools
 evince
 
@@ -59,7 +56,6 @@ libcurl4-openssl-dev
 libgflags-dev
 liblzma-dev
 liblz4-dev
-liblz4-tool
 libnss3-tools
 libreadline-dev
 libsnappy-dev
