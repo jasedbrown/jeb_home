@@ -39,8 +39,10 @@ impala
 jq
 less
 ripgrep
+rsync
 tar
 tree
+udisks2
 unzip
 wget
 zip
