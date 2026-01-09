@@ -428,8 +428,8 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; org-mode and friends
-(use-package org
-  :straight t)
+;; (use-package org
+;;   :straight t)
 
 (use-package markdown-mode
   :straight t)
@@ -546,14 +546,14 @@
 ;; Make sure the the go tools bin is on the path ($HOME/go/bin): 
 ;; https://github.com/golang/tools/blob/master/gopls/doc/emacs.md
 ;; autoload only when needed
-(use-package go-mode
-  :straight t
-  :mode ("\\.go\\'" . go-mode))
+;; (use-package go-mode
+;;   :straight t
+;;   :mode ("\\.go\\'" . go-mode))
 
-; autoload only when needed
-(use-package lua-mode
-  :straight t
-  :mode ("\\.lua\\'" . lua-mode))
+;; ; autoload only when needed
+;; (use-package lua-mode
+;;   :straight t
+;;   :mode ("\\.lua\\'" . lua-mode))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -646,21 +646,4 @@
   :config
   ;;(add-hook 'eglot-managed-mode-hook #'jason/eglot-breadcrumb-toggle)
   )
-
-
-;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-;; debugging config - hopefully this shit works *this time*
-;;
-;; use rudy-lldb under the hood
-;; https://github.com/samscott89/rudy
-
-(use-package realgud
-  :straight t)
-(use-package realgud-lldb
-  :straight t
-  :config
-  ;; Alias the internal function to a public name for convenience
-  (defalias 'realgud:lldb 'realgud--lldb))
-
-(setq realgud:lldb-command-name "rust-lldb")
 
