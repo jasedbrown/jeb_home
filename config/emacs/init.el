@@ -437,11 +437,11 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; LLM magick
-(use-package claude-code-ide
-  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
-  :bind ("C-c '" . claude-code-ide-menu)
-  :config
-  (claude-code-ide-emacs-tools-setup))
+;; (use-package claude-code-ide
+;;   :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
+;;   :bind ("C-c '" . claude-code-ide-menu)
+;;   :config
+;;   (claude-code-ide-emacs-tools-setup))
 
 (use-package agent-shell
   :straight t)
