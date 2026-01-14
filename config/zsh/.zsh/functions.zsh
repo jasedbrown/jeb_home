@@ -132,3 +132,9 @@ cchecklocked() {
     echo "cargo --locked clippy ${target_args[*]}"
     cargo --locked clippy "${target_args[@]}"
 }
+
+# a temporary work around for https://github.com/anthropics/claude-code/issues/15870
+claude() {
+    unset RIPGREP_CONFIG_PATH
+    command claude "$@"
+}
