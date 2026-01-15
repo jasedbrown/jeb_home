@@ -5,18 +5,16 @@ grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
 echo "Installing AUR helper..."
 if ! command -v paru &> /dev/null; then
     echo "Installing paru..."
-    git clone https://aur.archlinux.org/paru.git
-    cd paru
+    git clone https://aur.archlinux.org/paru.git /tmp/paru
+    cd /tmp/paru
     makepkg -si --noconfirm
-    cd ..
-    rm -rf paru
 fi
 
 echo "Installing AUR packages..."
 grep -v "^#" ./arch/aur-packages.txt | xargs paru -Sy --needed --noconfirm
 
 echo "Installing system76 drivers..."
-./arch/system76.sh
+# ./arch/system76.sh
 
 echo "Installing systemctl stuffs..."
 
@@ -61,7 +59,7 @@ if command -v ssh-agent &> /dev/null; then
 fi
 
 # enable pipewire for audio
-sudo systemctl enable --now pipewire.service
+systemctl --user enable --now pipewire.service
 
 # set up NTP time sync
 sudo timedatectl set-ntp true

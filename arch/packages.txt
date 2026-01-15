@@ -7,11 +7,9 @@ btop
 curl
 emacs-wayland
 git
-intel-ucode
 iw
 libinput
 linux-headers
-linux-tools
 lld
 man-db
 networkmanager
@@ -61,12 +59,13 @@ mariadb-clients
 mold
 ninja
 pgformatter
-pipx
+python-pipx
 podman
 podman-compose
 postgresql-libs
 python
 python-pip
+scccache
 wireshark-qt
 
 # window manager essentials
