@@ -25,6 +25,8 @@ graphviz
 imagemagick
 jq
 less
+pipx
+python3-tk
 readline-common
 ripgrep
 stow
@@ -46,9 +48,6 @@ gcc
 gdb
 ninja-build
 vim
-
-# General tools
-evince
 
 # System libs
 libbz2-dev

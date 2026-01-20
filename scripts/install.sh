@@ -26,15 +26,12 @@ fi
 if [ -f /etc/arch-release ]; then
     echo "Detected Arch Linux"
     ./arch/arch.sh
-    SETUP_SCRIPT="./scripts/setup_common.sh"
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then
     echo "Detected Pop!_OS"
     ./pop_os/pop_os.sh
-    SETUP_SCRIPT="./scripts/setup_common.sh"
 elif [ -f /proc/device-tree/model ] && grep -q "Raspberry Pi" /proc/device-tree/model; then
     echo "Detected Raspberry Pi OS"
     ./pi_os/pi_os.sh
-    SETUP_SCRIPT="./pi_os/setup_rust.sh"
 else
     echo "Unsupported distro!"
     exit 1
@@ -46,7 +43,7 @@ if [ "$(getent passwd $(whoami) | cut -d: -f7)" != "/usr/bin/zsh" ]; then
 fi
 
 echo "Running development setup..."
-$SETUP_SCRIPT
+./scripts/setup_common.sh
 
 echo "Setting up dotfiles..."
 ./scripts/symlink.sh

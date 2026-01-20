@@ -58,7 +58,7 @@ if [ ! -d "$HOME/.pyenv" ]; then
     curl https://pyenv.run | bash
     source "$HOME/.pyenv/bin/pyenv"
     pyenv update
-    pyenv install 3.13
+    pyenv install 3.14
 fi
 
 # Make sure pipx is initialized
