@@ -99,22 +99,36 @@ tdev() {
   fi
 }
 
-# Run the basic cargo sanity commands: check, fmt, and clippy
-ccheck() {
-    echo "cargo check"
-    cargo check
-    echo "cargo fmt"
-    cargo fmt
-    echo "cargo clippy"
-    cargo clippy
-}
-
 # Run the basic cargo sanity commands, but with locked deps: check, fmt, and clippy
 cchecklocked() {
-    echo "cargo --locked check"
-    cargo --locked check
-    echo "cargo --locked fmt"
-    cargo --locked fmt
-    echo "cargo --locked clippy"
-    cargo --locked clippy
+    local target_triple=""
+    local -a target_args
+    local -a fmt_args
+
+    if [[ -n "$1" ]]; then
+        case "$1" in
+            a) target_triple="aarch64-unknown-linux-gnu" ;;
+            r) target_triple="riscv64gc-unknown-linux-gnu" ;;
+            x) target_triple="x86_64-unknown-linux-gnu" ;;
+            *)
+                echo "Usage: cchecklocked [a|r|x]"
+                return 1
+                ;;
+        esac
+    fi
+
+    if [[ -n "$target_triple" ]]; then
+        target_args=(--target "$target_triple")
+        fmt_args=(-- --target "$target_triple")
+    else
+        target_args=()
+        fmt_args=()
+    fi
+
+    echo "cargo --locked check ${target_args[*]}"
+    cargo --locked check "${target_args[@]}"
+    echo "cargo --locked fmt ${fmt_args[*]}"
+    cargo --locked fmt "${fmt_args[@]}"
+    echo "cargo --locked clippy ${target_args[*]}"
+    cargo --locked clippy "${target_args[@]}"
 }
