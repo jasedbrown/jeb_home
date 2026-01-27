@@ -52,3 +52,8 @@ eval "$(pyenv virtualenv-init - zsh)"
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 export PATH="$PATH:${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+
+# bun - because apparently there are not enough fucking node.js package managers ...
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
