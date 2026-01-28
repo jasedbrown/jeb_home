@@ -25,4 +25,8 @@ if [ ! -f "/usr/local/bin/emacs" ]; then
     ./build_emacs.sh
 fi
 
+# pop_os has some aggressively low vm.dirty_bytes settings (tuned for low-end hardware).
+# override those settings
+sudo cp ./system/etc/sysctl.d/99-dirty-pages.conf /etc/sysctl.d/
+
 echo "Pop!_OS specific setup complete!" 
