@@ -61,14 +61,6 @@ if [ -f /etc/arch-release ]; then
 fi
 
 
-# create an override for ollama
-sudo mkdir -p /etc/systemd/system/ollama.service.d
-sudo cp "${DOTFILES_DIR}/systemd/ollama-override.conf" \
-     /etc/systemd/system/ollama.service.d/override.conf
-sudo chmod 644 /etc/systemd/system/ollama.service.d/override.conf
-sudo systemctl daemon-reload
-
-
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
 
