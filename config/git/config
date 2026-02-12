@@ -12,10 +12,12 @@
     defaultBranch = main
 [core]
     editor = emacs -nw
-    pager = less -+X;9u
+    # pager = less -+X;9u
 [user]
     email = jasedbrown@gmail.com
     name = Jason Brown
 
 [include]
     path = ~/.config/git-readyset/config
+    path = ./delta.conf
+
