@@ -437,12 +437,6 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; LLM magick
-;; (use-package claude-code-ide
-;;   :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
-;;   :bind ("C-c '" . claude-code-ide-menu)
-;;   :config
-;;   (claude-code-ide-emacs-tools-setup))
-
 (use-package agent-shell
   :straight t)
 (setq agent-shell-anthropic-authentication
@@ -452,40 +446,6 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; rust fun!
-;; rustic = basic rust-mode + additions
-;; define the hook functions before they are referenced in use-package
-
-;; 2024-Aug-23 unclear if this is even necessary
-;; (defun rk/rustic-mode ()
-;;   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-;;   ;; save rust buffers that are not file visiting. Once
-;;   ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-;;   ;; no longer be necessary.
-;;   (when buffer-file-name
-;;     (setq-local buffer-save-without-query t))
-;;   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
-
-;; set the cargo build directory to a local dir in `./target'.
-;; this allows rust-analyzer (called from emacs) to have it's own compilation dir.
-;; 2024-Aug-23 not sure this is working as hoped. var gets set in local buffer, but
-;; not being respected.
-(defun jeb/set-cargo-target-dir ()
-  "Set Cargo's target directory to 'target/emacs' relative to the workspace root using Projectile."
-    (let ((project-root (projectile-project-root)))
-      (if project-root
-            (setq-local lsp-rust-analyzer-cargo-override-command
-                        `("cargo" "build" "--target-dir" ,(concat project-root "target/emacs")))
-        (message "Could not determine project root using Projectile"))))
-
-;; Set up Emacs-specific cargo build directory - in lieu oif the above busted projectile-thing ...
-;; (let ((emacs-cargo-dir (expand-file-name "emacs/cargo-builds" 
-;;                                         (or (getenv "XDG_CACHE_HOME") 
-;;                                             "~/.cache"))))
-;;   (setenv "CARGO_TARGET_DIR" emacs-cargo-dir)
-;;   ;; Ensure the directory exists
-;;   (make-directory emacs-cargo-dir t))
-
-
 ;; Make sure the Rust Tree-sitter grammar exists:
 ;; M-x treesit-install-language-grammar RET rust RET
 
@@ -499,8 +459,6 @@
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
   :after rust-mode
-;; ;;  :hook (rustic-mode . (lambda() (rk/rustic-mode) ))
-;; ;;  :hook (rustic-mode . jeb/set-cargo-target-dir)
   :custom
   (rustic-lsp-client 'eglot))
 
