@@ -64,9 +64,9 @@ fi
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
 
-# symlink Claude config
-mkdir -p ~/.claude
-ln -sf "$(pwd)/config/claude/commands" ~/.claude/commands
-ln -sf "$(pwd)/config/claude/skills" ~/.claude/skills
+# # symlink Claude config
+# mkdir -p ~/.claude
+# ln -sf "$(pwd)/config/claude/commands" ~/.claude/commands
+# ln -sf "$(pwd)/config/claude/skills" ~/.claude/skills
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"
