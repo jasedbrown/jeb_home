@@ -46,6 +46,7 @@ zstd
 # Development tools
 autoconf
 automake
+bpfcc-tools
 cmake
 feh
 gcc
