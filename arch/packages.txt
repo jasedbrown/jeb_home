@@ -53,6 +53,7 @@ clang
 cmake
 gcc
 gdb
+git-delta
 lldb
 llvm
 mariadb-clients
