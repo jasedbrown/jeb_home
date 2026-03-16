@@ -19,11 +19,8 @@ alias gs='git status'
 alias ethereal='wireshark'
 alias ff='firefox'
 
-# emacs magick. explicitly set a primary build directory for cargo
-# when executed via emacs, so it doesn't conflict with the regular <project>/target dir.
-# Note: It'd probably be better to have a per-project subjectory, but, meh, here we are ...
-EMACS_CARGO_DIR=${XDG_CACHE_HOME}/emacs/cargo-builds
-alias emacs="CARGO_TARGET_DIR=${EMACS_CARGO_DIR} emacs -nw"
+# emacs magick.
+alias emacs="emacs -nw"
 
 # handy terminal "reset", without executing `reset`
 # this will: Clear scrollback buffer, Move cursor to home position, Clear visible screen
