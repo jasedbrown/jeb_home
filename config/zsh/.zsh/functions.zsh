@@ -130,7 +130,17 @@ cchecklocked() {
     echo "cargo --locked fmt ${fmt_args[*]}"
     cargo --locked fmt "${fmt_args[@]}"
     echo "cargo --locked clippy ${target_args[*]}"
-    cargo --locked clippy "${target_args[@]}"
+    cargo --locked clippy "${target_args[@]}" --workspace --all-targets --all-features --target-dir ./target/clippy -- -W clippy::disallowed_methods -D warnings
+}
+
+# Create a new jj branch (bookmark) from main@origin
+jjbranch() {
+  local name="$1"
+  if [[ -z "$name" ]]; then
+    echo "Usage: jjbranch <branch-name>"
+    return 1
+  fi
+  jj new main@origin && jj bookmark create "$name" -r @
 }
 
 # a temporary work around for https://github.com/anthropics/claude-code/issues/15870
