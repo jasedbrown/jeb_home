@@ -1,0 +1,19 @@
+[user]
+name = "Jason Brown"
+email = "jason.b@readyset.io"
+
+[aliases]
+bm = ["bookmark", "list"]
+g =  ["git"]
+gu = ["gerrit", "upload"]
+rb = ["rebase", "-d", "main@origin"]
+
+[revsets]
+log = "trunk()..@ | trunk()"
+
+[ui]
+pager = ["delta", "--dark", "--navigate", "--line-numbers"]
+diff-formatter = ":git"
+
+[git]
+diff-context = 15
