@@ -5,7 +5,7 @@
 [ -d "$XDG_CACHE_HOME"/zsh ] || mkdir -p "$XDG_CACHE_HOME"/zsh
 
 # Source all modular config files
-for file in $ZDOTDIR/.zsh/*.zsh; do
+for file in $ZDOTDIR/conf.d/*.zsh; do
   [ -r "$file" ] && source "$file"
 done
 
