@@ -23,9 +23,18 @@ export CXXFLAGS="$CXXFLAGS -include cstdint"
 # this adds the cargo bin dir to the path
 source "$HOME/.cargo/env"
 
-# sdkman (for java jdk management)
+# sdkman (for java jdk management) - lazy loaded
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+function sdk() {
+    unfunction sdk java javac gradle mvn
+    [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    sdk "$@"
+}
+function java javac gradle mvn() {
+    unfunction sdk java javac gradle mvn
+    [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    command "$0" "$@"
+}
 
 # pyenv (for python sdk and virtualenv management)
 export PYENV_ROOT="$HOME/.pyenv"
@@ -44,10 +53,14 @@ eval "$(pyenv virtualenv-init - zsh)"
 # export GOPATH=$HOME/.local/share/gopath
 # export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
-# nvm/nodejs - really only using for claude code (atm)
+# nvm/nodejs - lazy loaded (claude code just needs node on PATH)
 export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 export PATH="$PATH:${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+function nvm() {
+    unfunction nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm "$@"
+}
 
 # bun - because apparently there are not enough fucking node.js package managers ...
 export BUN_INSTALL="$HOME/.bun"
