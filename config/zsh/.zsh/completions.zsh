@@ -51,3 +51,6 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:
 
 autoload -U compinit
 compinit -d "$ZSH_COMPDUMP"
+
+# jj completions (must be after compinit)
+source <(jj util completion zsh)
