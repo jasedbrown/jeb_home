@@ -1,3 +1,5 @@
 **/.claude/settings.local.json
 # Beads issue tracker (local-only, never commit)
 .beads/
+# Claude Code agent shell transcripts
+.agent-shell/
