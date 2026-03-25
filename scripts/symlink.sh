@@ -12,10 +12,13 @@ NC='\033[0m' # No Color
 DOTFILES_DIR="$HOME/jeb_home"
 cd "$DOTFILES_DIR" || { echo -e "${RED}Error: Cannot change to dotfiles directory${NC}"; exit 1; }
 
-# Create necessary directories
+# Create necessary directories.
+# Pre-create dirs that other tools write into so stow creates per-file
+# symlinks instead of folding the whole directory into the repo.
 echo -e "${BLUE}Creating necessary directories...${NC}"
-mkdir -p "$HOME/.config"
-mkdir -p "$HOME/.local"
+mkdir -p "$HOME/.config/systemd/user/default.target.wants"
+mkdir -p "$HOME/.config/systemd/user/sockets.target.wants"
+mkdir -p "$HOME/.local/bin"
 
 # Symlink using stow if available, otherwise manually
 if command -v stow &> /dev/null; then
