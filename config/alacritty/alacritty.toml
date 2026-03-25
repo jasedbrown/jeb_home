@@ -10,7 +10,7 @@ decorations = "None"
 [selection]
 save_to_clipboard = true
 
-[keyboard]
-bindings = [
-    { key = "0", mods = "Control", action = "None" },
-]
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
