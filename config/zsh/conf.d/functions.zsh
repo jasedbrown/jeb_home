@@ -143,6 +143,31 @@ jjbranch() {
   jj new main@origin && jj bookmark create "$name" -r @
 }
 
+jjclean() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: jjclean <bookmark>"
+    return 1
+  fi
+
+  local bookmark="$1"
+
+  # Show what we're about to do
+  echo "Will abandon and delete bookmark:"
+  jj log -r "$bookmark" --no-graph -T 'change_id.short() ++ " " ++ description.first_line() ++ "\n"'
+  
+  echo ""
+  read -q "REPLY?Proceed? [y/N] "
+  echo ""
+  
+  if [[ "$REPLY" == "y" ]]; then
+    jj abandon "$bookmark"
+    jj bookmark delete "$bookmark"
+    echo "Done. (jj op undo to reverse)"
+  else
+    echo "Aborted."
+  fi
+}
+
 # a temporary work around for https://github.com/anthropics/claude-code/issues/15870
 claude() {
     unset RIPGREP_CONFIG_PATH
