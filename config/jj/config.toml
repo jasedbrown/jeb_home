@@ -4,9 +4,19 @@ email = "jason.b@readyset.io"
 
 [aliases]
 bm = ["bookmark", "list"]
-g =  ["git"]
+d  = ["diff"]
+g  = ["git"]
 gu = ["gerrit", "upload"]
+# log of current branch
+ll = ["log", "-r", "ancestors(@, 20)"]
+# log of main@origin
+lm = ["log", "-r", "ancestors(main@origin, 20)"]
 rb = ["rebase", "-d", "main@origin"]
+ru = ["git", "fetch"]
+orphans = ["log", "-r", "bookmarks() ~ trunk()"]
+s  = ["status"]
+st = ["log", "-r", "trunk()..(bookmarks()::)"]
+
 
 [revsets]
 log = "trunk()..@ | trunk()"
