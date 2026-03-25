@@ -13,9 +13,6 @@ fi
 echo "Installing AUR packages..."
 grep -v "^#" ./arch/aur-packages.txt | xargs paru -Sy --needed --noconfirm
 
-echo "Installing system76 drivers..."
-# ./arch/system76.sh
-
 echo "Installing systemctl stuffs..."
 
 ######
@@ -25,6 +22,16 @@ if command -v NetworkManager &> /dev/null; then
     sudo systemctl enable --now NetworkManager.service
 fi
 
+
+# System76 drivers
+if pacman -Qi system76-driver &> /dev/null; then
+    sudo systemctl enable --now system76
+fi
+
+if pacman -Qi system76-firmware-daemon-git &> /dev/null; then
+    sudo systemctl enable --now system76-firmware-daemon
+    sudo gpasswd -a $USER adm
+fi
 
 # Bluetooth (only if hardware exists)
 if [ -d /sys/class/bluetooth ]; then
