@@ -39,7 +39,13 @@ useful stuff
 NOTE: you can also use `impala` TUI; need `iwd` running as systemd service. I found interconnectivity problems with this, so I bailed on it.
 
 * printing (cups/avavhi)
-** to discover network things (including printers): `avahi-discover`
+** `lp document.pdf` to print
+** `lpstat -p -d` list printers
+** `lpoptions -p <printer name> -o sides=two-sided-long-edge` - sert default to double-sided
+
+* scanning
+** `sane` - utility ti scan from CLI
+** `simple-scan` - simple GUI that uses `sane`
 
 * bluetooth
 ** use `bluetoothctl` to discover and pair other devices.

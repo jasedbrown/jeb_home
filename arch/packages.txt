@@ -80,10 +80,13 @@ hyprland
 hyprlock
 hyprpaper
 hyprpicker
+imagemagick
 libnotify
 mako
 power-profiles-daemon
+sane
 sddm
+simple-scan
 slurp
 waybar
 wl-clipboard
