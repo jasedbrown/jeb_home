@@ -359,6 +359,9 @@
 ;; magit magick!
 (use-package magit)
 
+(use-package jj-mode
+  :straight (:host github :repo "bolivier/jj-mode.el"))
+
 (defun my/git-commit-spellcheck ()
   "Spell-check commit message before saving."
   (ispell-buffer))
@@ -605,3 +608,17 @@
   ;;(add-hook 'eglot-managed-mode-hook #'jason/eglot-breadcrumb-toggle)
   )
 
+;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
+(use-package treesit-fold
+  :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+
+;; TLA+ related.
+;; https://quint-lang.org
+(use-package quint-mode
+  :straight (:host github :repo "informalsystems/quint"
+             :files ("editor-plugins/emacs/quint-mode.el"))
+  :mode "\\.qnt\\'"
+  :config
+  (add-to-list 'eglot-server-programs
+               '(quint-mode . ("quint-language-server" "--stdio")))
+  :hook (quint-mode . eglot-ensure))
