@@ -1,0 +1,12 @@
+# Moonlander MK1 - Oryx live training (hidraw access)
+KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
+
+# Moonlander MK1 - normal mode
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="1972", MODE:="0666", GROUP="plugdev"
+
+# Moonlander MK1 - bootloader (keymapp flashing)
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="2003", MODE:="0666", GROUP="plugdev"
+
+# STM32 DFU fallback (older firmware may use this)
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE:="0666", GROUP="plugdev"
+

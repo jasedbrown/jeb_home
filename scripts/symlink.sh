@@ -63,6 +63,10 @@ if [ -f /etc/arch-release ]; then
     sudo ln -fs /usr/bin/mold /usr/local/bin/mold
 fi
 
+# udev rules (ZSA keyboard flashing)
+sudo cp "$DOTFILES_DIR/system/etc/udev/rules.d/50-zsa.rules" /etc/udev/rules.d/50-zsa.rules
+sudo udevadm control --reload-rules
+
 
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" ~/.cargo/config.toml
