@@ -3,11 +3,13 @@ grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
 
 
 echo "Installing AUR helper..."
-if ! command -v paru &> /dev/null; then
+if ! command -v paru &> /dev/null || ! paru --version &> /dev/null; then
     echo "Installing paru..."
+    rm -rf /tmp/paru
     git clone https://aur.archlinux.org/paru.git /tmp/paru
     cd /tmp/paru
     makepkg -si --noconfirm
+    cd -
 fi
 
 echo "Installing AUR packages..."
@@ -47,10 +49,6 @@ fi
 if command -v avahi-daemon &> /dev/null; then
     sudo systemctl enable --now avahi-daemon.service
 fi
-
-# D-Bus (required for many services)
-sudo systemctl enable --now dbus.service
-sudo systemctl enable --now dbus-broker.service
 
 # SSH agent (user service)
 if command -v ssh-agent &> /dev/null; then
