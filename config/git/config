@@ -19,6 +19,6 @@
     name = Jason Brown
 
 [include]
-    path = ~/.config/git-readyset/config
+    path = ~/.config/git-work/config
     path = ./delta.conf
 
