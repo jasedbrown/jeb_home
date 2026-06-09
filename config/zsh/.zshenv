@@ -13,10 +13,10 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_DATA_HOME=$HOME/.local/share
 
-ulimit -n unlimited
+ulimit -n unlimited 2>/dev/null || ulimit -n 65536 2>/dev/null || true
 
 # my good ol' source code, developer home
-export SRC_HOME="/opt/dev"
+export SRC_HOME="${SRC_HOME:-/opt/dev}"
 
 # standard directory for my dotfiles repo
 export DOTFILES_HOME="$HOME/jeb_home"
@@ -27,5 +27,4 @@ export EDITOR="emacs -nw"
 if [ -f /etc/arch-release ]; then
     export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 fi
-
 

@@ -1,0 +1,29 @@
+tap "d12frosted/emacs-plus"
+
+brew "stow"
+brew "git-delta"
+brew "jj"
+brew "tmux"
+brew "ripgrep"
+brew "coreutils"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "pipx"
+brew "cmake"
+brew "pkg-config"
+brew "sccache"
+brew "cargo-binstall"
+
+cask "nikitabobko/tap/aerospace"
+
+cask "emacs-plus-app"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-noto-sans-cjk"
+cask "font-symbols-only-nerd-font"
+
+brew "libpq"
+cask "orbstack"
+brew "mise"
+brew "node"
+cask "ghostty"
+

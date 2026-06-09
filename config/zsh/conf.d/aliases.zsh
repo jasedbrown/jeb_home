@@ -1,5 +1,11 @@
 # always print colors with 'ls'
-alias ls='ls --color=auto'
+if command -v gls >/dev/null 2>&1; then
+    alias ls='gls --color=auto'
+elif [ "$(uname -s)" = "Darwin" ]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+fi
 
 alias cd.='cd ..'
 alias cd..='cd ../../'

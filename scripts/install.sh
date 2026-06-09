@@ -15,6 +15,12 @@ if [[ ! -f "$(dirname "$0")/setup_common.sh" ]]; then
     exit 1
 fi
 
+if [ "$(uname -s)" = "Darwin" ]; then
+    echo "Detected macOS"
+    ./macos/install.sh
+    exit 0
+fi
+
 # this is my long-time dev directory. make sure it exists and is owned by me.
 export SRC_HOME=/opt/dev
 if [ ! -d "$SRC_HOME" ]; then

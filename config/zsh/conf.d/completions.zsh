@@ -6,10 +6,9 @@
 #  https://thevaluable.dev/zsh-completion-guide-examples/
 #    https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
 
-export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
-if [ ! -d "$ZSH_COMPDUMP" ]; then
-    mkdir -p $ZSH_COMPDUMP
-fi
+export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+export ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
+mkdir -p "$ZSH_CACHE_DIR"
 
 # Should be called before compinit
 zmodload zsh/complist
@@ -29,7 +28,7 @@ setopt always_to_end
 zstyle ':completion:*' completer _extensions _complete _approximate
 
 zstyle ':completion:*' use-cache yes
-zstyle ':completion:*' cache-path "$ZSH_COMPDUMP"
+zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR"
 
 # Complete . and .. special directories
 zstyle ':completion:*' special-dirs true
@@ -53,4 +52,6 @@ autoload -U compinit
 compinit -d "$ZSH_COMPDUMP"
 
 # jj completions (must be after compinit)
-source <(jj util completion zsh)
+if command -v jj >/dev/null 2>&1; then
+    source <(jj util completion zsh)
+fi

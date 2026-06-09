@@ -12,16 +12,19 @@ export LSP_USE_PLISTS=true
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
 export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/rg.conf
 
-# this is a hack to get rocksdb to compile on arch,
-# which uses gcc-15 now.
-export CXXFLAGS="$CXXFLAGS -include cstdint"
+if [ -f /etc/arch-release ]; then
+    # This is a hack to get rocksdb to compile on Arch, which uses gcc-15 now.
+    export CXXFLAGS="$CXXFLAGS -include cstdint"
+fi
 
 
 #######################
 # PL sdk/env managers
 
 # this adds the cargo bin dir to the path
-source "$HOME/.cargo/env"
+if [ -r "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
 
 # sdkman (for java jdk management) - lazy loaded
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -38,9 +41,15 @@ function java javac gradle mvn() {
 
 # pyenv (for python sdk and virtualenv management)
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init - zsh)"
+if [ -d "$PYENV_ROOT" ]; then
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
+if command -v pyenv >/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    if pyenv commands 2>/dev/null | grep -q '^virtualenv-init$'; then
+        eval "$(pyenv virtualenv-init - zsh)"
+    fi
+fi
 
 # rbenv (for ruby sdk and env management)
 # export PATH="$HOME/.rbenv/bin:$PATH"
@@ -65,4 +74,3 @@ function nvm() {
 # bun - because apparently there are not enough fucking node.js package managers ...
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-

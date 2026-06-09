@@ -1,13 +1,29 @@
 #!/bin/bash
+set -euo pipefail
+
 JDTLS_HOME="$HOME/.local/share/eclipse.jdt.ls"
+
+case "$(uname -s)" in
+    Darwin)
+        JDTLS_CONFIG="config_mac"
+        ;;
+    Linux)
+        JDTLS_CONFIG="config_linux"
+        ;;
+    *)
+        echo "Unsupported OS for jdtls wrapper: $(uname -s)" >&2
+        exit 1
+        ;;
+esac
+
 java \
     -Declipse.application=org.eclipse.jdt.ls.core.id1 \
     -Dosgi.bundles.defaultStartLevel=4 \
     -Declipse.product=org.eclipse.jdt.ls.core.product \
     -Dlog.level=ALL \
     -Xmx1G \
-    -jar $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar \
-    -configuration $JDTLS_HOME/config_linux \
+    -jar "$JDTLS_HOME"/plugins/org.eclipse.equinox.launcher_*.jar \
+    -configuration "$JDTLS_HOME/$JDTLS_CONFIG" \
     -data "${1:-$HOME/.cache/jdtls-workspace}" \
     --add-modules=ALL-SYSTEM \
     --add-opens java.base/java.util=ALL-UNNAMED \

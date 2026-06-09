@@ -165,17 +165,30 @@
 ;; Wayland clipboard integration
 (setq x-select-enable-clipboard-manager t)
 
-;; If running in terminal Emacs under Wayland
+;; Terminal Emacs clipboard integration
 (unless (display-graphic-p)
-  (setq interprogram-cut-function
-        (lambda (text &optional _push)
-          (let ((process-connection-type nil))
-            (let ((proc (start-process "wl-copy" "*Messages*" "wl-copy" "-f" "-n")))
-              (process-send-string proc text)
-              (process-send-eof proc)))))
-  (setq interprogram-paste-function
-        (lambda ()
-          (shell-command-to-string "wl-paste -n | tr -d '\r'"))))
+  (cond
+   ((eq system-type 'darwin)
+    (setq interprogram-cut-function
+          (lambda (text &optional _push)
+            (let ((process-connection-type nil))
+              (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+                (process-send-string proc text)
+                (process-send-eof proc)))))
+    (setq interprogram-paste-function
+          (lambda ()
+            (shell-command-to-string "pbpaste | tr -d '\r'"))))
+   ((and (executable-find "wl-copy")
+         (executable-find "wl-paste"))
+    (setq interprogram-cut-function
+          (lambda (text &optional _push)
+            (let ((process-connection-type nil))
+              (let ((proc (start-process "wl-copy" "*Messages*" "wl-copy" "-f" "-n")))
+                (process-send-string proc text)
+                (process-send-eof proc)))))
+    (setq interprogram-paste-function
+          (lambda ()
+            (shell-command-to-string "wl-paste -n | tr -d '\r'"))))))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

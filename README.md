@@ -26,6 +26,24 @@ after paru is installed, this is reasonably easy (just downloads more rust :shru
 Apparently I couldn't give up on this, so I asked Claude to help translate the arch stuffs for pop!,
 as well as incorporating my old setup scripts.
 
+## macOS install
+
+The macOS setup keeps the same XDG-oriented layout used on Linux:
+
+* `config/` is stowed into `~/.config`
+* `local/` is stowed into `~/.local`
+* `home/` is stowed into `~`
+
+Install Homebrew first, then run:
+
+```sh
+./macos/install.sh
+```
+
+The macOS package list lives in `macos/Brewfile`. Emacs uses the prebuilt
+`emacs-plus-app` cask for native compilation support, even though I still run
+it from the terminal via `emacs -nw` or `emacsclient -nw`.
+
 ## random notes/links
 useful stuff
 
