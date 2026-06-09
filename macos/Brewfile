@@ -14,7 +14,9 @@ brew "pkg-config"
 brew "sccache"
 brew "cargo-binstall"
 
+# linux <> macos tomfoolery
 cask "nikitabobko/tap/aerospace"
+cask "karabiner-elements"
 
 cask "emacs-plus-app"
 cask "font-jetbrains-mono-nerd-font"
