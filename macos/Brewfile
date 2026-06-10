@@ -27,5 +27,7 @@ brew "libpq"
 cask "orbstack"
 brew "mise"
 brew "node"
+brew "pnpm"
+
 cask "ghostty"
 
