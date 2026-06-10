@@ -1,2 +1,6 @@
 font-family = JetBrainsMono Nerd Font
 font-size = 13
+
+# make macos stop fucking up emacs
+macos-option-as-alt = true
+

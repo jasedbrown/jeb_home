@@ -134,7 +134,13 @@
 ;; make sure to use builtins
 ;; 2025-Sept-26 - ran into problems when getting eglot/treesitter to work
 (use-package project  :straight nil)
-(use-package xref     :straight nil)
+(use-package xref
+  :straight nil
+  :bind (("M-." . xref-find-definitions)
+         ("M-," . xref-go-back)
+         ("C-M-," . xref-go-forward)
+         ("M-?" . xref-find-references)
+         ("C-M-." . xref-find-apropos)))
 (use-package eglot    :straight nil)
 (use-package eldoc    :straight nil)
 (use-package flymake  :straight nil)
