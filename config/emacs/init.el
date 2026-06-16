@@ -520,6 +520,10 @@
   :straight nil
   :mode ("\\.py\\'" . python-ts-mode))
 
+(setq treesit-language-source-alist
+      '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (tsx        "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")))
+
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; golang-related settings. Need a Go SDK installed, and the go-lsp server (gopls)
@@ -630,6 +634,54 @@
 ;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
 (use-package treesit-fold
   :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+
+;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+;; Debugging with Dape + LLDB DAP.
+;;
+;; `dape' is separate from `dap-mode' and does not depend on `lsp-mode'.
+;; Rust pretty-printers are loaded the same way `rust-lldb' loads them, but
+;; `lldb-dap' remains the debug adapter.
+
+(defun jeb/rust-lldb-init-commands ()
+  "Return LLDB commands that load Rust's LLDB formatters."
+  (require 'subr-x)
+  (let* ((sysroot (string-trim
+                   (shell-command-to-string "rustc --print sysroot")))
+         (etc-dir (expand-file-name "lib/rustlib/etc" sysroot)))
+    (vector
+     (format "command script import \"%s\""
+             (expand-file-name "lldb_lookup.py" etc-dir))
+     (format "command source \"%s\""
+             (expand-file-name "lldb_commands" etc-dir)))))
+
+(use-package dape
+  :straight t
+  :commands (dape)
+  :bind (("C-c d d" . dape)
+         ("C-c d b" . dape-breakpoint-toggle)
+         ("C-c d c" . dape-continue)
+         ("C-c d n" . dape-next)
+         ("C-c d s" . dape-step-in)
+         ("C-c d o" . dape-step-out)
+         ("C-c d r" . dape-restart)
+         ("C-c d q" . dape-quit))
+  :custom
+  (dape-key-prefix "\C-cd")
+  (dape-buffer-window-arrangement 'gud)
+  :config
+  ;; The Apple CLT binary exists on this machine, but plain `lldb-dap' is not
+  ;; currently on PATH.
+  (setf (plist-get (alist-get 'lldb-dap dape-configs) 'command)
+        "/Library/Developer/CommandLineTools/usr/bin/lldb-dap")
+
+  ;; Preserve the useful Rust display behavior from `rust-lldb'.
+  (setf (plist-get (alist-get 'lldb-dap dape-configs) :initCommands)
+        #'jeb/rust-lldb-init-commands))
+
+(use-package repeat
+  :straight nil
+  :config
+  (repeat-mode 1))
 
 ;; TLA+ related.
 ;; https://quint-lang.org
