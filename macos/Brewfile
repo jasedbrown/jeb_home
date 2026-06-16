@@ -26,8 +26,7 @@ cask "font-symbols-only-nerd-font"
 brew "libpq"
 cask "orbstack"
 brew "mise"
-brew "node"
-brew "pnpm"
-
+brew "gh"
 cask "ghostty"
 
+brew "codex-acp"
