@@ -4,3 +4,9 @@ font-size = 13
 # make macos stop fucking up emacs
 macos-option-as-alt = true
 
+# more macos hackings
+# macos-titlebar-style = hidden
+window-decoration = none
+
+# disable fancy ligatures
+font-feature = -calt
