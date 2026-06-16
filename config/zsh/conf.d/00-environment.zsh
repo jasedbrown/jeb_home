@@ -39,16 +39,27 @@ function java javac gradle mvn() {
     command "$0" "$@"
 }
 
-# pyenv (for python sdk and virtualenv management)
+# pyenv (for python sdk and virtualenv management) - lazy loaded
 export PYENV_ROOT="$HOME/.pyenv"
 if [ -d "$PYENV_ROOT" ]; then
-    export PATH="$PYENV_ROOT/bin:$PATH"
+    # Keep pyenv-managed Python binaries available without paying for pyenv init
+    # during every shell startup.
+    export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
 fi
-if command -v pyenv >/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-    if pyenv commands 2>/dev/null | grep -q '^virtualenv-init$'; then
-        eval "$(pyenv virtualenv-init - zsh)"
-    fi
+if (( $+commands[pyenv] )); then
+    function _load_pyenv() {
+        unfunction pyenv 2>/dev/null
+        # --no-rehash avoids startup-time shim regeneration; run `pyenv rehash`
+        # manually after installing new Python executables.
+        eval "$(command pyenv init - --no-rehash --no-push-path zsh)"
+        if command pyenv commands 2>/dev/null | command grep -q '^virtualenv-init$'; then
+            eval "$(command pyenv virtualenv-init - zsh)"
+        fi
+    }
+    function pyenv() {
+        _load_pyenv
+        pyenv "$@"
+    }
 fi
 
 # rbenv (for ruby sdk and env management)

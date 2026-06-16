@@ -8,6 +8,7 @@
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 export ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
+export JJ_ZSH_COMPLETION="$ZSH_CACHE_DIR/_jj"
 mkdir -p "$ZSH_CACHE_DIR"
 
 # Should be called before compinit
@@ -49,9 +50,23 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:
 # _comp_options+=(globdots) # With hidden files
 
 autoload -U compinit
-compinit -d "$ZSH_COMPDUMP"
+# Reuse the existing compdump when possible. This skips compaudit and dump
+# regeneration on normal shell startup; remove $ZSH_COMPDUMP to force a rebuild.
+if [[ -s "$ZSH_COMPDUMP" ]]; then
+    compinit -C -d "$ZSH_COMPDUMP"
+else
+    compinit -d "$ZSH_COMPDUMP"
+fi
 
 # jj completions (must be after compinit)
-if command -v jj >/dev/null 2>&1; then
-    source <(jj util completion zsh)
+if [[ -s "$JJ_ZSH_COMPLETION" ]]; then
+    source "$JJ_ZSH_COMPLETION"
+elif command -v jj >/dev/null 2>&1; then
+    if [[ -w "$ZSH_CACHE_DIR" ]]; then
+        # Generating jj completions shells out, so cache the static result after
+        # the first run instead of using process substitution every startup.
+        jj util completion zsh >| "$JJ_ZSH_COMPLETION" 2>/dev/null && source "$JJ_ZSH_COMPLETION"
+    else
+        source <(jj util completion zsh)
+    fi
 fi
