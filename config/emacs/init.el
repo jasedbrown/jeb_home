@@ -101,9 +101,6 @@
                "  "
                mode-line-misc-info))
 
-;; raise the gc collection threshold, due to lsp-mode
-;; https://emacs-lsp.github.io/lsp-mode/page/performance/#adjust-gc-cons-threshold
-(setq gc-cons-threshold 100000000)
 ;; Increase the amount of data which Emacs reads from the process
 (setq read-process-output-max (* 1024 1024))
 
@@ -112,6 +109,10 @@
 ;; package support via straight.el
 ;; https://systemcrafters.net/advanced-package-management/using-straight-el/
 ;; https://github.com/radian-software/straight.el 
+
+;; Avoid scanning every straight repo during startup. `M-x straight-check-all`
+;; still checks explicitly, and check-on-save keeps edited packages fresh.
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
 
 ;; copy-and-paste base install block for getting straight.el
 (defvar bootstrap-version)
@@ -131,19 +132,24 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; make sure to use builtins
-;; 2025-Sept-26 - ran into problems when getting eglot/treesitter to work
-(use-package project  :straight nil)
+;; Keep straight from installing or autoloading packages that modern Emacs
+;; already provides. Packages like Rustic depend on `project' and `xref';
+;; if straight's copies shadow the built-ins, Eglot/Rustic can trip over
+;; duplicate feature providers when opening Rust buffers.
+(use-package project
+  :straight (:type built-in))
 (use-package xref
-  :straight nil
+  :straight (:type built-in)
   :bind (("M-." . xref-find-definitions)
          ("M-," . xref-go-back)
          ("C-M-," . xref-go-forward)
          ("M-?" . xref-find-references)
          ("C-M-." . xref-find-apropos)))
-(use-package eglot    :straight nil)
-(use-package eldoc    :straight nil)
-(use-package flymake  :straight nil)
+(use-package eldoc
+  :straight (:type built-in))
+(use-package flymake
+  :straight (:type built-in)
+  :defer t)
 
 (use-package hydra)
 
@@ -376,10 +382,13 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; magit magick!
-(use-package magit)
+(use-package magit
+  :commands (magit-status magit-dispatch magit-file-dispatch))
 
 (use-package jj-mode
-  :straight (:host github :repo "bolivier/jj-mode.el"))
+  :straight (:host github :repo "bolivier/jj-mode.el")
+  :commands (jj-log jj-squash-transient jj-bookmark-transient
+                    jj-new-transient jj-rebase-transient))
 
 (defun my/git-commit-spellcheck ()
   "Spell-check commit message before saving."
@@ -389,32 +398,6 @@
           (lambda ()
             ;; Run ispell automatically before saving the commit message
             (add-hook 'before-save-hook #'my/git-commit-spellcheck nil t)))
-
-;; convenience functions for pushing branches up to gerrit,
-;; via magit. prints result of the operation to the mini-buffer.
-(defun gerrit-push-origin-head ()
-  "Push the current branch to origin as refs/for/main using magit."
-  (interactive)
-  (let ((project-root (or (rustic-buffer-crate)
-                          (magit-toplevel))))
-    (when project-root
-      (let ((default-directory project-root)
-            (output-buffer "*Git Push Output*"))
-        (with-output-to-temp-buffer output-buffer
-          (let ((exit-code (call-process "git" nil output-buffer t
-                                         "push" "origin" "HEAD:refs/for/main")))
-            (if (eq exit-code 0)
-                (message "Pushed to origin HEAD:refs/for/main successfully.")
-              (message "Git push failed. See *Git Push Output* buffer for details."))))))))
-
-(transient-define-prefix my-magit-push-menu ()
-  "My Magit Push Menu"
-  ["Actions"
-   ["Push"
-    ("p" "Push to origin HEAD:refs/for/main" gerrit-push-origin-head)]])
-
-(define-key magit-mode-map (kbd "C-c C-p") 'my-magit-push-menu)
-
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; projectile
@@ -446,7 +429,8 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; inline errors
-(use-package flycheck)
+(use-package flycheck
+  :commands (flycheck-mode global-flycheck-mode))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; org-mode and friends
@@ -454,16 +438,22 @@
 ;;   :straight t)
 
 (use-package markdown-mode
-  :straight t)
+  :straight t
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; LLM magick
 (use-package agent-shell
-  :straight t)
-(setq agent-shell-anthropic-authentication
-      (agent-shell-anthropic-make-authentication :login t))
-(setq agent-shell-completion-mode t)
+  :straight t
+  :commands (agent-shell agent-shell-toggle agent-shell-new-shell
+                         agent-shell-prompt-compose)
+  :init
+  (setq agent-shell-completion-mode t)
+  :config
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t)))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -471,24 +461,30 @@
 ;; Make sure the Rust Tree-sitter grammar exists:
 ;; M-x treesit-install-language-grammar RET rust RET
 
-;; Enable Tree-sitter in rust-mode
+;; Enable native tree-sitter in `rust-mode'. Rustic derives from `rust-mode',
+;; so this must be set before Rustic is loaded for `.rs' buffers.
 (use-package rust-mode
   :straight t
+  :defer t
   :init
   (setq rust-mode-treesitter-derive t))
 
-;; Load Rustic after rust-mode
+;; Load Rustic when opening Rust files. With `rust-mode-treesitter-derive'
+;; enabled above, `rustic-mode' derives through `rust-ts-mode' on Emacs 29+.
 (use-package rustic
   :straight (rustic :type git :host github :repo "emacs-rustic/rustic")
-  :after rust-mode
-  :custom
-  (rustic-lsp-client 'eglot))
+  :mode ("\\.rs\\'" . rustic-mode)
+  :init
+  (setq rustic-lsp-client 'eglot))
 
 (use-package toml-mode
-  :straight t)
+  :straight t
+  :mode ("\\.toml\\'" . toml-mode))
 
 (use-package yaml-mode
-  :straight t)
+  :straight t
+  :mode (("\\.ya?ml\\'" . yaml-mode)
+         ("\\.yml\\'" . yaml-mode)))
 
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -520,8 +516,11 @@
   :straight nil
   :mode ("\\.py\\'" . python-ts-mode))
 
+;; Sources used by `M-x treesit-install-language-grammar'. Installed grammars
+;; are loaded locally at mode startup, so these URLs are not touched normally.
 (setq treesit-language-source-alist
-      '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+      '((rust       "https://github.com/tree-sitter/tree-sitter-rust")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (tsx        "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")))
 
 
@@ -547,6 +546,7 @@
 ;; currentlyusing pgformatter to do the dirty work: https://github.com/darold/pgFormatter
 (use-package sqlformat
   :straight t
+  :commands (sqlformat sqlformat-buffer sqlformat-region sqlformat-on-save-mode)
   :custom
   (sqlformat-command 'pgformatter))
 
@@ -560,7 +560,7 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; now set up eglot, *after* all the language modes
 (use-package eglot
-  :straight nil 
+  :straight (:type built-in)
   :commands (eglot eglot-ensure)
   :hook ((rustic-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
@@ -574,6 +574,8 @@
                '(sh-mode . ("bash-language-server" "start")))
   (add-to-list 'eglot-server-programs
                '((java-mode java-ts-mode) . ("jdtls")))
+  (add-to-list 'eglot-server-programs
+               '(quint-mode . ("quint-language-server" "--stdio")))
   :custom
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
@@ -633,7 +635,10 @@
 
 ;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
 (use-package treesit-fold
-  :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+  :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  :commands (treesit-fold-mode treesit-fold-toggle treesit-fold-open
+                               treesit-fold-close treesit-fold-open-all
+                               treesit-fold-close-all))
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; Debugging with Dape + LLDB DAP.
@@ -689,7 +694,4 @@
   :straight (:host github :repo "informalsystems/quint"
              :files ("editor-plugins/emacs/quint-mode.el"))
   :mode "\\.qnt\\'"
-  :config
-  (add-to-list 'eglot-server-programs
-               '(quint-mode . ("quint-language-server" "--stdio")))
   :hook (quint-mode . eglot-ensure))
