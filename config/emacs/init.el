@@ -629,8 +629,6 @@
   :commands (breadcrumb-local-mode breadcrumb-imenu-crumbs breadcrumb-project-crumbs)
   :init
   (require 'subr-x)
-  :config
-  ;;(add-hook 'eglot-managed-mode-hook #'jason/eglot-breadcrumb-toggle)
   )
 
 ;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
@@ -642,23 +640,6 @@
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; Debugging with Dape + LLDB DAP.
-;;
-;; `dape' is separate from `dap-mode' and does not depend on `lsp-mode'.
-;; Rust pretty-printers are loaded the same way `rust-lldb' loads them, but
-;; `lldb-dap' remains the debug adapter.
-
-(defun jeb/rust-lldb-init-commands ()
-  "Return LLDB commands that load Rust's LLDB formatters."
-  (require 'subr-x)
-  (let* ((sysroot (string-trim
-                   (shell-command-to-string "rustc --print sysroot")))
-         (etc-dir (expand-file-name "lib/rustlib/etc" sysroot)))
-    (vector
-     (format "command script import \"%s\""
-             (expand-file-name "lldb_lookup.py" etc-dir))
-     (format "command source \"%s\""
-             (expand-file-name "lldb_commands" etc-dir)))))
-
 (use-package dape
   :straight t
   :commands (dape)
@@ -677,11 +658,7 @@
   ;; The Apple CLT binary exists on this machine, but plain `lldb-dap' is not
   ;; currently on PATH.
   (setf (plist-get (alist-get 'lldb-dap dape-configs) 'command)
-        "/Library/Developer/CommandLineTools/usr/bin/lldb-dap")
-
-  ;; Preserve the useful Rust display behavior from `rust-lldb'.
-  (setf (plist-get (alist-get 'lldb-dap dape-configs) :initCommands)
-        #'jeb/rust-lldb-init-commands))
+        "/Library/Developer/CommandLineTools/usr/bin/lldb-dap"))
 
 (use-package repeat
   :straight nil
