@@ -94,8 +94,10 @@ on-mode-changed = []
     # '''
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-    # alt-slash = 'layout tiles horizontal vertical'
-    # alt-comma = 'layout accordion horizontal vertical'
+    # Using cmd-alt-ctrl prefix to avoid clobbering Emacs M-/ (dabbrev-expand)
+    # and M-, (xref-pop-marker-stack).
+    cmd-alt-ctrl-slash = 'layout tiles horizontal vertical'
+    cmd-alt-ctrl-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     # alt-h = 'focus left'
