@@ -21,6 +21,9 @@ fi
 #######################
 # PL sdk/env managers
 
+# sccache config for rust builds
+export SCCACHE_CACHE_SIZE="50G"
+
 # this adds the cargo bin dir to the path
 if [ -r "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
