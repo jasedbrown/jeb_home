@@ -5,6 +5,7 @@
     co = checkout
     cp = cherry-pick
     dc = diff --cached
+    fm = fetch origin main:refs/remotes/origin/main
     lgo = log
     rb = rebase origin/main
     ru = remote update
