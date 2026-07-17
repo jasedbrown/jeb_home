@@ -437,6 +437,16 @@
 ;; (use-package org
 ;;   :straight t)
 
+;; (defun my/org-table-toggle-x ()
+;;   "Toggle current org-table cell between empty and X."
+;;   (interactive)
+;;   (let ((cur (org-table-get-field)))
+;;     (org-table-get-field nil (if (string-blank-p (string-trim cur)) "X" ""))
+;;     (org-table-align)))
+
+;; (define-key org-mode-map (kbd "C-c x") #'my/org-table-toggle-x)
+
+
 (use-package markdown-mode
   :straight t
   :mode (("\\.md\\'" . markdown-mode)
@@ -629,7 +639,7 @@
   :commands (breadcrumb-local-mode breadcrumb-imenu-crumbs breadcrumb-project-crumbs)
   :init
   (require 'subr-x)
-  )
+  :hook (prog-mode . breadcrumb-local-mode))
 
 ;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
 (use-package treesit-fold
