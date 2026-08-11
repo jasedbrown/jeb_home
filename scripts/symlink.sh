@@ -78,13 +78,14 @@ if [ "$OS_NAME" = "Linux" ] && [ -d /etc/udev/rules.d ]; then
     fi
 fi
 
-
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" "$HOME/.cargo/config.toml"
 
-# # symlink Claude config
-# mkdir -p ~/.claude
-# ln -sf "$(pwd)/config/claude/commands" ~/.claude/commands
-# ln -sf "$(pwd)/config/claude/skills" ~/.claude/skills
+# install podman as a systemd service
+# install to ~/.local/share/systemd/user/ as that's an alternative location
+# for systemd. That prevents this "sidekick" dorfiles repo from conflicting
+# with the primary dotfiles repo installing to `~/.config/systemd/user/`.
+systemctl --user daemon-reload
+systemctl --user enable --now jeb-containers.service
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"
