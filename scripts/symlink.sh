@@ -81,6 +81,10 @@ fi
 # Symlink config files
 ln -sf "$(pwd)/config/cargo/config.toml" "$HOME/.cargo/config.toml"
 
+# Symlink Claude Code agent files
+mkdir -p "$HOME/.claude"
+ln -sf "$DOTFILES_DIR/agents/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
+
 # install podman as a systemd service
 # install to ~/.local/share/systemd/user/ as that's an alternative location
 # for systemd. That prevents this "sidekick" dorfiles repo from conflicting
