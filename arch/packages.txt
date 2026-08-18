@@ -1,6 +1,7 @@
 # Core system utilities
 avahi
 base-devel
+system76-scheduler
 bluez
 bluez-utils
 btop
@@ -67,7 +68,7 @@ podman-compose
 postgresql-libs
 python
 python-pip
-scccache
+sccache
 wireshark-qt
 
 # window manager essentials
@@ -133,3 +134,8 @@ papirus-icon-theme
 # libraries
 libtool
 libvterm
+
+# music related
+lilypond
+musescore
+ttf-dejavu

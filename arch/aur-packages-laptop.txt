@@ -1,0 +1,11 @@
+# AUR packages installed only on System76 laptops (see arch.sh laptop detection).
+# Do not add desktop-relevant packages here; those belong in aur-packages.txt.
+
+# ACPI hotkeys on models missing the in-kernel system76_acpi driver
+system76-acpi-dkms
+
+# IO board control (keyboard backlight/fan on models with a System76 IO board)
+system76-io-dkms
+
+# Keyboard backlight/keymap configurator GUI
+system76-keyboard-configurator

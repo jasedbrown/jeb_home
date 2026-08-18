@@ -1,16 +1,12 @@
-# AUR helpers
-yay
-
 # Applications
 1password
 spotify
 slack-desktop-wayland
 zoom
 
-# System76 drivers
+# System76 drivers (all models, laptop and desktop)
 system76-driver
-system76-firmware-daemon-git
-firmware-manager-git
+firmware-manager
 
 # Themes
 archlinux-themes-sddm
