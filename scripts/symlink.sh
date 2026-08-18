@@ -86,6 +86,6 @@ ln -sf "$(pwd)/config/cargo/config.toml" "$HOME/.cargo/config.toml"
 # for systemd. That prevents this "sidekick" dorfiles repo from conflicting
 # with the primary dotfiles repo installing to `~/.config/systemd/user/`.
 systemctl --user daemon-reload
-systemctl --user enable --now jeb-containers.service
+# systemctl --user enable --now jeb-containers.service
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"
