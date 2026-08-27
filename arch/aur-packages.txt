@@ -1,5 +1,6 @@
 # Applications
 1password
+pandoc-bin
 spotify
 slack-desktop-wayland
 zoom

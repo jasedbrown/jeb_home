@@ -38,6 +38,7 @@ graphviz
 impala
 jq
 less
+opencode
 ripgrep
 rsync
 tar
