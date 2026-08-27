@@ -27,7 +27,7 @@
         "custom/language",
         "pulseaudio",
         "network",
-        "battery",
+        // Disabled until Waybar includes the removable-battery crash fix.
         "power-profiles-daemon"
     ],
 
@@ -81,21 +81,6 @@
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "Disconnected  ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
-    },
-
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 15,
-            "critical": 5,
-        },
-        "format": "{icon}  {capacity}%",
-        "format-charging": "⚡ {capacity}%",
-        "format-plugged": "  {capacity}%",
-        "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""], 
     },
 
     "power-profiles-daemon": {
