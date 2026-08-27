@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; jasobrown's emacs config.
 
@@ -264,14 +266,6 @@
         ("M-<" . corfu-first)
         ("M->" . corfu-last)))
 
-;; Corfu-terminal: enable corfu in terminal emacs.
-;; this is necessary to use corfu in a terminal emulator.
-(use-package corfu-terminal
-  :after corfu
-  :init
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
-
 ;; Yasnippet: snippet expansion
 (use-package yasnippet
   :config
@@ -385,10 +379,10 @@
 (use-package magit
   :commands (magit-status magit-dispatch magit-file-dispatch))
 
-(use-package jj-mode
-  :straight (:host github :repo "bolivier/jj-mode.el")
-  :commands (jj-log jj-squash-transient jj-bookmark-transient
-                    jj-new-transient jj-rebase-transient))
+;; (use-package jj-mode
+;;   :straight (:host github :repo "bolivier/jj-mode.el")
+;;   :commands (jj-log jj-squash-transient jj-bookmark-transient
+;;                     jj-new-transient jj-rebase-transient))
 
 (defun my/git-commit-spellcheck ()
   "Spell-check commit message before saving."
