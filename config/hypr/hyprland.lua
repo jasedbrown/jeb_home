@@ -161,7 +161,7 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 -- NOTE: "togglegroup" isn't in the official example; verify the exact
 -- dispatcher name (guessed below) against the wiki.
 -- hl.bind(mainMod .. " + J", hl.dsp.window.toggle_group())
-hl.bind(mainMod .. " + slash", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + equal", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exit())
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
