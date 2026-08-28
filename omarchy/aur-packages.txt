@@ -1,0 +1,4 @@
+# Review AUR additions before adding them here.
+pandoc-bin
+slack-desktop-wayland
+zoom
