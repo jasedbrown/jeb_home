@@ -40,7 +40,13 @@ echo -e "${BLUE}Using GNU Stow to create symlinks...${NC}"
 
 # Stow XDG config directories
 echo -e "${GREEN}Symlinking XDG config files...${NC}"
-stow -t "$HOME/.config" config
+if command -v omarchy >/dev/null 2>&1; then
+    # Omarchy owns ~/.config/hypr/hyprland.lua and its related overrides.
+    # Keep this standalone Hyprland configuration out of an Omarchy session.
+    stow --ignore='^hypr(/|$)' -t "$HOME/.config" config
+else
+    stow -t "$HOME/.config" config
+fi
 
 # Stow local scripts
 echo -e "${GREEN}Symlinking scripts to ~/.local/...${NC}"
