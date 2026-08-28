@@ -62,6 +62,7 @@ llvm
 mariadb-clients
 mold
 ninja
+openai-codex
 pgformatter
 python-pipx
 podman
@@ -69,6 +70,8 @@ podman-compose
 postgresql-libs
 python
 python-pip
+nodejs
+npm
 sccache
 wireshark-qt
 

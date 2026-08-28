@@ -47,6 +47,8 @@ emacs
 gcc
 gdb
 ninja-build
+nodejs
+npm
 vim
 
 # System libs

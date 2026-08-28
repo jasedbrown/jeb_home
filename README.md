@@ -10,6 +10,23 @@ Thus, this repo has install scripts for both pop!_os and arch linux. It is
 hoped the scripts are idempotent to be rerun after each update (I'm not sure
 how achievable that is in practice, but that's the hope).
 
+## Global npm applications
+
+Global npm command-line applications are listed in `npm/packages.txt`. Running
+`./scripts/install.sh` installs missing entries and updates listed packages to
+their latest versions. Add one npm package name per line, for example:
+
+```text
+@informalsystems/quint
+typescript
+```
+
+To update only these applications, run:
+
+```sh
+./npm/install.sh
+```
+
 ## arch linux install
 
 1. new system - [helpful steps](https://linuxiac.com/arch-linux-install/)

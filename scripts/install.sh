@@ -51,6 +51,8 @@ fi
 echo "Running development setup..."
 ./scripts/setup_common.sh
 
+./npm/install.sh
+
 echo "Setting up dotfiles..."
 ./scripts/symlink.sh
 

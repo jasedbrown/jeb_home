@@ -52,6 +52,8 @@ feh
 gcc
 gdb
 ninja-build
+nodejs
+npm
 pgformatter
 pipx
 python3

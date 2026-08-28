@@ -1,0 +1,3 @@
+# Global npm command-line applications. Re-running scripts/install.sh updates
+# every package here to the latest version allowed by its npm version range.
+@informalsystems/quint

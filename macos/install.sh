@@ -38,6 +38,8 @@ fi
 echo "Installing macOS packages from $BREWFILE..."
 brew bundle --file "$BREWFILE"
 
+"$DOTFILES_HOME/npm/install.sh"
+
 echo "Creating user config directories..."
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.cache"
