@@ -28,3 +28,10 @@ if [ -f /etc/arch-release ]; then
     export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 fi
 
+# use sdk man's java in non-interactive shells
+export SDKMAN_DIR="${SDKMAN_DIR:-$HOME/.sdkman}"
+
+if [[ -x "$SDKMAN_DIR/candidates/java/current/bin/java" ]]; then
+    export JAVA_HOME="$SDKMAN_DIR/candidates/java/current"
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
