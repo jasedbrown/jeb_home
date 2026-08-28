@@ -29,7 +29,10 @@ if [ ! -d "$SRC_HOME" ]; then
 fi
 
 # Detect OS
-if [ -f /etc/arch-release ]; then
+if command -v omarchy >/dev/null 2>&1; then
+    echo "Detected Omarchy"
+    bash ./omarchy/omarchy.sh
+elif [ -f /etc/arch-release ]; then
     echo "Detected Arch Linux"
     ./arch/arch.sh
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then

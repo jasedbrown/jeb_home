@@ -5,10 +5,6 @@ spotify
 slack-desktop-wayland
 zoom
 
-# System76 drivers (all models, laptop and desktop)
-system76-driver
-firmware-manager
-
 # Themes
 archlinux-themes-sddm
 plymouth-theme-arch-logo

@@ -1,7 +1,6 @@
 # Core system utilities
 avahi
 base-devel
-system76-scheduler
 bluez
 bluez-utils
 btop

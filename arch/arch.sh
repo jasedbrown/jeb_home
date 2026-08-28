@@ -1,6 +1,11 @@
 echo "Installing core packages..."
 grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
 
+# System76 components should never be installed on unrelated hardware.
+IS_SYSTEM76=false
+if grep -qi "System76" /sys/class/dmi/id/sys_vendor /sys/class/dmi/id/product_name 2>/dev/null; then
+    IS_SYSTEM76=true
+fi
 
 echo "Installing AUR helper..."
 if ! command -v paru &> /dev/null || ! paru --version &> /dev/null; then
@@ -15,6 +20,12 @@ fi
 echo "Installing AUR packages..."
 grep -v "^#" ./arch/aur-packages.txt | xargs paru -Sy --needed --noconfirm
 
+if [ "$IS_SYSTEM76" = true ]; then
+    echo "System76 hardware detected, installing System76 packages..."
+    grep -v "^#" ./arch/packages-system76.txt | xargs sudo pacman -Sy --needed --noconfirm
+    grep -v "^#" ./arch/aur-packages-system76.txt | xargs paru -Sy --needed --noconfirm
+fi
+
 # A real system battery (as opposed to a peripheral's, e.g. a mouse or
 # keyboard) means this is a laptop. Desktops/mini-PCs (e.g. Meerkat, Thelio)
 # have no BAT* entry here.
@@ -23,8 +34,8 @@ if compgen -G "/sys/class/power_supply/BAT*" &> /dev/null; then
     IS_LAPTOP=true
 fi
 
-if [ "$IS_LAPTOP" = true ]; then
-    echo "Laptop detected, installing laptop-specific AUR packages..."
+if [ "$IS_SYSTEM76" = true ] && [ "$IS_LAPTOP" = true ]; then
+    echo "System76 laptop detected, installing laptop-specific AUR packages..."
     grep -v "^#" ./arch/aur-packages-laptop.txt | xargs paru -Sy --needed --noconfirm
 fi
 
@@ -39,16 +50,16 @@ fi
 
 
 # System76 drivers
-if pacman -Qi system76-driver &> /dev/null; then
+if [ "$IS_SYSTEM76" = true ] && pacman -Qi system76-driver &> /dev/null; then
     sudo systemctl enable --now system76
 fi
 
-if pacman -Qi system76-firmware-daemon &> /dev/null; then
+if [ "$IS_SYSTEM76" = true ] && pacman -Qi system76-firmware-daemon &> /dev/null; then
     sudo systemctl enable --now system76-firmware-daemon
     sudo gpasswd -a $USER adm
 fi
 
-if pacman -Qi system76-scheduler &> /dev/null; then
+if [ "$IS_SYSTEM76" = true ] && pacman -Qi system76-scheduler &> /dev/null; then
     sudo systemctl enable --now com.system76.Scheduler.service
 fi
 
@@ -106,4 +117,3 @@ if [[ "$HOOKS_LINE" != *"plymouth"* ]]; then
   # arch-logo should have been installed with the AUR packages.txt
   sudo plymouth-set-default-theme -R arch-logo
 fi
-
