@@ -17,5 +17,13 @@ if [ "${#packages[@]}" -eq 0 ]; then
     exit 0
 fi
 
+# npm 12+ blocks dependency install scripts (preinstall/install/postinstall) by
+# default as a supply-chain-risk mitigation. These packages rely on a
+# postinstall step to fetch/link their platform-specific native binary, so
+# without an explicit allowlist entry they silently install without a working
+# binary (npm exits 0 and only prints a warning).
+SCRIPT_ALLOWED_PACKAGES="@anthropic-ai/claude-code,opencode-ai"
+npm config set allow-scripts="$SCRIPT_ALLOWED_PACKAGES" --location=user
+
 echo "Installing/updating global npm packages..."
 npm install --global "${packages[@]}"

@@ -37,7 +37,6 @@ graphviz
 impala
 jq
 less
-opencode
 ripgrep
 rsync
 tar
@@ -61,7 +60,6 @@ llvm
 mariadb-clients
 mold
 ninja
-openai-codex
 pgformatter
 python-pipx
 podman

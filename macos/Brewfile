@@ -29,5 +29,3 @@ cask "orbstack"
 brew "mise"
 brew "gh"
 cask "ghostty"
-
-brew "codex-acp"
