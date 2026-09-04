@@ -1,2 +1,28 @@
+# fcitx5 global configuration.
+#
+# NB: options typed "List|Key" MUST be written as a subsection with numbered
+# entries. A flat `TriggerKeys=Super+space` does not set the key -- fcitx5
+# parses it as an *empty* list and silently unbinds the toggle entirely.
+# Verify the live values with:
+#   busctl --user call org.fcitx.Fcitx5 /controller \
+#          org.fcitx.Fcitx.Controller1 GetConfig s "fcitx://config/global"
+
 [Hotkey]
-TriggerKeys=Super+space
+# Holding the modifier after toggling enumerates the input methods. With only
+# English and Mozc there is nothing to enumerate, so leave it off.
+EnumerateWithTriggerKeys=False
+
+# Super+space is fcitx5's *default* for cycling input-method GROUPS, which
+# would collide with the toggle below. Only one group is configured, so clear
+# these -- a flat empty assignment is how you empty a key list.
+EnumerateGroupForwardKeys=
+EnumerateGroupBackwardKeys=
+
+[Hotkey/TriggerKeys]
+0=Super+space
+
+[Behavior]
+# Start in English; Super+space switches to Mozc.
+ActiveByDefault=False
+# Briefly name the input method when it changes.
+ShowInputMethodInformation=True
