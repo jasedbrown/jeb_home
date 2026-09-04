@@ -1,15 +1,10 @@
-# fcitx5 input-method profile.
-#
-# fcitx5 rewrites this file itself when input methods are added/reordered via
-# fcitx5-configtool, so expect occasional churn in `git status`.
-
 [Groups/0]
 # Group Name
 Name=Default
 # Layout
 Default Layout=us
 # Default Input Method
-DefaultIM=keyboard-us
+DefaultIM=mozc
 
 [Groups/0/Items/0]
 # Name
@@ -25,3 +20,4 @@ Layout=
 
 [GroupOrder]
 0=Default
+
