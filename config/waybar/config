@@ -20,7 +20,8 @@
     ],
 
     "modules-center": [
-        "clock"
+        "clock#date",
+        "clock#time"
     ],
 
     "modules-right": [
@@ -43,21 +44,49 @@
         }
     },
 
-    "clock": {
-        "format": "{:%Y-%m-%d  ::  %T}",
+    // The clock is split into two modules so it reads as a pair of segments,
+    // the same shape as the tmux status bar: an ambient block followed by a
+    // filled, bold block.
+    "clock#date": {
+        "format": "{:%a %Y-%m-%d}",
         "timezone": "",
-        "interval": 1,
+        "interval": 60,
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "on-scroll": 1,
+            "format": {
+                "months":   "<span color='#88c0d0'><b>{}</b></span>",
+                "weekdays": "<span color='#5e81ac'><b>{}</b></span>",
+                "days":     "<span color='#d8dee9'>{}</span>",
+                "today":    "<span color='#88c0d0'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
     },
 
+    "clock#time": {
+        "format": "{:%T}",
+        "timezone": "",
+        "interval": 1,
+        "tooltip": false
+    },
+
+    // English <-> Japanese (Mozc) via fcitx5. Super+space toggles it globally;
+    // clicking the module does the same thing.
     "custom/language": {
         "format": "{}",
+        "return-type": "json",
         "exec": "~/.config/waybar/scripts/language.sh",
         "interval": 1,
         "on-click": "fcitx5-remote -t"
     },
 
     "pulseaudio": {
-        "format": "{icon}  {volume}%",
+        "format": "{icon} {volume}%",
         "format-bluetooth": "{icon} {volume}%  {format_source}",
         "format-bluetooth-muted": "  {icon} {format_source}",
         "format-muted": "  {format_source}",
@@ -75,11 +104,11 @@
 
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "   {signalStrength}%",
-        "format-ethernet": "Connected   ",
-        "tooltip-format": "{ifname}: {gwaddr}",
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": " Connected",
+        "tooltip-format": "{ifname}  ::  {ipaddr}/{cidr}\ngateway {gwaddr}",
         "format-linked": "{ifname} (No IP)",
-        "format-disconnected": "Disconnected  ⚠",
+        "format-disconnected": "⚠ Offline",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
     },
 

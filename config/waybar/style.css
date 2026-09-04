@@ -28,22 +28,47 @@
     color: gray;
 }
 
+/*
+ * Clock: two segments, mirroring the tmux status bar's colour grammar.
+ *   #5e81ac filled block -> tmux status-left (session name)
+ *   #3b4252 ambient      -> tmux window-status-format
+ * The time carries the light-on-dark ambient treatment because it is the
+ * half that actually gets read; the date takes the filled block.
+ * #88c0d0 is deliberately left alone: it means "focused" in both tmux
+ * (current window) and the workspaces module, so the clock doesn't claim it.
+ * Monospace keeps the ticking seconds from shifting the segment's width.
+ */
 #clock {
-    font-size: 12px;
-    color: white;
-    margin-right: 2px;
-    padding: 1px 1px;
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 9px;
 }
 
-#network {
-    background: transparent;
-    color: white;
-    opacity: 0.7;
+#clock.date {
+    background: #5e81ac;
+    color: #2e3440;
+    border-radius: 4px 0 0 4px;
+    margin-left: 2px;
 }
 
-#network.disconnected {
+#clock.time {
     background: #3b4252;
-    color: #bf616a;
+    color: #eceff4;
+    border-radius: 0 4px 4px 0;
+    margin-right: 2px;
+    letter-spacing: 0.3px;
+}
+
+tooltip {
+    background: #2e3440;
+    border: 1px solid #4c566a;
+    border-radius: 4px;
+}
+
+tooltip label {
+    color: #d8dee9;
+    font-family: "JetBrainsMono Nerd Font", monospace;
 }
 
 window#waybar {
@@ -55,6 +80,7 @@ window#waybar {
 
 #workspaces button {
     background: transparent;
+    border-radius: 4px;
     color: white;
     margin-left: 1px;
     margin-right: 1px;
@@ -88,17 +114,84 @@ window#waybar {
     background-color: red;
 }
 
-#pulseaudio {
-    opacity: 0.7;
-}
-
+/*
+ * Right-hand tray: sound / network / power.
+ *
+ * These are ambient readouts, not things you select, so they all get the same
+ * neutral chip -- #3b4252 fill, no accent. #88c0d0 stays reserved for "focused"
+ * and #5e81ac for the clock, which keeps the eye landing on workspaces and the
+ * clock first. Colour on this side is spent only on state that matters:
+ * offline, muted, or a non-default power profile.
+ */
+#custom-language,
+#pulseaudio,
+#network,
 #power-profiles-daemon {
-    opacity: 0.7;
+    background: #3b4252;
+    color: #d8dee9;
+    border-radius: 4px;
+    margin: 0 1px;
+    padding: 0 8px;
+    transition-property: background-color, color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
 }
 
-/* Custom Stuff */
+#custom-language:hover,
+#pulseaudio:hover,
+#network:hover,
+#power-profiles-daemon:hover {
+    background: #4c566a;
+    color: #eceff4;
+}
+
+/* --- state --- */
+
+/*
+ * A / あ, the idiom every desktop IME uses. Explicit CJK fallback so the kana
+ * comes from Noto rather than whatever fontconfig picks, and a fixed width so
+ * the wider kana does not shove the rest of the tray sideways on each toggle.
+ */
 #custom-language {
-    color: white;
-    padding-top: 2px;
-    opacity: 0.7;
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans CJK JP", sans-serif;
+    font-size: 13px;
+    min-width: 16px;
+    padding: 0 7px;
+}
+
+/* Japanese input active -- the one state worth flagging on this module. */
+#custom-language.jp {
+    background: #b48ead;
+    color: #2e3440;
+    font-weight: bold;
+}
+
+#custom-language.off {
+    color: #bf616a;
+}
+
+#pulseaudio.muted {
+    color: #6c7a96;
+}
+
+#network.disconnected {
+    background: #3b4252;
+    color: #bf616a;
+}
+
+#network.linked {
+    color: #ebcb8b;
+}
+
+#power-profiles-daemon.performance {
+    color: #ebcb8b;
+}
+
+#power-profiles-daemon.power-saver {
+    color: #a3be8c;
+}
+
+/* give the last chip a little breathing room from the screen edge */
+#power-profiles-daemon {
+    margin-right: 4px;
 }
