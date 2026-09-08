@@ -1,9 +1,9 @@
 [build]
-# # Use sccache as a compiler wrapper
-rustc-wrapper = "sccache"
+# Use sccache as a compiler wrapper
+# rustc-wrapper = "sccache"
 
-# # Disable incremental builds to make sccache effective
-incremental = false
+# Disable incremental builds to make sccache effective
+# incremental = false
 
 [target.x86_64-unknown-linux-gnu]
 # Use mold linker with no-rosegment flag for better flamegraphs
