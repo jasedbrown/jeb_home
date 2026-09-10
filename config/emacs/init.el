@@ -106,6 +106,11 @@
 ;; Increase the amount of data which Emacs reads from the process
 (setq read-process-output-max (* 1024 1024))
 
+;; a handful of friendlier page scrolling settings
+(setq scroll-conservatively 20)
+(setq scroll-margin 3)
+;; Preserve point's vertical screen position when scrolling.
+(setq scroll-preserve-screen-position t)
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; package support via straight.el
@@ -638,9 +643,53 @@
 ;; folding for treesit! https://github.com/emacs-tree-sitter/treesit-fold
 (use-package treesit-fold
   :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
-  :commands (treesit-fold-mode treesit-fold-toggle treesit-fold-open
-                               treesit-fold-close treesit-fold-open-all
-                               treesit-fold-close-all))
+  :commands (treesit-fold-close
+             treesit-fold-close-all
+             treesit-fold-open
+             treesit-fold-toggle
+             treesit-fold-open-all
+             treesit-fold-mode
+             global-treesit-fold-mode
+             treesit-fold-open-recursively
+             treesit-fold-line-comment-mode)
+  :config
+  (set-face-attribute 'treesit-fold-replacement-face nil
+                      :foreground "#808080"
+                      :box nil
+                      :weight 'bold))
+
+(setq global-treesit-fold-mode t)
+(setq treesit-fold-line-count-show t)
+
+(use-package treesit-fold-indicators
+  :straight (treesit-fold-indicators :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+(setq global-treesit-fold-indicators-mode 1)
+
+;; Systems and General Purpose
+(add-hook 'c-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'c++-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'java-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'rust-ts-mode-hook #'treesit-fold-mode)
+
+;; kirigami: a frontend to many backend folding engines,
+;; https://www.jamescherti.com/emacs-kirigami-code-text-folding/
+(use-package kirigami
+  :commands (kirigami-open-fold
+             kirigami-open-fold-rec
+             kirigami-close-fold
+             kirigami-toggle-fold
+             kirigami-open-folds
+             kirigami-close-folds-except-current
+             kirigami-close-folds)
+
+  :bind
+  ;; simple keybindings
+  (("C-c f o" . kirigami-open-fold)          ; Open fold at point
+   ("C-c f O" . kirigami-open-fold-rec)      ; Open fold recursively
+   ("C-c f r" . kirigami-open-folds)         ; Open all folds
+   ("C-c f c" . kirigami-close-fold)         ; Close fold at point
+   ("C-c f m" . kirigami-close-folds)        ; Close all folds
+   ("C-c f a" . kirigami-toggle-fold)))      ; Toggle fold at point
 
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ;; Debugging with Dape + LLDB DAP.
