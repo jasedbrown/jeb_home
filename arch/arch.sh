@@ -1,4 +1,4 @@
-echo "Installing core packages..."
+echo "Installing core arch packages..."
 grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
 
 # System76 components should never be installed on unrelated hardware.
@@ -7,7 +7,6 @@ if grep -qi "System76" /sys/class/dmi/id/sys_vendor /sys/class/dmi/id/product_na
     IS_SYSTEM76=true
 fi
 
-echo "Installing AUR helper..."
 if ! command -v paru &> /dev/null || ! paru --version &> /dev/null; then
     echo "Installing paru..."
     rm -rf /tmp/paru
