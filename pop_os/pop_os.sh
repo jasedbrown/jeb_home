@@ -10,6 +10,10 @@ fi
 echo "Updating package lists..."
 sudo apt update > /dev/null
 
+# not silenced or -y, so any upgrade prompts are visible
+echo "Upgrading packages..."
+sudo apt upgrade
+
 echo "Installing packages..."
 # Install core packages from packages.txt
 grep -v "^#" ./pop_os/packages.txt | xargs sudo apt install -y > /dev/null

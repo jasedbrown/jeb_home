@@ -39,13 +39,23 @@ fi
 # Install/update JDTLS (Java LSP server)
 # my wrapper script will be symlinked
 JDTLS_DIR="$HOME/.local/share/eclipse.jdt.ls"
-mkdir -p "$JDTLS_DIR"
+JDTLS_SNAPSHOTS="https://download.eclipse.org/jdtls/snapshots"
+# latest.txt names the current snapshot tarball, e.g. jdt-language-server-1.62.0-202609111927.tar.gz.
+# Record it after install and only re-download when it changes.
+JDTLS_LATEST=$(curl -fsSL "$JDTLS_SNAPSHOTS/latest.txt" | tr -d '[:space:]')
+JDTLS_VERSION_FILE="$JDTLS_DIR/.installed-version"
 
-wget -q "https://www.eclipse.org/downloads/download.php?file=/jdtls/snapshots/jdt-language-server-latest.tar.gz" \
-    -O /tmp/jdtls.tar.gz
-rm -rf "$JDTLS_DIR"/*
-tar -xzf /tmp/jdtls.tar.gz -C "$JDTLS_DIR"
-rm /tmp/jdtls.tar.gz
+if [ -z "$JDTLS_LATEST" ]; then
+    echo "Could not determine latest JDTLS version, skipping"
+elif [ "$(cat "$JDTLS_VERSION_FILE" 2>/dev/null)" != "$JDTLS_LATEST" ]; then
+    echo "Installing JDTLS $JDTLS_LATEST..."
+    mkdir -p "$JDTLS_DIR"
+    if curl -fsSL "$JDTLS_SNAPSHOTS/$JDTLS_LATEST" -o /tmp/jdtls.tar.gz; then
+        rm -rf "$JDTLS_DIR"/* "$JDTLS_VERSION_FILE"
+        tar -xzf /tmp/jdtls.tar.gz -C "$JDTLS_DIR" && echo "$JDTLS_LATEST" > "$JDTLS_VERSION_FILE"
+    fi
+    rm -f /tmp/jdtls.tar.gz
+fi
 
 
 #################################

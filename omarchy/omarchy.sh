@@ -7,6 +7,10 @@ if ! command -v omarchy >/dev/null 2>&1; then
     exit 1
 fi
 
+# Full system update (pacman, AUR, Omarchy itself, migrations) before installing anything
+echo "Updating Omarchy and system packages..."
+omarchy update
+
 echo "Installing Omarchy repository packages..."
 grep -v '^[[:space:]]*#' ./omarchy/packages.txt | xargs -r omarchy pkg add
 

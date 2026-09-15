@@ -65,13 +65,9 @@ restart() {
     sudo /sbin/shutdown -r 0
 }
 
+# install.sh handles both fresh installs and updates; it must run from the repo root
 sysupdate() {
-    if [ -f /etc/arch-release ]; then
-        sudo pacman -Syu
-    else
-        sudo apt update
-        sudo apt upgrade
-    fi
+    (cd "$DOTFILES_HOME" && ./scripts/install.sh "$@")
 }
 
 # tmux attach-or-create from tmuxp template

@@ -1,5 +1,11 @@
+# Always do a full sync + upgrade first; Arch doesn't support partial upgrades.
+# Every later install uses `-S` (no `y`) so the package db isn't re-synced mid-run.
+# No --noconfirm here so replacement/conflict prompts and pacman warnings are visible.
+echo "Upgrading system packages..."
+sudo pacman -Syu
+
 echo "Installing core arch packages..."
-grep -v "^#" ./arch/packages.txt | xargs sudo pacman -Sy --needed --noconfirm
+grep -v "^#" ./arch/packages.txt | xargs sudo pacman -S --needed --noconfirm
 
 # System76 components should never be installed on unrelated hardware.
 IS_SYSTEM76=false
@@ -16,13 +22,16 @@ if ! command -v paru &> /dev/null || ! paru --version &> /dev/null; then
     cd -
 fi
 
+echo "Upgrading AUR packages..."
+paru -Sua
+
 echo "Installing AUR packages..."
-grep -v "^#" ./arch/aur-packages.txt | xargs paru -Sy --needed --noconfirm
+grep -v "^#" ./arch/aur-packages.txt | xargs paru -S --needed --noconfirm
 
 if [ "$IS_SYSTEM76" = true ]; then
     echo "System76 hardware detected, installing System76 packages..."
-    grep -v "^#" ./arch/packages-system76.txt | xargs sudo pacman -Sy --needed --noconfirm
-    grep -v "^#" ./arch/aur-packages-system76.txt | xargs paru -Sy --needed --noconfirm
+    grep -v "^#" ./arch/packages-system76.txt | xargs sudo pacman -S --needed --noconfirm
+    grep -v "^#" ./arch/aur-packages-system76.txt | xargs paru -S --needed --noconfirm
 fi
 
 # A real system battery (as opposed to a peripheral's, e.g. a mouse or
@@ -35,7 +44,7 @@ fi
 
 if [ "$IS_SYSTEM76" = true ] && [ "$IS_LAPTOP" = true ]; then
     echo "System76 laptop detected, installing laptop-specific AUR packages..."
-    grep -v "^#" ./arch/aur-packages-laptop.txt | xargs paru -Sy --needed --noconfirm
+    grep -v "^#" ./arch/aur-packages-laptop.txt | xargs paru -S --needed --noconfirm
 fi
 
 echo "Installing systemctl stuffs..."
