@@ -418,6 +418,8 @@
   (projectile-file-exists-remote-cache-expire nil)
   (projectile-git-command "git ls-files -zc --exclude-standard")  ; Faster than default
   (projectile-indexing-method 'alien)  ; Usually faster for git projects
+  ;; keep frecency history (machine-local state) out of the dotfiles repo
+  (projectile-frecency-file (concat user-cache-directory "/emacs/projectile-frecency.eld"))
 )
 
 ;; apparently, `deadgrep` is thw newer hotness, but not sure
