@@ -15,6 +15,7 @@ man-db
 networkmanager
 openssh
 openssl
+pacman-contrib
 plymouth
 stow
 tmux
