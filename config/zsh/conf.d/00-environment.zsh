@@ -88,3 +88,8 @@ function nvm() {
 # bun - because apparently there are not enough fucking node.js package managers ...
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# claude
+CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+DISABLE_TELEMETRY=1
+
