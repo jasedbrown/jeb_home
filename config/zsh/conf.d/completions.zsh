@@ -58,15 +58,15 @@ else
     compinit -d "$ZSH_COMPDUMP"
 fi
 
-# jj completions (must be after compinit)
-if [[ -s "$JJ_ZSH_COMPLETION" ]]; then
-    source "$JJ_ZSH_COMPLETION"
-elif command -v jj >/dev/null 2>&1; then
-    if [[ -w "$ZSH_CACHE_DIR" ]]; then
-        # Generating jj completions shells out, so cache the static result after
-        # the first run instead of using process substitution every startup.
-        jj util completion zsh >| "$JJ_ZSH_COMPLETION" 2>/dev/null && source "$JJ_ZSH_COMPLETION"
-    else
-        source <(jj util completion zsh)
-    fi
-fi
+# # jj completions (must be after compinit)
+# if [[ -s "$JJ_ZSH_COMPLETION" ]]; then
+#     source "$JJ_ZSH_COMPLETION"
+# elif command -v jj >/dev/null 2>&1; then
+#     if [[ -w "$ZSH_CACHE_DIR" ]]; then
+#         # Generating jj completions shells out, so cache the static result after
+#         # the first run instead of using process substitution every startup.
+#         jj util completion zsh >| "$JJ_ZSH_COMPLETION" 2>/dev/null && source "$JJ_ZSH_COMPLETION"
+#     else
+#         source <(jj util completion zsh)
+#     fi
+# fi
