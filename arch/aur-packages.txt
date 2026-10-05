@@ -2,7 +2,7 @@
 1password
 pandoc-bin
 spotify
-slack-desktop-wayland
+slack-desktop
 zoom
 
 # Themes
