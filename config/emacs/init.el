@@ -3,6 +3,8 @@
 ;; -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;; jasobrown's emacs config.
 
+(setq confirm-kill-emacs 'yes-or-no-p)
+
 ;; if starting emacs with a custom user-emacs-directory
 ;; https://emacs.stackexchange.com/questions/4253/how-to-start-emacs-with-a-custom-user-emacs-directory
 (setq user-init-file (or load-file-name (buffer-file-name)))
@@ -13,8 +15,7 @@
 ;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load-file custom-file)
 
-(setq confirm-kill-emacs 'yes-or-no-p)
-(fset 'yes-or-no-p 'y-or-n-p)
+(setopt use-short-answers t)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (when (fboundp 'scroll-bar-mode)
