@@ -91,6 +91,17 @@ ln -sf "$(pwd)/config/cargo/config.toml" "$HOME/.cargo/config.toml"
 mkdir -p "$HOME/.claude"
 ln -sf "$DOTFILES_DIR/agents/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
 
+# Codex loads /etc/codex/config.toml as shared defaults, then gives the user
+# config higher precedence. Keep ~/.codex/config.toml local so Codex can store
+# machine-specific project trust and TUI state without modifying this repo.
+sudo mkdir -p /etc/codex
+sudo cp "$DOTFILES_DIR/agents/codex/config.toml" /etc/codex/config.toml
+
+# Codex discovers global instructions in ~/.codex/AGENTS.md. Symlink only that
+# file into CODEX_HOME and leave credentials, sessions, and other state local.
+mkdir -p "$HOME/.codex"
+ln -sf "$DOTFILES_DIR/agents/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+
 # install podman as a systemd service
 # install to ~/.local/share/systemd/user/ as that's an alternative location
 # for systemd. That prevents this "sidekick" dorfiles repo from conflicting
