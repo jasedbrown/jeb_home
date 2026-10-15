@@ -106,7 +106,9 @@ ln -sf "$DOTFILES_DIR/agents/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
 # install to ~/.local/share/systemd/user/ as that's an alternative location
 # for systemd. That prevents this "sidekick" dorfiles repo from conflicting
 # with the primary dotfiles repo installing to `~/.config/systemd/user/`.
-systemctl --user daemon-reload
+if [ "$OS_NAME" = "Linux" ]; then
+    systemctl --user daemon-reload
+fi
 # systemctl --user enable --now jeb-containers.service
 
 echo -e "${GREEN}Symlinks created successfully!${NC}"

@@ -21,11 +21,9 @@ cask "karabiner-elements"
 
 cask "emacs-plus-app"
 cask "font-jetbrains-mono-nerd-font"
-cask "font-noto-sans-cjk"
+# cask "font-noto-sans-cjk"
 cask "font-symbols-only-nerd-font"
 
 brew "libpq"
-cask "orbstack"
-brew "mise"
 brew "gh"
 cask "ghostty"

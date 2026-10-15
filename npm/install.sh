@@ -11,7 +11,11 @@ if ! command -v npm >/dev/null 2>&1; then
     exit 1
 fi
 
-mapfile -t packages < <(grep -Ev '^[[:space:]]*(#|$)' "$PACKAGES_FILE")
+# Not mapfile: macOS ships bash 3.2, which lacks it.
+packages=()
+while IFS= read -r package; do
+    packages+=("$package")
+done < <(grep -Ev '^[[:space:]]*(#|$)' "$PACKAGES_FILE")
 
 if [ "${#packages[@]}" -eq 0 ]; then
     exit 0
