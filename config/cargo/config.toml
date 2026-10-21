@@ -15,7 +15,7 @@ rustflags = [
 ]
 
 [alias]
-nt = "nextest run --workspace --features failure_injection --no-fail-fast"
+nt = "nextest run --workspace --no-fail-fast"
 
 [net]
 git-fetch-with-cli = true
