@@ -67,13 +67,16 @@ if [ ! -d "$HOME/.pyenv" ]; then
     echo "Installing pyenv..."
 
     curl https://pyenv.run | bash
-    source "$HOME/.pyenv/bin/pyenv"
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
     pyenv update
     pyenv install 3.14
 fi
 
-# Make sure pipx is initialized
-pipx ensurepath
+# Make sure pipx's bin dir is on PATH (ensurepath warns noisily if it already is)
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    pipx ensurepath
+fi
 
 # Install global Python LSP + helpers if not already installed
 if ! pipx list | grep -q "python-lsp-server"; then
