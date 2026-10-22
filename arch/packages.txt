@@ -62,15 +62,14 @@ mariadb-clients
 mold
 ninja
 pgformatter
-python-pipx
 podman
 podman-compose
 postgresql-libs
 python
-python-pip
 nodejs
 npm
 sccache
+uv
 wireshark-qt
 
 # window manager essentials

@@ -25,7 +25,6 @@ graphviz
 imagemagick
 jq
 less
-pipx
 python3-tk
 readline-common
 ripgrep

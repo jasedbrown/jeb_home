@@ -40,6 +40,12 @@ brew bundle --file "$BREWFILE"
 
 "$DOTFILES_HOME/npm/install.sh"
 
+if ! uv tool list 2>/dev/null | grep -q "python-lsp-server"; then
+    echo "Installing python-lsp-server..."
+    uv tool install --force python-lsp-server \
+        --with pylsp-mypy --with python-lsp-black --with python-lsp-ruff --with pylsp-rope
+fi
+
 echo "Creating user config directories..."
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.cache"

@@ -62,26 +62,22 @@ fi
 #################################
 # python
 
-# Install pyenv
-if [ ! -d "$HOME/.pyenv" ]; then
-    echo "Installing pyenv..."
-
-    curl https://pyenv.run | bash
-    export PATH="$HOME/.pyenv/bin:$PATH"
-    eval "$(pyenv init -)"
-    pyenv update
-    pyenv install 3.14
-fi
-
-# Make sure pipx's bin dir is on PATH (ensurepath warns noisily if it already is)
-if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    pipx ensurepath
+# uv manages python tools (and python versions, if ever needed).
+# Arch packages it; elsewhere use the standalone installer, which drops it in ~/.local/bin.
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh
+    export PATH="$HOME/.local/bin:$PATH"
+elif [ "$(command -v uv)" = "$HOME/.local/bin/uv" ]; then
+    # standalone installs aren't covered by a package manager, so update them here
+    uv self update
 fi
 
 # Install global Python LSP + helpers if not already installed
-if ! pipx list | grep -q "python-lsp-server"; then
-    pipx install python-lsp-server
-    pipx inject python-lsp-server pylsp-mypy python-lsp-black python-lsp-ruff pylsp-rope
+if ! uv tool list 2>/dev/null | grep -q "python-lsp-server"; then
+    # --force replaces a pylsp entrypoint left behind by an old pipx install
+    uv tool install --force python-lsp-server \
+        --with pylsp-mypy --with python-lsp-black --with python-lsp-ruff --with pylsp-rope
 fi
 
 

@@ -55,9 +55,7 @@ ninja-build
 nodejs
 npm
 pgformatter
-pipx
 python3
-python3-pip
 vim
 wireshark
 
