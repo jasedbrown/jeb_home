@@ -45,7 +45,8 @@ JDTLS_SNAPSHOTS="https://download.eclipse.org/jdtls/snapshots"
 JDTLS_LATEST=$(curl -fsSL "$JDTLS_SNAPSHOTS/latest.txt" | tr -d '[:space:]')
 JDTLS_VERSION_FILE="$JDTLS_DIR/.installed-version"
 
-if [ -z "$JDTLS_LATEST" ]; then
+# download.eclipse.org may serve an HTML error page with a 200 status, so validate the format
+if [[ ! "$JDTLS_LATEST" =~ ^jdt-language-server-[0-9A-Za-z.-]+\.tar\.gz$ ]]; then
     echo "Could not determine latest JDTLS version, skipping"
 elif [ "$(cat "$JDTLS_VERSION_FILE" 2>/dev/null)" != "$JDTLS_LATEST" ]; then
     echo "Installing JDTLS $JDTLS_LATEST..."
