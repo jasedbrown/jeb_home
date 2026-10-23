@@ -95,7 +95,8 @@ wl-clipboard
 wofi
 xdg-desktop-portal-hyprland
 
-# Browsers
+# apps
+discord
 firefox
 
 # Multimedia
