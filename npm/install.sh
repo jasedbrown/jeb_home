@@ -29,5 +29,29 @@ fi
 SCRIPT_ALLOWED_PACKAGES="@anthropic-ai/claude-code,opencode-ai"
 npm config set allow-scripts="$SCRIPT_ALLOWED_PACKAGES" --location=user
 
-echo "Installing/updating global npm packages..."
-npm install --global "${packages[@]}"
+# `npm install --global` re-downloads every package it's given, even ones that
+# are already current, so only pass it packages that are missing or outdated.
+# `npm outdated` exits 1 when anything is outdated, hence the `|| true`.
+installed_json="$(npm ls --global --depth=0 --json 2>/dev/null || true)"
+outdated_json="$(npm outdated --global --json 2>/dev/null || true)"
+
+to_install=()
+while IFS= read -r package; do
+    [ -n "$package" ] && to_install+=("$package")
+done < <(
+    INSTALLED_JSON="$installed_json" OUTDATED_JSON="$outdated_json" node -e '
+        const parse = (s) => { try { return JSON.parse(s || "{}"); } catch { return {}; } };
+        const installed = new Set(Object.keys(parse(process.env.INSTALLED_JSON).dependencies || {}));
+        const outdated = new Set(Object.keys(parse(process.env.OUTDATED_JSON)));
+        for (const p of process.argv.slice(1)) {
+            if (!installed.has(p) || outdated.has(p)) console.log(p);
+        }
+    ' "${packages[@]}"
+)
+
+if [ "${#to_install[@]}" -eq 0 ]; then
+    exit 0
+fi
+
+echo "Installing/updating: ${to_install[*]}"
+npm install --global "${to_install[@]}"
