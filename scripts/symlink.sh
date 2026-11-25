@@ -4,10 +4,7 @@
 set -euo pipefail
 
 # Colors for output
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
 RED='\033[0;31m'
-YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 # Set dotfiles directory
@@ -18,7 +15,6 @@ OS_NAME="$(uname -s)"
 # Create necessary directories.
 # Pre-create dirs that other tools write into so stow creates per-file
 # symlinks instead of folding the whole directory into the repo.
-echo -e "${BLUE}Creating necessary directories...${NC}"
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.cache"
 mkdir -p "$HOME/.local/bin"
@@ -36,10 +32,7 @@ if ! command -v stow >/dev/null 2>&1; then
     exit 1
 fi
 
-echo -e "${BLUE}Using GNU Stow to create symlinks...${NC}"
-
 # Stow XDG config directories
-echo -e "${GREEN}Symlinking XDG config files...${NC}"
 if command -v omarchy >/dev/null 2>&1; then
     # Omarchy owns ~/.config/hypr/hyprland.lua and its related overrides.
     # Keep this standalone Hyprland configuration out of an Omarchy session.
@@ -49,17 +42,14 @@ else
 fi
 
 # Stow local scripts
-echo -e "${GREEN}Symlinking scripts to ~/.local/...${NC}"
 stow -t "$HOME/.local" local
 
 # Stow home directory files
-echo -e "${GREEN}Symlinking files to home directory...${NC}"
 stow -t "$HOME" home
 
 ln -sf "$DOTFILES_DIR/config/zsh/.zshenv" "$HOME/.zshenv"
 
 if [ "$OS_NAME" = "Linux" ] && [ -f /etc/arch-release ]; then
-    echo -e "${GREEN}Applying system-wide configurations - Arch specific...${NC}"
     sudo cp "$DOTFILES_DIR/system/vconsole.conf" /etc/vconsole.conf
     sudo cp "$DOTFILES_DIR/system/sddm.conf" /etc/sddm.conf
 
@@ -77,7 +67,6 @@ if [ "$OS_NAME" = "Linux" ] && [ -f /etc/arch-release ]; then
 fi
 
 if [ "$OS_NAME" = "Linux" ] && [ -d /etc/udev/rules.d ]; then
-    echo -e "${GREEN}Applying udev rules...${NC}"
     sudo cp "$DOTFILES_DIR/system/etc/udev/rules.d/50-zsa.rules" /etc/udev/rules.d/50-zsa.rules
     if command -v udevadm >/dev/null 2>&1; then
         sudo udevadm control --reload-rules
@@ -111,4 +100,3 @@ if [ "$OS_NAME" = "Linux" ]; then
 fi
 # systemctl --user enable --now jeb-containers.service
 
-echo -e "${GREEN}Symlinks created successfully!${NC}"

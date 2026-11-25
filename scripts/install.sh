@@ -16,7 +16,6 @@ if [[ ! -f "$(dirname "$0")/setup_common.sh" ]]; then
 fi
 
 if [ "$(uname -s)" = "Darwin" ]; then
-    echo "Detected macOS"
     ./macos/install.sh
     exit 0
 fi
@@ -30,16 +29,12 @@ fi
 
 # Detect OS
 if command -v omarchy >/dev/null 2>&1; then
-    echo "Detected Omarchy"
     bash ./omarchy/omarchy.sh
 elif [ -f /etc/arch-release ]; then
-    echo "Detected Arch Linux"
     ./arch/arch.sh
 elif [ -f /etc/os-release ] && grep -q "Pop!_OS" /etc/os-release; then
-    echo "Detected Pop!_OS"
     ./pop_os/pop_os.sh
 elif [ -f /proc/device-tree/model ] && grep -q "Raspberry Pi" /proc/device-tree/model; then
-    echo "Detected Raspberry Pi OS"
     ./pi_os/pi_os.sh
 else
     echo "Unsupported distro!"
@@ -51,12 +46,8 @@ if [ "$(getent passwd $(whoami) | cut -d: -f7)" != "/usr/bin/zsh" ]; then
     sudo chsh -s /usr/bin/zsh $(whoami)
 fi
 
-echo "Running development setup..."
 ./scripts/setup_common.sh
 
 ./npm/install.sh
 
-echo "Setting up dotfiles..."
 ./scripts/symlink.sh
-
-echo "Installation complete!"

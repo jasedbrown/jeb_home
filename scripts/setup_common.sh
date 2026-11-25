@@ -1,12 +1,10 @@
 #!/bin/bash
 # setup_common.sh
 
-echo "Configuring system settings..."
 # Lower the paranoia level for better flamegraphs
 sudo sh -c 'echo -1 > /proc/sys/kernel/perf_event_paranoid'
 sudo sh -c 'echo 0 > /proc/sys/kernel/kptr_restrict'
 
-echo "Setting up development tools..."
 # install rust and libraries
 if [ ! -d "$HOME/.rustup" ] || ! command -v rustc &> /dev/null; then
     echo "Installing rust..."

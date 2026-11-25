@@ -1,11 +1,25 @@
 # Always do a full sync + upgrade first; Arch doesn't support partial upgrades.
 # Every later install uses `-S` (no `y`) so the package db isn't re-synced mid-run.
 # No --noconfirm here so replacement/conflict prompts and pacman warnings are visible.
-echo "Upgrading system packages..."
 sudo pacman -Syu
 
-echo "Installing core arch packages..."
-grep -v "^#" ./arch/packages.txt | xargs sudo pacman -S --needed --noconfirm
+# Install the packages listed in a file that aren't installed yet, using the
+# given command. pacman and paru print an "is up to date -- skipping" line for
+# every already-installed package (even with --needed and -q), so `pacman -T`
+# filters those out first. It also sees AUR packages once they're installed.
+#   usage: install_missing <list-file> <install command...>
+install_missing() {
+    local list="$1"
+    shift
+    local missing
+    missing=$(grep -Ev '^[[:space:]]*(#|$)' "$list" | xargs -r pacman -T)
+    if [ -n "$missing" ]; then
+        # word splitting is intended: one argument per package
+        "$@" $missing
+    fi
+}
+
+install_missing ./arch/packages.txt sudo pacman -S --needed --noconfirm
 
 # System76 components should never be installed on unrelated hardware.
 IS_SYSTEM76=false
@@ -19,19 +33,16 @@ if ! command -v paru &> /dev/null || ! paru --version &> /dev/null; then
     git clone https://aur.archlinux.org/paru.git /tmp/paru
     cd /tmp/paru
     makepkg -si --noconfirm
-    cd -
+    cd - > /dev/null
 fi
 
-echo "Upgrading AUR packages..."
 paru -Sua
 
-echo "Installing AUR packages..."
-grep -v "^#" ./arch/aur-packages.txt | xargs paru -S --needed --noconfirm
+install_missing ./arch/aur-packages.txt paru -S --needed --noconfirm
 
 if [ "$IS_SYSTEM76" = true ]; then
-    echo "System76 hardware detected, installing System76 packages..."
-    grep -v "^#" ./arch/packages-system76.txt | xargs sudo pacman -S --needed --noconfirm
-    grep -v "^#" ./arch/aur-packages-system76.txt | xargs paru -S --needed --noconfirm
+    install_missing ./arch/packages-system76.txt sudo pacman -S --needed --noconfirm
+    install_missing ./arch/aur-packages-system76.txt paru -S --needed --noconfirm
 fi
 
 # A real system battery (as opposed to a peripheral's, e.g. a mouse or
@@ -43,11 +54,8 @@ if compgen -G "/sys/class/power_supply/BAT*" &> /dev/null; then
 fi
 
 if [ "$IS_SYSTEM76" = true ] && [ "$IS_LAPTOP" = true ]; then
-    echo "System76 laptop detected, installing laptop-specific AUR packages..."
-    grep -v "^#" ./arch/aur-packages-laptop.txt | xargs paru -S --needed --noconfirm
+    install_missing ./arch/aur-packages-laptop.txt paru -S --needed --noconfirm
 fi
-
-echo "Installing systemctl stuffs..."
 
 ######
 # Network services
@@ -64,7 +72,10 @@ fi
 
 if [ "$IS_SYSTEM76" = true ] && pacman -Qi system76-firmware-daemon &> /dev/null; then
     sudo systemctl enable --now system76-firmware-daemon
-    sudo gpasswd -a $USER adm
+    # gpasswd announces the add even when the user is already a member
+    if ! id -nG "$USER" | grep -qw adm; then
+        sudo gpasswd -a "$USER" adm
+    fi
 fi
 
 if [ "$IS_SYSTEM76" = true ] && pacman -Qi system76-scheduler &> /dev/null; then
